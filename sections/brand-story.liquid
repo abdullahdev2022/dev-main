@@ -1,0 +1,537 @@
+{% style %}
+.brand-story__{{ section.id }}{
+  background-color:{{ section.settings.background_color }};
+  padding-top:{{ section.settings.padding_top }}px;
+  padding-bottom:{{ section.settings.padding_bottom }}px;
+}
+@media(max-width:768px){
+  .brand-story__{{ section.id }}{
+    padding-top:{{ section.settings.mobile_padding_top }}px;
+    padding-bottom:{{ section.settings.mobile_padding_bottom }}px;
+  }
+}
+
+.brand-story__wrapper {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+}
+
+.brand-story__video_main {
+  border-radius: 14px;
+  width: 100%;
+  max-width: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-story__video video {
+  width: 100%;
+  display: block;
+  height: auto;
+
+}
+
+.brand-story__image-thumbnail {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.brand-story__image-thumbnail img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  object-fit: cover;
+}
+
+.brand-story__image-thumbnail.is-hidden {
+  display: none;
+}
+
+.brand-story__wrapper-image img {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+.brand-story__video-control {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.brand-story__content {
+  width: 100%;
+  max-width: 50%;
+  text-align: start;
+}
+
+.brand-story__content-subtitle p {
+  border-radius: 100px;
+  display: inline-block;
+  background-color: #FFFFFF;
+  color: #6774A5;
+  font-size: 16px;
+  line-height: 21.6px;
+  font-weight: 500;
+  letter-spacing: -2%;
+  text-align: center;
+
+  padding: 8px 14px;
+  margin: 0;
+}
+
+.brand-story__content-heading * {
+  color: #232323;
+  font-size: 40px;
+  line-height: 50px;
+  letter-spacing: -2%;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.brand-story__content-heading {
+  padding-top: 24px;
+}
+
+.brand-story__content-heading * strong {
+  color: #6774A5;
+}
+
+.brand-story__content-description p {
+  color: #6A6A6A;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 23.4px;
+  letter-spacing: -1%;
+  margin: 0;
+}
+
+.brand-story__content-description {
+  padding-top: 16px;
+}
+
+.brand-story__content-description p strong {
+  color: #232323;
+  font-weight: 600;
+}
+
+.brand-story__content-button {
+  padding-top: 48px;
+}
+
+.brand-story__content-button a {
+  border-radius: 6px;
+  display: inline-block;
+  background-color: #6774A5;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 17px 24px;
+  transition:0.3s;
+}
+
+.brand-story__content-button a:hover {
+  background-color: #000;
+  color: #FFFFFF;
+}
+
+.brand-story__content-description.brand-story__description-desktop {
+  display: block;
+}
+
+.brand-story__content-description.brand-story__description-mobile {
+  display: none;
+}
+
+.brand-story_play_btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.brand-story_play_btn .pit-pause-icon {
+  display: none;
+}
+
+.brand-story_play_btn .pit-play-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.brand-story_play_btn.is-playing .pit-play-icon {
+  display: none;
+}
+
+.brand-story_play_btn.is-playing .pit-pause-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-left: 0;
+}
+
+@media(max-width:768px) {
+  .brand-story__wrapper {
+    flex-direction: column-reverse;
+    gap: 0px;
+  }
+
+  .brand-story__content {
+    max-width: 100%;
+    text-align: center;
+    padding-bottom: 54px;
+  }
+
+  .brand-story__video_main {
+    border-radius: 12px;
+    max-width: 100%;
+  }
+
+  .brand-story__content-button.brand-story__button-desktop {
+    display: none;
+  }
+
+  .brand-story__content-description.brand-story__description-desktop {
+    display: none;
+  }
+
+  .brand-story__content-description.brand-story__description-mobile {
+    padding-top: 24px;
+    display: block;
+  }
+
+  .brand-story__content-subtitle p {
+    font-size: 12px;
+    line-height: 15.6px;
+    padding: 6px 12px;
+  }
+ .brand-story__content-heading{
+  padding-top:16px;
+ }
+  .brand-story__content-heading * {
+    font-size: 28px;
+    line-height: 33.6px;
+  }
+  .brand-story__content-heading * br{
+    display:none;
+  }
+  .brand-story__content-description p {
+    font-size: 16px;
+    line-height: 21.6px;
+  }
+
+  .brand-story__video-control {
+    left: unset;
+    top: unset;
+    right: 24px;
+    bottom: 24px;
+    transform: unset;
+  }
+}
+{% endstyle %}
+
+<div class="brand-story brand-story__{{ section.id }}">
+  <div class="container">
+    <div class="brand-story__wrapper">
+      {% if section.settings.description != blank %}
+        <div class="brand-story__content-description brand-story__description-mobile">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+      <div class="brand-story__video_main">
+        {% if section.settings.select_option == 'video' %}
+          <div class="brand-story__video">
+            {% if section.settings.video != blank %}
+              {{ section.settings.video | video_tag: autoplay: false, playsinline: true }}
+            {% endif %}
+
+            {% if section.settings.video_thumbnail != blank %}
+              <div class="brand-story__image-thumbnail">
+                {{
+                  section.settings.video_thumbnail
+                  | image_url: width: 800
+                  | image_tag: alt: section.settings.video_thumbnail
+                }}
+              </div>
+            {% endif %}
+            <div class="brand-story__video-control">
+              <button
+                type="button"
+                class="brand-story_play_btn brand-story_icon"
+                aria-label="Play video"
+              >
+                <svg
+                  class="pit-play-icon"
+                  width="14"
+                  height="17"
+                  viewBox="0 0 14 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M1.26953 0.0625C1.48074 0.0664667 1.68702 0.127006 1.86719 0.237305L13.124 7.12305C13.2963 7.22712 13.4384 7.37446 13.5371 7.5498C13.6358 7.72529 13.6879 7.92366 13.6875 8.125V8.12598C13.6879 8.3272 13.6357 8.5248 13.5371 8.7002C13.4384 8.87566 13.2963 9.0228 13.124 9.12695V9.12793L1.86719 16.0137C1.68704 16.1239 1.48071 16.1845 1.26953 16.1885C1.05823 16.1924 0.849247 16.1397 0.665039 16.0361C0.482627 15.9341 0.330479 15.7847 0.224609 15.6045C0.11887 15.4244 0.0628554 15.2195 0.0625 15.0107V1.24023L0.0732422 1.08496C0.0940291 0.930686 0.145277 0.781616 0.224609 0.646484C0.33048 0.466297 0.482627 0.316834 0.665039 0.214844C0.849268 0.11123 1.0582 0.0585864 1.26953 0.0625Z" fill="#232323" stroke="white" stroke-width="0.125"/>
+                </svg>
+                <svg
+                  class="pit-pause-icon"
+                  height="64px"
+                  width="64px"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 271.953 271.953"
+                  fill="#000000"
+                >
+                  <g>
+                    <path style="fill:#010002;" d="M135.977,271.953c75.097,0,135.977-60.879,135.977-135.977S211.074,0,135.977,0S0,60.879,0,135.977S60.879,271.953,135.977,271.953z M135.977,21.756c62.979,0,114.22,51.241,114.22,114.22s-51.241,114.22-114.22,114.22s-114.22-51.241-114.22-114.22S72.992,21.756,135.977,21.756z"/>
+                    <path style="fill:#010002;" d="M110.707,200.114c7.511,0,13.598-6.086,13.598-13.598V83.174c0-7.511-6.086-13.598-13.598-13.598c-7.511,0-13.598,6.086-13.598,13.598v103.342C97.109,194.028,103.195,200.114,110.707,200.114z"/>
+                    <path style="fill:#010002;" d="M165.097,200.114c7.511,0,13.598-6.086,13.598-13.598V83.174c0-7.511-6.086-13.598-13.598-13.598S151.5,75.663,151.5,83.174v103.342C151.5,194.028,157.586,200.114,165.097,200.114z"/>
+                  </g>
+                </svg>
+              </button>
+            </div>
+          </div>
+        {% else %}
+          {% if section.settings.image != blank %}
+            <div class="brand-story__wrapper-image">
+              {{ section.settings.image | image_url: width: 800 | image_tag: alt: section.settings.image.alt }}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="brand-story__content">
+        {% if section.settings.subtitle != blank %}
+          <div class="brand-story__content-subtitle">
+            <p>{{ section.settings.subtitle }}</p>
+          </div>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <div class="brand-story__content-heading">
+            {{ section.settings.heading }}
+          </div>
+        {% endif %}
+        {% if section.settings.description != blank %}
+          <div class="brand-story__content-description brand-story__description-desktop">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+        {% if section.settings.button_label != blank %}
+          <div class="brand-story__content-button brand-story__button-desktop">
+            <a href="{{ section.settings.button_url }}">{{ section.settings.button_label }} </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var section = document.querySelector('.brand-story__{{ section.id }}');
+    if (!section) return;
+
+    section.querySelectorAll('.brand-story__video').forEach(function (videoContainer) {
+      var video = videoContainer.querySelector('video');
+      var muteBtn = videoContainer.querySelector('.brand-story_audio_btn');
+      if (!video || !muteBtn) return;
+      if (video.muted) {
+        muteBtn.classList.add('is-muted');
+      }
+    });
+
+  
+    function stopAllVideos(exceptContainer) {
+      section.querySelectorAll('.brand-story__video').forEach(function (container) {
+        if (container === exceptContainer) return;
+        var video = container.querySelector('video');
+        var playBtn = container.querySelector('.brand-story_play_btn');
+        var thumbnail = container.querySelector('.brand-story__image-thumbnail');
+        if (video && !video.paused) {
+          video.pause();
+          if (playBtn) playBtn.classList.remove('is-playing');
+          if (thumbnail) thumbnail.classList.remove('is-hidden');
+        }
+      });
+    }
+
+
+    section.querySelectorAll('.brand-story_play_btn').forEach(function (button) {
+      var videoContainer = button.closest('.brand-story__video');
+      if (!videoContainer) return;
+      var video = videoContainer.querySelector('video');
+      var thumbnail = videoContainer.querySelector('.brand-story__image-thumbnail');
+      if (!video) return;
+
+      button.addEventListener('click', function () {
+        if (video.paused) {
+          stopAllVideos(videoContainer);
+          video.play().catch(function () {});
+          button.classList.add('is-playing');
+          if (thumbnail) thumbnail.classList.add('is-hidden');
+        } else {
+          video.pause();
+          button.classList.remove('is-playing');
+          if (thumbnail) thumbnail.classList.remove('is-hidden');
+        }
+      });
+
+      video.addEventListener('ended', function () {
+        button.classList.remove('is-playing');
+        if (thumbnail) thumbnail.classList.remove('is-hidden');
+      });
+    });
+
+    section.querySelectorAll('.brand-story_audio_btn').forEach(function (button) {
+      var videoContainer = button.closest('.brand-story__video');
+      if (!videoContainer) return;
+      var video = videoContainer.querySelector('video');
+      if (!video) return;
+
+      button.addEventListener('click', function () {
+        video.muted = !video.muted;
+        button.classList.toggle('is-muted', video.muted);
+      });
+    });
+  })();
+</script>
+{% schema %}
+{
+  "name": "Brand Story",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "select_option",
+      "label": "Select Option",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "video"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Select a Image",
+      "visible_if": "{{ section.settings.select_option == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Select a video",
+      "visible_if": "{{ section.settings.select_option == 'video' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_thumbnail",
+      "label": "Video Thumbnail",
+      "visible_if": "{{ section.settings.select_option == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Url"
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F6F7FB"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Story"
+    }
+  ]
+}
+{% endschema %}

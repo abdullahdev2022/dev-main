@@ -1,0 +1,34 @@
+
+{% if product != blank and product.media.size > 0 %}
+  <div class="bundle-package-tab__swiper-main swiper" id="bpt-main-{{ section_id }}-{{ block_index }}">
+    <div class="swiper-wrapper">
+      {% for media in product.media %}
+        <div class="bundle-package-tab__slide swiper-slide">
+          <img
+            src="{{ media | image_url: width: 1000 }}"
+            alt="{{ media.alt | escape }}"
+            loading="lazy"
+            width="700"
+            height="700"
+          >
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="bundle-package-tab__swiper-thumb swiper" id="bpt-thumb-{{ section_id }}-{{ block_index }}">
+    <div class="swiper-wrapper">
+      {% for media in product.media %}
+        <div class="bundle-package-tab__slide-thumb swiper-slide">
+          <img
+            src="{{ media | image_url: width: 200 }}"
+            alt="{{ media.alt | escape }}"
+            loading="lazy"
+            width="120"
+            height="120"
+          >
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

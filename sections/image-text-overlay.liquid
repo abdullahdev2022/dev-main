@@ -1,0 +1,264 @@
+{% style %}
+  .image-text-overlay__{{ section.id }}{
+      background-color:{{ section.settings.bg_color }};
+      padding-top:{{ section.settings.top_padding_desktop }}px;
+      padding-bottom:{{ section.settings.bottom_padding_desktop }}px;
+
+  }
+  @media(max-width:768px){
+  .image-text-overlay__{{ section.id }}{
+      padding-top:{{ section.settings.top_padding_mobile }}px;
+      padding-bottom:{{ section.settings.bottom_padding_mobile }}px;
+
+  }
+  }
+.image-text-overlay__main {
+  position: relative;
+}
+
+.image-text-overlay__main-image img {
+  border-radius: 16px;
+  width: 100%;
+  height: auto;
+}
+
+.image-text-overlay__main-image img.desktop-image {
+  display: block;
+}
+
+.image-text-overlay__main-image img.mobile-image {
+  display: none;
+}
+
+.image-text-overlay__content {
+  width: 100%;
+  max-width: 846px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 0px 24px;
+
+}
+
+.image-text-overlay__content-heading * {
+  color: #FFFFFF;
+  font-size: 54px;
+  line-height: 67.5px;
+  font-weight: 600;
+  letter-spacing: -2%;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.image-text-overlay__content-description p {
+  color: #FFFFFF;
+  font-size: 18px;
+  line-height: 23.4px;
+  font-weight: 400;
+  letter-spacing: -2%;
+  margin: 0;
+}
+
+.image-text-overlay__content-description {
+  padding-top: 16px;
+}
+
+.image-text-overlay__content-button a {
+  border-radius: 6px;
+  display: inline-block;
+  background-color: #6774A5;
+  color: #FFFFFF;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 17px 24px;
+  transition:0.3s;
+}
+
+.image-text-overlay__content-button a:hover {
+  background-color: #000;
+  color: #FFFFFF;
+}
+
+.image-text-overlay__content-button {
+  padding-top: 48px;
+}
+@media(max-width:990px){
+.image-text-overlay__content-description p br{
+  display:none;
+}
+}
+@media(max-width:768px) {
+  .image-text-overlay__main-image img {
+    border-radius: 12px;
+
+  }
+
+  .image-text-overlay__main-image img.desktop-image {
+    display: none;
+  }
+
+  .image-text-overlay__main-image img.mobile-image {
+    display: block;
+  }
+ .image-text-overlay__content{
+  padding:0px 18px;
+ }
+  .image-text-overlay__content-heading * {
+    font-size: 36px;
+    line-height: 45px;
+  }
+
+  .image-text-overlay__content-description p {
+    font-size: 16px;
+    line-height: 21.6px;
+  }
+
+  .image-text-overlay__content-button a {
+    border-radius: 4px;
+    padding: 12px 24px;
+    max-width:246px;
+    width:100%;
+  }
+
+  .image-text-overlay__content-button {
+    padding-top: 32px;
+  }
+}
+{% endstyle %}
+<div class="image-text-overlay image-text-overlay__{{ section.id }}">
+  <div class="container">
+    <div class="image-text-overlay__main">
+      {% if section.settings.desktop_image != blank %}
+        <div class="image-text-overlay__main-image">
+          {{
+            section.settings.desktop_image
+            | image_url: width: 1600
+            | image_tag: alt: section.settings.desktop_image.alt, class: 'desktop-image'
+          }}
+          {% assign mobile = section.settings.mobile_image | default: section.settings.desktop_image %}
+          {{ mobile | image_url: width: 800 | image_tag: alt: mobile.alt, class: 'mobile-image' }}
+        </div>
+      {% endif %}
+      <div class="image-text-overlay__content">
+        {% if section.settings.heading != blank %}
+          <div class="image-text-overlay__content-heading">
+            {{ section.settings.heading }}
+          </div>
+        {% endif %}
+        {% if section.settings.description != blank %}
+          <div class="image-text-overlay__content-description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+        {% if section.settings.button != blank %}
+          <div class="image-text-overlay__content-button">
+            <a href="{{ section.settings.button_link }}"> {{ section.settings.button }}</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Image Text Overlay",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Select a Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Select a Mobile Image"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Button"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Url"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "top_padding_desktop",
+      "label": "Top Padding",
+      "default": 32,
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "bottom_padding_desktop",
+      "label": "Bottom Padding Desktop",
+      "default": 32,
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "top_padding_mobile",
+      "label": "Top Padding Mobile",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "bottom_padding_mobile",
+      "label": "Bottom Padding Mobile",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "unit": "px",
+      "step": 1
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Image Text Overlay"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,940 @@
+{% comment %}
+  ============================================================
+  Section: Event Calendar
+  File: sections/event-calendar.liquid
+  ============================================================
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign heading     = section.settings.heading
+  assign subheading  = section.settings.subheading
+  assign show_filter = section.settings.show_filter
+-%}
+
+{%- comment %} Collect unique filter tags from blocks {%- endcomment %}
+{%- assign all_tags = '' -%}
+{%- for block in section.blocks -%}
+  {%- if block.settings.event_tag != blank -%}
+    {%- assign all_tags = all_tags | append: block.settings.event_tag | append: ',' -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign unique_tags = all_tags | split: ',' | uniq -%}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+
+<section
+  class="ec-section"
+  id="ec-section-{{ section_id }}"
+  data-section-id="{{ section_id }}"
+>
+  <div class="ec-container">
+
+    {%- comment %} ── Header ── {%- endcomment %}
+    {%- if heading != blank or subheading != blank -%}
+      <div class="ec-header">
+        {%- if heading != blank -%}
+          <h2 class="ec-heading">{{ heading }}</h2>
+        {%- endif -%}
+        {%- if subheading != blank -%}
+          <p class="ec-subheading">{{ subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ec-body">
+
+      {%- comment %} ── Left: Calendar ── {%- endcomment %}
+      <div class="ec-calendar-wrap">
+        <div class="ec-cal-header">
+          <p class="ec-cal-title">{{ section.settings.cal_title | default: 'Choose a date' }}</p>
+          <p class="ec-cal-hint">DAYS WITH A DOT HAVE AN EVENT</p>
+        </div>
+        <div id="ec-flatpickr-{{ section_id }}" class="ec-flatpickr-inline"></div>
+        <div class="ec-cal-footer">
+          <div class="ec-cal-footer-left">
+            <span class="ec-legend-dot"></span>
+            <span class="ec-legend-label">Event day</span>
+          </div>
+          <span class="ec-cal-footer-hint">Tap a date to filter events</span>
+        </div>
+      </div>
+
+      {%- comment %} ── Right: Events Panel ── {%- endcomment %}
+      <div class="ec-events-panel">
+
+        {%- comment %} Filter Pills {%- endcomment %}
+        {%- if show_filter and unique_tags.size > 0 -%}
+          <div class="ec-filters" id="ec-filters-{{ section_id }}">
+            <button
+              class="ec-filter-btn ec-filter-active"
+              data-filter="all"
+              aria-pressed="true"
+            >All</button>
+            {%- for tag in unique_tags -%}
+              {%- if tag != blank -%}
+                <button
+                  class="ec-filter-btn"
+                  data-filter="{{ tag | handle }}"
+                  aria-pressed="false"
+                >{{ tag }}</button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment %} Event Cards {%- endcomment %}
+        <div class="ec-events-list" id="ec-events-list-{{ section_id }}">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- assign ev_date  = block.settings.event_date -%}
+              {%- assign ev_title = block.settings.event_title -%}
+              {%- assign ev_desc  = block.settings.event_description -%}
+              {%- assign ev_tag   = block.settings.event_tag -%}
+              {%- assign ev_time  = block.settings.event_time -%}
+
+              {%- if ev_date != blank and ev_title != blank -%}
+                <div
+                  class="ec-event-card"
+                  data-date="{{ ev_date }}"
+                  data-filter="{{ ev_tag | handle | default: 'all' }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="ec-event-left">
+                    {%- assign date_parts  = ev_date | split: '-' -%}
+                    {%- assign month_num   = date_parts[1] | times: 1 -%}
+                    {%- assign month_index = month_num | minus: 1 -%}
+                    {%- assign day_num     = date_parts[2] -%}
+                    {%- assign months      = 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec' | split: ',' -%}
+                    {%- assign month_abbr  = months[month_index] -%}
+                    <span class="ec-event-month">{{ month_abbr }}</span>
+                    <span class="ec-event-day">{{ day_num }}</span>
+                  </div>
+                  <div class="ec-event-right">
+                    <div class="ec-event-top-row">
+                      <span class="ec-event-title">{{ ev_title }}</span>
+                      {%- if ev_tag != blank -%}
+                        <span class="ec-event-tag">{{ ev_tag }}</span>
+                      {%- endif -%}
+                    </div>
+                    {%- if ev_time != blank -%}
+                      <span class="ec-event-time">{{ ev_time }}</span>
+                    {%- endif -%}
+                    {%- if ev_desc != blank -%}
+                      <p class="ec-event-desc">{{ ev_desc }}</p>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <div class="ec-empty-state">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <p>No events added yet. Add event blocks in the customizer.</p>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- comment %} No-results message (hidden by default) {%- endcomment %}
+        <div class="ec-no-results" id="ec-no-results-{{ section_id }}" style="display:none;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg>
+          <p>No events on this date.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment %} ─────────── Styles ─────────── {%- endcomment %}
+<style>
+/* ── Reset & Base ── */
+#ec-section-{{ section_id }} *,
+#ec-section-{{ section_id }} *::before,
+#ec-section-{{ section_id }} *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Section Wrapper ── */
+#ec-section-{{ section_id }} {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 64px 20px;
+  background: #f7f5f1;
+}
+
+/* ── Container ── */
+#ec-section-{{ section_id }} .ec-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+#ec-section-{{ section_id }} .ec-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+#ec-section-{{ section_id }} .ec-heading {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+#ec-section-{{ section_id }} .ec-subheading {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #6b6b6b;
+  line-height: 1.6;
+}
+
+/* ── Two-column Body ── */
+#ec-section-{{ section_id }} .ec-body {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 780px) {
+  #ec-section-{{ section_id }} .ec-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   CALENDAR WRAP — matches reference design
+───────────────────────────────────────────────────────── */
+
+/* Card container */
+#ec-section-{{ section_id }} .ec-calendar-wrap {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px 20px 16px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+  border: 1px solid #f0ede8;
+  position: sticky;
+  top: 20px;
+  max-width: 420px;
+}
+
+/* Top header: title + hint */
+#ec-section-{{ section_id }} .ec-cal-header {
+  margin-bottom: 4px;
+}
+#ec-section-{{ section_id }} .ec-cal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+#ec-section-{{ section_id }} .ec-cal-hint {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b0aba4;
+  margin-bottom: 0;
+}
+
+/* Divider line under header */
+#ec-section-{{ section_id }} .ec-cal-header::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: #f0ede8;
+  margin-top: 14px;
+}
+
+/* Footer: legend + hint */
+#ec-section-{{ section_id }} .ec-cal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px solid #f0ede8;
+}
+#ec-section-{{ section_id }} .ec-cal-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#ec-section-{{ section_id }} .ec-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9a96e;
+  flex-shrink: 0;
+}
+#ec-section-{{ section_id }} .ec-legend-label {
+  font-size: 0.8125rem;
+  color: #5a5a5a;
+  font-weight: 500;
+}
+#ec-section-{{ section_id }} .ec-cal-footer-hint {
+  font-size: 0.75rem;
+  color: #b0aba4;
+}
+
+/* ── Flatpickr Overrides ── */
+
+/* Strip default chrome */
+#ec-section-{{ section_id }} .flatpickr-calendar {
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  font-family: inherit !important;
+  border-radius: 0 !important;
+}
+
+/* Month row — month name LEFT, arrows RIGHT */
+#ec-section-{{ section_id }} .flatpickr-months {
+  display: flex !important;
+  align-items: center !important;
+  padding: 14px 0 10px !important;
+  position: relative !important;
+}
+#ec-section-{{ section_id }} .flatpickr-month {
+  background: transparent !important;
+  height: auto !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+#ec-section-{{ section_id }} .flatpickr-current-month {
+  font-size: 1.0625rem !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  padding: 0 !important;
+  position: static !important;
+  width: auto !important;
+  left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-current-month select,
+#ec-section-{{ section_id }} .flatpickr-current-month .cur-month {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+  font-size: 1.0625rem !important;
+  background: transparent !important;
+}
+#ec-section-{{ section_id }} .flatpickr-current-month .cur-year {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+  font-size: 1.0625rem !important;
+  background: transparent !important;
+}
+
+/* Nav arrows — circular bordered buttons (right-aligned) */
+#ec-section-{{ section_id }} .flatpickr-prev-month,
+#ec-section-{{ section_id }} .flatpickr-next-month {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid #e4e0d8 !important;
+  background: #ffffff !important;
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+  padding: 0 !important;
+  position: static !important;
+  top: auto !important;
+}
+#ec-section-{{ section_id }} .flatpickr-prev-month {
+  margin-right: 6px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-prev-month:hover,
+#ec-section-{{ section_id }} .flatpickr-next-month:hover {
+  background: #f5f2ed !important;
+  border-color: #c9b99a !important;
+}
+#ec-section-{{ section_id }} .flatpickr-prev-month svg,
+#ec-section-{{ section_id }} .flatpickr-next-month svg {
+  width: 13px !important;
+  height: 13px !important;
+  fill: #5a5a5a !important;
+}
+
+/* Weekday row */
+#ec-section-{{ section_id }} .flatpickr-weekdays {
+  background: transparent !important;
+  margin-bottom: 2px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-weekday {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  color: #c0bbb4 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Days grid */
+#ec-section-{{ section_id }} .flatpickr-days {
+  width: 100% !important;
+}
+#ec-section-{{ section_id }} .dayContainer {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* Day cells */
+#ec-section-{{ section_id }} .flatpickr-day {
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+  color: #1a1a1a !important;
+  border-radius: 50% !important;
+  height: 44px !important;
+  line-height: 28px !important;
+  max-width: 40px !important;
+  border: 1.5px solid transparent !important;
+  transition: background 0.12s ease, border-color 0.12s ease !important;
+  position: relative !important;
+  flex-basis: calc(100% / 7) !important;
+  margin: 2px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding-top: 6px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-day:hover {
+  background: #f5f2ed !important;
+  border-color: transparent !important;
+  color: #1a1a1a !important;
+}
+
+/* Selected day — border ring, no fill (matches reference) */
+#ec-section-{{ section_id }} .flatpickr-day.selected,
+#ec-section-{{ section_id }} .flatpickr-day.selected:hover {
+  background: transparent !important;
+  border-color: #c9a96e !important;
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+}
+
+/* Today — same warm gold ring */
+#ec-section-{{ section_id }} .flatpickr-day.today {
+  border-color: #c9a96e !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  background: transparent !important;
+}
+#ec-section-{{ section_id }} .flatpickr-day.today:hover {
+  background: #fdf8f2 !important;
+}
+#ec-section-{{ section_id }} .flatpickr-day.today.selected {
+  border-color: #1a1a1a !important;
+}
+
+/* Other-month days */
+#ec-section-{{ section_id }} .flatpickr-day.prevMonthDay,
+#ec-section-{{ section_id }} .flatpickr-day.nextMonthDay {
+  color: #d4cfc9 !important;
+}
+
+/* Event dot — sits below the date number */
+#ec-section-{{ section_id }} .flatpickr-day {
+  padding-bottom: 6px !important;
+}
+#ec-section-{{ section_id }} .ec-event-dot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #D2B976;
+  pointer-events: none;
+  display: block;
+}
+
+/* ── Filter Pills ── */
+#ec-section-{{ section_id }} .ec-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+#ec-section-{{ section_id }} .ec-filter-btn {
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1.5px solid #e0dbd4;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #5a5a5a;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+#ec-section-{{ section_id }} .ec-filter-btn:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
+}
+#ec-section-{{ section_id }} .ec-filter-btn.ec-filter-active {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* ── Events List ── */
+#ec-section-{{ section_id }} .ec-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Event Card ── */
+#ec-section-{{ section_id }} .ec-event-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  border: 1.5px solid transparent;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: default;
+}
+#ec-section-{{ section_id }} .ec-event-card:hover {
+  border-color: #e8e3dc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* Left date column */
+#ec-section-{{ section_id }} .ec-event-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+  background: #f5f2ed;
+  border-radius: 10px;
+  padding: 8px 6px;
+  flex-shrink: 0;
+}
+#ec-section-{{ section_id }} .ec-event-month {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #b8967e;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+#ec-section-{{ section_id }} .ec-event-day {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+/* Right content column */
+#ec-section-{{ section_id }} .ec-event-right {
+  flex: 1;
+  min-width: 0;
+}
+#ec-section-{{ section_id }} .ec-event-top-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+#ec-section-{{ section_id }} .ec-event-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+#ec-section-{{ section_id }} .ec-event-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #f0ede8;
+  color: #8a7a6a;
+  padding: 2px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+#ec-section-{{ section_id }} .ec-event-time {
+  font-size: 0.8rem;
+  color: #9a9a9a;
+  display: block;
+  margin-bottom: 4px;
+}
+#ec-section-{{ section_id }} .ec-event-desc {
+  font-size: 0.8375rem;
+  color: #6b6b6b;
+  line-height: 1.55;
+  margin-top: 2px;
+}
+
+/* ── Empty / No-results States ── */
+#ec-section-{{ section_id }} .ec-empty-state,
+#ec-section-{{ section_id }} .ec-no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 20px;
+  color: #b0aba4;
+  text-align: center;
+}
+#ec-section-{{ section_id }} .ec-empty-state p,
+#ec-section-{{ section_id }} .ec-no-results p {
+  font-size: 0.875rem;
+  max-width: 220px;
+  line-height: 1.5;
+}
+</style>
+
+{%- comment %} ─────────── JavaScript ─────────── {%- endcomment %}
+<script>
+(function () {
+  'use strict';
+
+  /* ── Guard: run once per section ── */
+  if (window.__ecInit_{{ section_id | replace: '-', '_' }}) return;
+  window.__ecInit_{{ section_id | replace: '-', '_' }} = true;
+
+  /* ── Event Data from Liquid ── */
+  var EC_EVENTS_{{ section_id | replace: '-', '_' }} = [
+    {%- for block in section.blocks -%}
+      {%- if block.settings.event_date != blank and block.settings.event_title != blank -%}
+      {
+        date:  "{{ block.settings.event_date }}",
+        title: {{ block.settings.event_title | json }},
+        tag:   {{ block.settings.event_tag | default: '' | json }},
+        tagHandle: "{{ block.settings.event_tag | handle | default: 'all' }}"
+      }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ];
+
+  /* ── Unique dates for dot rendering ── */
+  var EC_EVENT_DATES_{{ section_id | replace: '-', '_' }} = [
+    {%- assign seen = '' -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.event_date != blank -%}
+        {%- unless seen contains block.settings.event_date -%}
+          {%- assign seen = seen | append: block.settings.event_date | append: '|' -%}
+          "{{ block.settings.event_date }}"
+          {%- unless forloop.last -%},{%- endunless -%}
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ];
+
+  /* ── Helpers ── */
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function toISO(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+
+  /* ── Element refs ── */
+  var sectionId   = '{{ section_id }}';
+  var listEl      = document.getElementById('ec-events-list-' + sectionId);
+  var noResultsEl = document.getElementById('ec-no-results-' + sectionId);
+  var dateLabelEl = document.querySelector('#ec-section-' + sectionId + ' .ec-cal-footer-hint');
+  var filtersEl   = document.getElementById('ec-filters-' + sectionId);
+  var calWrap     = document.getElementById('ec-flatpickr-' + sectionId);
+
+  /* ── State ── */
+  var activeDate   = null;   /* ISO string or null = "all" */
+  var activeFilter = 'all';  /* tag handle or 'all' */
+
+  /* ── Render Events ── */
+  function renderEvents() {
+    if (!listEl) return;
+
+    var cards = listEl.querySelectorAll('.ec-event-card');
+    var visibleCount = 0;
+
+    cards.forEach(function (card) {
+      var cardDate   = card.getAttribute('data-date');
+      var cardFilter = card.getAttribute('data-filter') || 'all';
+
+      var dateMatch   = (!activeDate) || (cardDate === activeDate);
+      var filterMatch = (activeFilter === 'all') || (cardFilter === activeFilter);
+
+      if (dateMatch && filterMatch) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (noResultsEl) {
+      noResultsEl.style.display = visibleCount === 0 ? '' : 'none';
+    }
+
+    /* Date label */
+    if (dateLabelEl) {
+      if (!activeDate) {
+        dateLabelEl.textContent = 'Showing all upcoming events';
+      } else {
+        var parts = activeDate.split('-');
+        var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        dateLabelEl.textContent = 'Events on ' + d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+      }
+    }
+  }
+
+  /* ── Add event dots to calendar ── */
+  function addDots() {
+    var eventDates = EC_EVENT_DATES_{{ section_id | replace: '-', '_' }};
+    if (!eventDates || !eventDates.length) return;
+
+    /* Remove old dots first */
+    var old = calWrap.querySelectorAll('.ec-event-dot');
+    old.forEach(function (d) { d.remove(); });
+
+    var dayEls = calWrap.querySelectorAll('.flatpickr-day:not(.prevMonthDay):not(.nextMonthDay)');
+    dayEls.forEach(function (dayEl) {
+      var ariaLabel = dayEl.getAttribute('aria-label'); /* e.g. "June 15, 2026" */
+      if (!ariaLabel) return;
+
+      var parsed = new Date(ariaLabel);
+      if (isNaN(parsed.getTime())) {
+        /* Fallback: try parsing "Month Day, Year" */
+        parsed = new Date(Date.parse(ariaLabel));
+      }
+      if (isNaN(parsed.getTime())) return;
+
+      /* Flatpickr aria-label uses local timezone; build ISO from it */
+      var iso = parsed.getFullYear() + '-' + pad(parsed.getMonth() + 1) + '-' + pad(parsed.getDate());
+
+      if (eventDates.indexOf(iso) !== -1) {
+        /* Avoid duplicate dots */
+        if (!dayEl.querySelector('.ec-event-dot')) {
+          var dot = document.createElement('span');
+          dot.className = 'ec-event-dot';
+          dot.setAttribute('aria-hidden', 'true');
+          dayEl.appendChild(dot);
+        }
+      }
+    });
+  }
+
+  /* ── Load Flatpickr then init ── */
+  function initCalendar() {
+    if (typeof flatpickr === 'undefined') {
+      var script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/flatpickr';
+      script.onload = function () { setupFlatpickr(); };
+      document.head.appendChild(script);
+    } else {
+      setupFlatpickr();
+    }
+  }
+
+  function setupFlatpickr() {
+    if (!calWrap) return;
+
+    flatpickr(calWrap, {
+      inline:          true,
+      disableMobile:   true,
+      defaultDate:     null,
+      onReady: function (selectedDates, dateStr, instance) {
+        addDots();
+      },
+      onMonthChange: function () {
+        /* Re-render dots after navigation */
+        setTimeout(addDots, 50);
+      },
+      onYearChange: function () {
+        setTimeout(addDots, 50);
+      },
+      onChange: function (selectedDates, dateStr) {
+        if (selectedDates.length > 0) {
+          activeDate = toISO(selectedDates[0]);
+        } else {
+          activeDate = null;
+        }
+        renderEvents();
+      }
+    });
+  }
+
+  /* ── Filter pills ── */
+  if (filtersEl) {
+    filtersEl.addEventListener('click', function (e) {
+      var btn = e.target.closest('.ec-filter-btn');
+      if (!btn) return;
+
+      filtersEl.querySelectorAll('.ec-filter-btn').forEach(function (b) {
+        b.classList.remove('ec-filter-active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+
+      btn.classList.add('ec-filter-active');
+      btn.setAttribute('aria-pressed', 'true');
+      activeFilter = btn.getAttribute('data-filter');
+      renderEvents();
+    });
+  }
+
+  /* ── Boot ── */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCalendar);
+  } else {
+    initCalendar();
+  }
+
+  /* ── Shopify Theme Editor live updates ── */
+  if (window.Shopify && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.detail && e.detail.sectionId === sectionId) {
+        window.__ecInit_{{ section_id | replace: '-', '_' }} = false;
+      }
+    });
+  }
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Event Calendar",
+  "tag": "section",
+  "class": "ec-section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "cal_title",
+      "label": "Calendar Card Title",
+      "default": "Choose a date"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Upcoming Events"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "Browse our upcoming in-store and online events."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter",
+      "label": "Show Filter Pills",
+      "default": true,
+      "info": "Shows filter buttons generated from event tags."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "event",
+      "name": "Event",
+      "settings": [
+        {
+          "type": "text",
+          "id": "event_title",
+          "label": "Event Title",
+          "default": "New Arrivals Drop"
+        },
+        {
+          "type": "text",
+          "id": "event_date",
+          "label": "Event Date",
+          "default": "2026-07-15",
+          "info": "Format: YYYY-MM-DD (e.g. 2026-07-15)"
+        },
+        {
+          "type": "text",
+          "id": "event_time",
+          "label": "Event Time (optional)",
+          "placeholder": "e.g. 6:00 PM – 9:00 PM"
+        },
+        {
+          "type": "textarea",
+          "id": "event_description",
+          "label": "Description (optional)",
+          "placeholder": "Short description of the event..."
+        },
+        {
+          "type": "select",
+          "id": "event_tag",
+          "label": "Event Type / Tag",
+          "options": [
+            { "value": "",        "label": "— None —" },
+            { "value": "In-store","label": "In-store" },
+            { "value": "Online",  "label": "Online" },
+            { "value": "Sale",    "label": "Sale" },
+            { "value": "Workshop","label": "Workshop" },
+            { "value": "Launch",  "label": "Launch" }
+          ],
+          "default": ""
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Event Calendar",
+      "blocks": [
+        {
+          "type": "event",
+          "settings": {
+            "event_title": "Summer Collection Launch",
+            "event_date": "2026-07-05",
+            "event_time": "10:00 AM – 8:00 PM",
+            "event_description": "Be the first to shop our new summer edit, in-store and online.",
+            "event_tag": "Launch"
+          }
+        },
+        {
+          "type": "event",
+          "settings": {
+            "event_title": "Styling Workshop",
+            "event_date": "2026-07-12",
+            "event_time": "2:00 PM – 5:00 PM",
+            "event_description": "Complimentary personal styling session with our team.",
+            "event_tag": "In-store"
+          }
+        },
+        {
+          "type": "event",
+          "settings": {
+            "event_title": "Members-Only Sale",
+            "event_date": "2026-07-20",
+            "event_time": "All Day",
+            "event_description": "Exclusive 20% off for loyalty members. Shop online or in-store.",
+            "event_tag": "Sale"
+          }
+        },
+        {
+          "type": "event",
+          "settings": {
+            "event_title": "Live Q&A with Founder",
+            "event_date": "2026-07-25",
+            "event_time": "7:00 PM",
+            "event_description": "Join our Instagram Live for a behind-the-scenes look at the brand.",
+            "event_tag": "Online"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 30
+}
+{% endschema %}

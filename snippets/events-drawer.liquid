@@ -1,0 +1,378 @@
+<div class="events-drawer_items">
+
+  <div class="events-drawer__header">
+    <div class="events-drawer__close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.07998 15.36L-1.94758e-05 14.28L6.55998 7.68L-1.94758e-05 1.08L1.07998 -4.76837e-07L7.63998 6.6L14.16 -4.76837e-07L15.24 1.08L8.67998 7.68L15.24 14.28L14.16 15.36L7.63998 8.8L1.07998 15.36Z" fill="#0A0A0A"/>
+      </svg>
+    </div>
+    <div class="events-drawer__heading">{{ block.settings.event_heading }}</div>
+  </div>
+
+  <div class="events-drawer__scroll-area">
+
+    <div class="events-drawer__content">
+
+      {% if block.settings.event_image != blank %}
+        <div class="events-drawer__content-image">
+          {{ block.settings.event_image | image_url: width: 800 | image_tag: alt: block.settings.event_heading, loading: 'lazy' }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.event_subheading != blank %}
+        <div class="events-drawer__content-subheading">
+          <h3>{{ block.settings.event_subheading }}</h3>
+        </div>
+      {% endif %}
+
+      {% if block.settings.event_heading != blank %}
+        <div class="events-drawer__content-heading">
+          <h2>{{ block.settings.event_heading }}</h2>
+        </div>
+      {% endif %}
+
+      <div class="events-drawer__content-information">
+
+        {% if block.settings.date_drawer != blank %}
+          <div class="events-drawer__information-row">
+            {% if block.settings.date_icon != blank %}
+              <div class="events-drawer__information-icon">
+                {{ block.settings.date_icon | image_url: width: 48 | image_tag: alt: '' }}
+              </div>
+            {% endif %}
+            <div class="events-drawer__information-text">
+              <span>{{ block.settings.date_drawer }}</span>
+              {% if block.settings.date_text_drawer != blank %}
+                <p>{{ block.settings.date_text_drawer }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.time_drawer != blank %}
+          <div class="events-drawer__information-row">
+            {% if block.settings.time_icon != blank %}
+              <div class="events-drawer__information-icon">
+                {{ block.settings.time_icon | image_url: width: 48 | image_tag: alt: '' }}
+              </div>
+            {% endif %}
+            <div class="events-drawer__information-text">
+              <span>{{ block.settings.time_drawer }}</span>
+              {% if block.settings.time_text_drawer != blank %}
+                <p>{{ block.settings.time_text_drawer }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.location_drawer != blank %}
+          <div class="events-drawer__information-row">
+            {% if block.settings.location_icon != blank %}
+              <div class="events-drawer__information-icon">
+                {{ block.settings.location_icon | image_url: width: 48 | image_tag: alt: '' }}
+              </div>
+            {% endif %}
+            <div class="events-drawer__information-text">
+              <span>{{ block.settings.location_drawer }}</span>
+              {% if block.settings.location_text_drawer != blank %}
+                <p>{{ block.settings.location_text_drawer }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class="events-drawer__footer">
+
+      {% if block.settings.description_drawer != blank %}
+        <div class="events-drawer__footer-description">
+          <p>{{ block.settings.description_drawer }}</p>
+        </div>
+      {% endif %}
+
+      {% assign has_points = false %}
+      {% for i in (1..6) %}
+        {% assign point_key = 'event_point_' | append: i %}
+        {% if block.settings[point_key] != blank %}
+          {% assign has_points = true %}
+        {% endif %}
+      {% endfor %}
+
+      {% if has_points %}
+        <div class="events-drawer__footer-checklist">
+          <ul>
+            {% for i in (1..6) %}
+              {% assign point_key = 'event_point_' | append: i %}
+              {% assign point = block.settings[point_key] %}
+              {% if point != blank %}
+                <li>{{ point }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <div class="events-drawer__bottom-btns">
+        {% if block.settings.button_label_1 != blank %}
+          <a href="{{ block.settings.button_link_1 }}">{{ block.settings.button_label_1 }}</a>
+        {% endif %}
+        {% if block.settings.button_label_2 != blank %}
+          <a href="{{ block.settings.button_link_2 }}">{{ block.settings.button_label_2 }}</a>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+
+/* ===================== EVENTS DRAWER ===================== */
+
+.events-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99;
+  width: 420px;
+  max-width: 100%;
+  height: 100dvh;
+  background: #fff;
+  opacity: 0;
+  transform: translateX(100%);
+  overflow-x: hidden;
+  overflow-y: auto;                 /* poora drawer scroll */
+  -webkit-overflow-scrolling: touch;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.events-drawer.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.events-drawer_items {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ---------- Header (sticky, no flex-shrink) ---------- */
+.events-drawer__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.events-drawer__close {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.events-drawer__heading {
+  position: absolute;               /* perfectly center */
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+  color: #0A0A0A;
+  font-family: var(--font-satoshi);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.3px;
+}
+
+/* ---------- Image (full-bleed) ---------- */
+.events-drawer__content {
+  padding: 0 20px;
+}
+
+.events-drawer__content-image {
+  margin: 0 -20px 24px;             /* 24px gap niche, edge-to-edge */
+  width: calc(100% + 40px);
+  aspect-ratio: 9 / 5;              /* zaroorat ho to badal lena */
+  overflow: hidden;
+}
+
+.events-drawer__content-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Subheading ---------- */
+.events-drawer__content-subheading {
+  margin-bottom: 6px;
+}
+.events-drawer__content-subheading h3 {
+  margin: 0;
+  color: #666;
+  font-family: var(--font-satoshi);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+/* ---------- Heading ---------- */
+.events-drawer__content-heading {
+  margin-bottom: 20px;
+}
+.events-drawer__content-heading h2 {
+  margin: 0;
+  color: #0A0A0A;
+  font-family: var(--font-satoshi);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.5px;
+  text-transform: none;
+}
+
+/* ---------- Info rows (date / time / location) ---------- */
+.events-drawer__content-information {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.events-drawer__information-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.events-drawer__information-icon {
+  width: 24px;
+  min-width: 24px;                  /* shrink hone se rokta hai (no flex-shrink) */
+  display: flex;
+}
+.events-drawer__information-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.events-drawer__information-text span {
+  display: block;
+  color: #0A0A0A;
+  font-family: var(--font-satoshi);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.1px;
+}
+.events-drawer__information-text p {
+  margin: 4px 0 0;
+  color: #666;
+  font-family: var(--font-satoshi);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* ---------- Footer wrap ---------- */
+.events-drawer__footer {
+  padding: 0 20px;
+}
+
+/* Description (upar divider line) */
+.events-drawer__footer-description {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #E6E1D8;
+}
+.events-drawer__footer-description p {
+  margin: 0;
+  color: #000;
+  font-family: var(--font-satoshi);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+/* Checklist (upar divider line) */
+.events-drawer__footer-checklist {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #E6E1D8;
+}
+.events-drawer__footer-checklist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.events-drawer__footer-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: #000;
+  font-family: var(--font-satoshi);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: normal;
+}
+.events-drawer__footer-checklist li::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5 6.4 11.8 13 4.8' fill='none' stroke='%23C4A882' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* ---------- Buttons ---------- */
+.events-drawer__bottom-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+  padding-bottom: 24px;
+}
+.events-drawer__bottom-btns a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  border-radius: 2px;
+  text-decoration: none;
+  text-align: center;
+  font-family: var(--font-satoshi);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.events-drawer__bottom-btns a:nth-child(1) {   /* SHOP — black */
+  background: #0A0A0A;
+  color: #FFF;
+}
+.events-drawer__bottom-btns a:nth-child(2) {   /* BOOK — white */
+  background: #FFF;
+  color: #0A0A0A;
+  border: 0.5px solid #E5E5E5;
+}
+
+/* ---------- Mobile ---------- */
+@media only screen and (max-width: 768px) {
+  .events-drawer {
+    width: 100%;
+  }
+}
+    </style>

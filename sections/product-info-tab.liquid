@@ -1,0 +1,1434 @@
+{%- liquid
+  assign background = section.settings.background_color
+  assign padding_top = section.settings.padding_top
+  assign padding_bottom = section.settings.padding_bottom
+  assign mobile_padding_top = section.settings.mobile_padding_top
+  assign mobile_padding_bottom = section.settings.mobile_padding_bottom
+
+  assign tab_step = section.settings.tab_step | split: ','
+  assign tab_title = section.settings.tab_name | split: ','
+  assign tab_count = tab_step | size
+
+  assign needs_scroll = false
+  if tab_count > 2
+    assign needs_scroll = true
+  endif
+-%}
+
+{%- style -%}
+    .product-info-tab-{{ section.id }} {
+      background-color: {{ background }};
+      padding-top: {{ padding_top }}px;
+      padding-bottom: {{ padding_bottom }}px;
+    }
+
+    .product-info-tab__head {
+      padding-bottom: 48px;
+      border-bottom: 1px solid #2323231A;
+    }
+
+    .product-info-tab__head.tab-scroll {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .product-info-tab__head.tab-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .product-info-tab__head-wrap {
+      display: flex;
+      gap: 24px;
+    }
+
+    .product-info-tab__tab-item {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      max-width: 442px;
+      flex: 0 442px;
+      width: 100%;
+      position:relative;
+    }
+
+     .product-info-tab__tab-item.is-active:before {
+    content: '';
+    border-bottom: 2px solid #232323;
+    bottom: -48px;
+    position: absolute;
+    width: 100%;
+}
+
+    .product-info-tab__head-tab_step {
+      min-width: 48px;
+      max-width: 48px;
+      width: 100%;
+      height: 48px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid transparent;
+      /* transition: all 0.3s ease; */
+    }
+
+    .product-info-tab__head-tab_step span {
+      color: #232323;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 130%;
+      letter-spacing: -1%;
+      margin: 0;
+    }
+
+    .product-info-tab__head-tab_title p {
+      color: #232323;
+      opacity: 20%;
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 40px;
+      letter-spacing: -2%;
+      margin: 0;
+      /* transition: all 0.3s ease; */
+    }
+
+    .product-info-tab__tab-item.is-active .product-info-tab__head-tab_step {
+      background: #6774A5;
+    }
+
+    .product-info-tab__tab-item.is-active .product-info-tab__head-tab_step span {
+      color: #fff;
+    }
+
+    .product-info-tab__tab-item.is-active .product-info-tab__head-tab_title p {
+      opacity: 100%;
+      color: #232323;
+    }
+
+    .product-info-tab__tab-item:hover .product-info-tab__head-tab_step {
+      background: #6774A5;
+    }
+
+    .product-info-tab__tab-item:hover .product-info-tab__head-tab_step span {
+      color: #fff;
+    }
+
+    .product-info-tab__tab-item:hover .product-info-tab__head-tab_title p {
+      opacity: 100%;
+      color: #232323;
+    }
+    .product-info-tab__tab-item:hover:before{
+          content: '';
+    border-bottom: 2px solid #232323;
+    bottom: -48px;
+    position: absolute;
+    width: 100%;
+    }
+
+    .product-info-tab__content-wrapper {
+      display: none;
+    }
+
+    .product-info-tab__content-wrapper.is-active {
+      display: flex;
+      gap: 24px;
+      padding-top: 48px;
+    }
+     .product-info-tab__content-wrapper.image_left {
+      flex-direction: row-reverse;
+  }
+    .product-info-tab__content-block {
+      padding: 32px 24px;
+      background-color: #fff;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      max-width: 50%;
+      width: 100%;
+    }
+
+    .product-info-tab__content-item-top {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .product-info-tab__content-heading h2 {
+      color: #232323;
+      opacity: 0.5;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 21.6px;
+      letter-spacing: -2%;
+      margin: 0;
+    }
+
+    .product-info-tab__content-description p {
+      color: #6A6A6A;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 30px;
+      letter-spacing: -2%;
+      margin: 0;
+    }
+
+    .product-info-tab__content-description p strong {
+      color: #6774A5;
+      font-weight: 700;
+    }
+
+    .product-info-tab__content-description p em {
+      color: #232323;
+      font-weight: 700;
+    }
+
+    .product-info-tab__content-item.product-info-tab__content-choice {
+      background-color: #F6F7FB;
+      border-radius: 14px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .product-info-tab__choice-head {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .product-info-tab__choice-subtitle {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .product-info-tab__choice-subtitle p {
+      color: #232323;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: normal;
+      letter-spacing: -1%;
+      margin: 0;
+    }
+
+    .product-info-tab__choice-subtitle svg {
+      height: 22px;
+      width: 12px;
+    }
+
+    .product-info-tab__title p {
+      color: #232323;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21.6px;
+      letter-spacing: -1%;
+      margin: 0;
+    }
+
+    .product-info-tab__title p strong {
+      font-weight: 600;
+    }
+
+    .product-info-tab__choice-clinic {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .product-info-tab__choice-image {
+      width: 64px;
+      height: 64px;
+    }
+
+    .product-info-tab__choice-image img {
+      width: 100%;
+      display: flex;
+    }
+
+    .product-info-tab__choice-clinic-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-info-tab__choice-text p {
+      color: #6A6A6A;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21.6px;
+      letter-spacing: -2%;
+      margin: 0;
+    }
+
+    .product-info-tab__choice-text p strong {
+      color: #232323;
+      font-weight: 600;
+    }
+
+    .product-info-tab__choice-name p {
+      color: #232323;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24.3px;
+      letter-spacing: -2%;
+      margin: 0;
+    }
+
+    .product-info-tab__content-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .product-info-tab__stat-wrap {
+      display: flex;
+      gap: 24px;
+    }
+
+    .product-info-tab__stat-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .product-info-tab__stat-number p {
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 45px;
+      letter-spacing: -2%;
+      margin: 0;
+    }
+
+    .product-info-tab__stat-text {
+      padding-top: 8px;
+      border-top: 1px solid #2323231A;
+    }
+
+    .product-info-tab__stat-text p {
+      color: #232323;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 23.4px;
+      letter-spacing: -1%;
+      margin: 0;
+    }
+
+    .product-info-tab__stat-text p strong {
+      color: #6774A5;
+      font-weight: 600;
+    }
+  .product-info-tab__content-description h4 {
+      margin: 0;
+      font-size: 29px;
+      font-weight: 600;
+      letter-spacing: 0;
+      padding-bottom: 24px;
+      line-height: normal;
+  }
+    .product-info-tab__compliance {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .product-info-tab__compliance-image {
+      width: 48px;
+      height: 48px;
+    }
+
+    .product-info-tab__compliance-image img {
+      width: 100%;
+      display: flex;
+      border-radius: 10px;
+    }
+
+    .product-info-tab__compliance-text {
+      border-top: 1px solid #2323231A;
+      padding-top: 12px;
+    }
+
+    .product-info-tab__compliance-text p {
+      color: #232323;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 23.4px;
+      letter-spacing: -1%;
+      margin: 0;
+    }
+
+    .product-info-tab__compliance-text p strong {
+      font-weight: 600;
+    }
+
+    .product-info-tab__image-block {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 50%;
+      width: 100%;
+    }
+
+    .product-info-tab__image img {
+      width: 100%;
+      display: flex;
+      border-radius: 14px;
+    }
+
+    .product-info-tab__video {
+      position: relative;
+    }
+
+    .product-info-tab__video video {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      border-radius: 14px;
+    }
+
+    .product-info-tab__image-thumbnail {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
+
+    .product-info-tab__image-thumbnail img {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+
+    .product-info-tab__image-thumbnail.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .product-info-tab__video-control {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 24px 23px;
+      z-index: 20;
+    }
+
+    .product-info-tab_play_btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    svg.pit-play-icon{
+      width: 14px;
+      height: 17px;
+    }
+    .product-info-tab_audio_btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .product-info-tab_icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .product-info-tab_play_btn svg.pit-pause-icon {
+      display: none;
+    }
+
+    .product-info-tab_play_btn.is-playing svg:first-child {
+      display: none;
+    }
+
+    .product-info-tab_play_btn.is-playing svg.pit-pause-icon {
+      display: block;
+    }
+
+    .product-info-tab_audio_btn.is-muted svg {
+      width: 23px;
+      height: 25px;
+    }
+
+    .product-info-tab_audio_btn svg.pit-unmute-icon {
+      display: none;
+    }
+
+    .product-info-tab_audio_btn.is-muted img {
+      display: none;
+    }
+
+    .product-info-tab_audio_btn.is-muted svg.pit-unmute-icon {
+      display: block;
+    }
+    .product-info-tab-bullet ul {
+      margin: 0;
+      padding: 0;
+  }
+
+  .product-info-tab-bullet li {
+      color: #232323;
+      font-weight: 400;
+      font-size: 18px;
+      letter-spacing: 0;
+      list-style: none;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgb(35 35 35 / 10%);
+      margin-bottom: 12px;
+      position: relative;
+      padding-left: 23px;
+      line-height: normal;
+  }
+  .product-info-tab-bullet li:before {
+     content: '';
+      position: absolute;
+      background-image: url(https://cdn.shopify.com/s/files/1/1381/3303/files/tick_symbol.svg?v=1778744518&amp;width=40);
+      width: 18px;
+      height: 18px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      left: 0;
+      top: 2px;
+  }
+  .product-info-tab-bullet li:last-child {
+      margin-bottom: 0;
+      border-bottom: 0;
+      padding-bottom: 0;
+  }
+  .product_tab_images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+  }
+  .product_images {
+      border-radius: 12px;
+  }
+  .product_tab_images_item {
+      position: relative;
+  }
+  .product_images_text {
+      position: absolute;
+      top: 0;
+      padding: 24px;
+          backdrop-filter: blur(2px);
+
+  }
+  .product_images_text p {
+      margin: 0;
+      color: #fff;
+      font-size: 14px;
+      line-height: normal;
+      border-top: 1px solid rgb(255 255 255 / 50%);
+      padding-top: 16px;
+  }
+    @media only screen and (max-width: 990px) {
+
+      /* Main Section */
+      .product-info-tab-{{ section.id }} {
+        padding-top: {{ mobile_padding_top }}px;
+        padding-bottom: {{ mobile_padding_bottom }}px;
+      }
+      .product-info-tab__content-description h4 {
+      font-size: 20px;
+      padding-bottom: 16px;
+  }
+  .product-info-tab-bullet li {
+      font-size: 14px;
+  }
+  .product_tab_images {
+      grid-template-columns: 1fr;
+  }
+      .product-info-tab .container {
+        padding: 0 20px;
+      }
+
+      .product-info-tab__head {
+        padding-bottom: 23px;
+      }
+
+      .product-info-tab__head-tab_title p {
+        font-size: 28px;
+        line-height: 33.6px;
+      }
+
+      .product-info-tab__tab-item {
+        flex-direction: row;
+        gap: 12px;
+        max-width: 256px;
+        flex: 0 0 256px;
+      }
+
+
+     .product-info-tab__tab-item.is-active:before {
+    bottom: -23px;
+}
+
+
+      .product-info-tab__head-tab_step {
+        min-width: 30px;
+        max-width: 30px;
+        height: 30px;
+      }
+
+      .product-info-tab__content-wrapper.is-active {
+        flex-direction: column-reverse;
+        gap: 16px;
+        padding-top: 54px;
+      }
+
+      .product-info-tab__content-block {
+        padding: 24px 16px;
+        border-radius: 12px;
+        gap: 32px;
+        max-width: 100%;
+      }
+
+      .product-info-tab__content-heading h2 {
+        font-size: 14px;
+        line-height: 18.2px;
+      }
+
+      .product-info-tab__content-description p {
+        font-size: 16px;
+        line-height: 21.6px;
+      }
+
+      .product-info-tab__content-item.product-info-tab__content-choice {
+        border-radius: 10px;
+        padding: 12px;
+        flex-direction: column-reverse;
+      }
+
+      .product-info-tab__choice-clinic {
+        gap: 16px;
+      }
+
+      .product-info-tab__choice-clinic-wrap {
+        gap: 4px;
+      }
+
+      .product-info-tab__choice-text p {
+        font-size: 12px;
+        line-height: 15.6px;
+        letter-spacing: 0;
+      }
+
+      .product-info-tab__choice-text p strong {
+        font-weight: 400;
+      }
+
+      .product-info-tab__choice-name p {
+        font-size: 12px;
+        line-height: 15.6px;
+        letter-spacing: 0;
+      }
+
+      .product-info-tab__title p {
+        font-size: 14px;
+        line-height: 18.2px;
+      }
+
+      .product-info-tab__title p strong:last-of-type {
+        font-weight: 400;
+      }
+
+      .product-info-tab__stat-wrap {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .product-info-tab__stat-number p {
+        font-size: 28px;
+        line-height: 33.6px;
+      }
+
+      .product-info-tab__stat-text p {
+        font-size: 16px;
+        line-height: 21.6px;
+        letter-spacing: -2%;
+      }
+
+      .product-info-tab__image-block {
+        gap: 16px;
+        max-width: 100%;
+      }
+     .product-info-tab__head-wrap {
+      gap: 16px;
+  }
+  .product-info-tab__choice-head {
+      gap: 14px;
+  }
+  .product-info-tab__stat-text {
+      padding-top: 12px;
+  }
+  .product-info-tab__content-wrapper.images {
+      flex-direction: column !important;
+  }
+    }
+{%- endstyle -%}
+
+<div class="product-info-tab product-info-tab-{{ section.id }}">
+  <div class="container">
+    <div class="product-info-tab-main">
+      <div class="product-info-tab__head {% if needs_scroll %}tab-scroll{% endif %}">
+        <div class="product-info-tab__head-wrap">
+          {% for i in (0..tab_step.size) %}
+            {% if tab_step[i] != blank and tab_title[i] != blank %}
+              {% assign is_first = false %}
+              {% if i == 0 %}
+                {% assign is_first = true %}
+              {% endif %}
+              <div
+                class="product-info-tab__tab-item {% if is_first %}is-active{% endif %}"
+                data-tab-index="{{ i }}"
+                role="button"
+                tabindex="0"
+              >
+                <div class="product-info-tab__head-tab_step">
+                  <span>{{ tab_step[i] | strip }}</span>
+                </div>
+                <div class="product-info-tab__head-tab_title">
+                  <p>{{ tab_title[i] | strip }}</p>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="product-info-tab-wrapper">
+        {% for block in section.blocks %}
+          {% liquid
+            assign image = block.settings.image
+            assign video = block.settings.video
+            assign video_thumbnail = block.settings.video_thumbnail
+            assign heading = block.settings.heading
+            assign description = block.settings.description
+            assign subtitle_choice = block.settings.subtitle_choice
+            assign title_choice = block.settings.title_choice
+            assign image_choice = block.settings.image_choice
+            assign text_choice = block.settings.text_choice
+            assign name_choice = block.settings.name_choice
+            assign rating_stat = block.settings.rating_stat
+            assign rating_text_stat = block.settings.rating_text_stat
+            assign percentage_stat = block.settings.percentage_stat
+            assign percentage_text_stat = block.settings.percentage_text_stat
+            assign image_compliance = block.settings.image_compliance
+            assign compliance_text_stat = block.settings.compliance_text_stat
+            assign block_tab_name = block.settings.tab_name | strip
+
+            assign block_index = forloop.index0
+            assign is_first_block = false
+            if block_index == 0
+              assign is_first_block = true
+            endif
+
+            assign tab_name_found = false
+            for i in (0..tab_title.size)
+              if tab_title[i] == block_tab_name and block_tab_name != blank
+                assign tab_name_found = true
+                break
+              endif
+            endfor
+          %}
+          {% if tab_name_found %}
+            <div
+              class="product-info-tab__content-wrapper {{ block.settings.image_layout }} {{ block.settings.image_placement }} {% if is_first_block %}is-active{% endif %}"
+              data-tab-content="{{ block_index }}"
+              data-tab-name="{{ block_tab_name }}"
+            >
+              <div class="product-info-tab__content-block">
+                <div class="product-info-tab__content-item product-info-tab__content-item-top">
+                  {% if heading != blank %}
+                    <div class="product-info-tab__content-heading">
+                      <h2>{{ heading }}</h2>
+                    </div>
+                  {% endif %}
+                  {% if description != blank %}
+                    <div class="product-info-tab__content-description">
+                      {{ description }}
+                    </div>
+                  {% endif %}
+                </div>
+                {% if block.settings.bullet_description != blank %}
+                  <div class="product-info-tab-bullet">
+                    {{ block.settings.bullet_description }}
+                  </div>
+                {% endif %}
+                {% if block.settings.subtitle_choice_show == true %}
+                  <div class="product-info-tab__content-item product-info-tab__content-choice">
+                    {% if subtitle_choice != blank or title_choice != blank %}
+                      <div class="product-info-tab__choice-head">
+                        {% if subtitle_choice != blank %}
+                          <div class="product-info-tab__choice-subtitle">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="10"
+                              height="18"
+                              viewBox="0 0 10 18"
+                              fill="none"
+                            >
+                              <path d="M1.64169 5.68718C1.67993 7.01429 3.06557 8.00797 3.06557 8.00797C3.06557 8.00797 4.38982 6.85003 4.35247 5.52276C4.31395 4.19407 2.92756 3.20134 2.92756 3.20134C2.92756 3.20134 1.60434 4.35991 1.64169 5.68718ZM1.01696 10.2806C1.84614 11.3554 3.64665 11.5172 3.64665 11.5172C3.64665 11.5172 4.10316 9.93628 3.27398 8.86154C2.4448 7.78681 0.643258 7.62438 0.643258 7.62438C0.643258 7.62438 0.186888 9.20605 1.01696 10.2806ZM2.48206 14.3155C3.80373 14.8891 5.51212 14.2678 5.51212 14.2678C5.51212 14.2678 5.07671 12.7158 3.75503 12.1422C2.43336 11.5686 0.724974 12.1899 0.724974 12.1899C0.724974 12.1899 1.16038 13.7419 2.48206 14.3155ZM6.29606 17.1344C7.73452 17.4478 9.27695 16.5316 9.27695 16.5316C9.27695 16.5316 8.4863 15.1073 7.0477 14.7931C5.60923 14.4797 4.06784 15.3965 4.06784 15.3965C4.06784 15.3965 4.85759 16.821 6.29606 17.1344ZM5.17884 2.10415C4.25768 3.18695 4.57805 4.76407 4.57805 4.76407C4.57805 4.76407 6.39414 4.58681 7.31529 3.50401C8.23645 2.42121 7.91594 0.843302 7.91594 0.843302C7.91594 0.843302 6.09999 1.02134 5.17884 2.10415Z" stroke="#212121" stroke-linecap="round"></path>
+                            </svg>
+                            <p>{{ subtitle_choice }}</p>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="11"
+                              height="18"
+                              viewBox="0 0 11 18"
+                              fill="none"
+                            >
+                              <path d="M8.87882 5.68718C8.84057 7.01429 7.45494 8.00797 7.45494 8.00797C7.45494 8.00797 6.13069 6.85003 6.16804 5.52276C6.20656 4.19407 7.59295 3.20134 7.59295 3.20134C7.59295 3.20134 8.91617 4.35991 8.87882 5.68718ZM9.50355 10.2806C8.67436 11.3554 6.87385 11.5172 6.87385 11.5172C6.87385 11.5172 6.41735 9.93628 7.24653 8.86154C8.07571 7.78681 9.87725 7.62438 9.87725 7.62438C9.87725 7.62438 10.3336 9.20605 9.50355 10.2806ZM8.03845 14.3155C6.71677 14.8891 5.00839 14.2678 5.00839 14.2678C5.00839 14.2678 5.4438 12.7158 6.76548 12.1422C8.08715 11.5686 9.79553 12.1899 9.79553 12.1899C9.79553 12.1899 9.36012 13.7419 8.03845 14.3155ZM4.22445 17.1344C2.78598 17.4478 1.24356 16.5316 1.24356 16.5316C1.24356 16.5316 2.03421 15.1073 3.47281 14.7931C4.91128 14.4797 6.45267 15.3965 6.45267 15.3965C6.45267 15.3965 5.66292 16.821 4.22445 17.1344ZM5.34167 2.10415C6.26283 3.18695 5.94246 4.76407 5.94246 4.76407C5.94246 4.76407 4.12637 4.58681 3.20521 3.50401C2.28406 2.42121 2.60456 0.843302 2.60456 0.843302C2.60456 0.843302 4.42051 1.02134 5.34167 2.10415Z" stroke="#212121" stroke-linecap="round"></path>
+                            </svg>
+                          </div>
+                        {% endif %}
+                        {% if title_choice != blank %}
+                          <div class="product-info-tab__title">
+                            {{ title_choice }}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                    {% if image_choice != blank or text_choice != blank or name_choice != blank %}
+                      <div class="product-info-tab__choice-clinic">
+                        {% if image_choice != blank %}
+                          <div class="product-info-tab__choice-image">
+                            <img src="{{ image_choice | image_url: width:100 }}" alt="{{ image_choice.alt }}">
+                          </div>
+                        {% endif %}
+                        {% if text_choice != blank or name_choice != blank %}
+                          <div class="product-info-tab__choice-clinic-wrap">
+                            {% if text_choice != blank %}
+                              <div class="product-info-tab__choice-text">
+                                {{ text_choice }}
+                              </div>
+                            {% endif %}
+                            {% if name_choice != blank %}
+                              <div class="product-info-tab__choice-name">
+                                <p>{{ name_choice }}</p>
+                              </div>
+                            {% endif %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                <div class="product-info-tab__content-item product-info-tab__content-stat">
+                  {% if rating_stat != blank
+                    or rating_text_stat != blank
+                    or percentage_stat != blank
+                    or percentage_text_stat != blank
+                  %}
+                    <div class="product-info-tab__stat-wrap">
+                      {% if rating_stat != blank or rating_text_stat != blank %}
+                        <div class="product-info-tab__stat-block product-info-tab__stat-block-1">
+                          {% if rating_stat != blank %}
+                            <div class="product-info-tab__stat-number">
+                              <p>{{ rating_stat }}</p>
+                            </div>
+                          {% endif %}
+                          {% if rating_text_stat != blank %}
+                            <div class="product-info-tab__stat-text">
+                              {{ rating_text_stat }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                      {% if percentage_stat != blank or percentage_text_stat != blank %}
+                        <div class="product-info-tab__stat-block product-info-tab__stat-block-2">
+                          {% if percentage_stat != blank %}
+                            <div class="product-info-tab__stat-number">
+                              <p>{{ percentage_stat }}</p>
+                            </div>
+                          {% endif %}
+                          {% if percentage_text_stat != blank %}
+                            <div class="product-info-tab__stat-text">
+                              {{ percentage_text_stat }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  {% if image_compliance != blank or compliance_text_stat != blank %}
+                    <div class="product-info-tab__compliance">
+                      {% if image_compliance != blank %}
+                        <div class="product-info-tab__compliance-image">
+                          <img src="{{ image_compliance | image_url: width:100 }}" alt="{{ image_compliance.alt }}">
+                        </div>
+                      {% endif %}
+                      {% if compliance_text_stat != blank %}
+                        <div class="product-info-tab__compliance-text">
+                          {{ compliance_text_stat }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="product-info-tab__image-block">
+                {% if block.settings.image_layout == 'image_with_video' %}
+                  {% if image != blank %}
+                    <div class="product-info-tab__image">
+                      <img src="{{ image | image_url: width:1000 }}" alt="{{ image.alt }}">
+                    </div>
+                  {% endif %}
+                  {% if video != blank %}
+                    <div class="product-info-tab__video">
+                      {{ video | video_tag: autoplay: false, playsinline: true }}
+                      {% if video_thumbnail != blank %}
+                        <div class="product-info-tab__image-thumbnail">
+                          <img src="{{ video_thumbnail | image_url }}" alt="{{ video_thumbnail.alt }}">
+                        </div>
+                      {% endif %}
+                      <div class="product-info-tab__video-control">
+                        <button
+                          type="button"
+                          class="product-info-tab_audio_btn product-info-tab_icon"
+                          aria-label="Play audio"
+                        >
+                          <img src="https://cdn.shopify.com/s/files/1/1381/3303/files/audio.png?v=1778515029">
+                          <svg
+                            class="pit-unmute-icon"
+                            width="64px"
+                            height="64px"
+                            viewBox="0 0 21 21"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#000000"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"/> <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/> <g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2)"> <path d="m1.5 5.5h3l5-5v16l-5-5h-3c-.55228475 0-1-.4477153-1-1v-4c0-.55228475.44771525-1 1-1z"/> <path d="m11.5 6.5 4 4"/> <path d="m15.5 10.5-4-4z" transform="matrix(0 1 -1 0 22 -5)"/> </g> </g>
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          class="product-info-tab_play_btn product-info-tab_icon"
+                          aria-label="Play video"
+                        >
+                         
+                          <svg class="pit-play-icon" width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.26953 0.0625C1.48074 0.0664667 1.68702 0.127006 1.86719 0.237305L13.124 7.12305C13.2963 7.22712 13.4384 7.37446 13.5371 7.5498C13.6358 7.72529 13.6879 7.92366 13.6875 8.125V8.12598C13.6879 8.3272 13.6357 8.5248 13.5371 8.7002C13.4384 8.87566 13.2963 9.0228 13.124 9.12695V9.12793L1.86719 16.0137C1.68704 16.1239 1.48071 16.1845 1.26953 16.1885C1.05823 16.1924 0.849247 16.1397 0.665039 16.0361C0.482627 15.9341 0.330479 15.7847 0.224609 15.6045C0.11887 15.4244 0.0628554 15.2195 0.0625 15.0107V1.24023L0.0732422 1.08496C0.0940291 0.930686 0.145277 0.781616 0.224609 0.646484C0.33048 0.466297 0.482627 0.316834 0.665039 0.214844C0.849268 0.11123 1.0582 0.0585864 1.26953 0.0625Z" fill="#232323" stroke="white" stroke-width="0.125"/>
+                          </svg>
+
+                          <svg
+                            class="pit-pause-icon"
+                            height="64px"
+                            width="64px"
+                            version="1.1"
+                            id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 271.953 271.953"
+                            xml:space="preserve"
+                            fill="#000000"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"/> <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/> <g id="SVGRepo_iconCarrier"> <g> <g> <path style="fill:#010002;" d="M135.977,271.953c75.097,0,135.977-60.879,135.977-135.977S211.074,0,135.977,0S0,60.879,0,135.977 S60.879,271.953,135.977,271.953z M135.977,21.756c62.979,0,114.22,51.241,114.22,114.22s-51.241,114.22-114.22,114.22 s-114.22-51.241-114.22-114.22S72.992,21.756,135.977,21.756z"/> <path style="fill:#010002;" d="M110.707,200.114c7.511,0,13.598-6.086,13.598-13.598V83.174c0-7.511-6.086-13.598-13.598-13.598 c-7.511,0-13.598,6.086-13.598,13.598v103.342C97.109,194.028,103.195,200.114,110.707,200.114z"/> <path style="fill:#010002;" d="M165.097,200.114c7.511,0,13.598-6.086,13.598-13.598V83.174c0-7.511-6.086-13.598-13.598-13.598 S151.5,75.663,151.5,83.174v103.342C151.5,194.028,157.586,200.114,165.097,200.114z"/> </g> </g> </g>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% else %}
+                  <div class="product_tab_images">
+                    {% if block.settings.image_1 != blank %}
+                      <div class="product_tab_images_item">
+                        <img
+                          class="product_images"
+                          src="{{ block.settings.image_1 | image_url }}"
+                          width=""
+                          height=""
+                          alt="{{shop.name }}"
+                        >
+                        {% if block.settings.text_1 != blank %}
+                          <div class="product_images_text">{{ block.settings.text_1 }}</div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.image_2 != blank %}
+                      <div class="product_tab_images_item">
+                        <img
+                          class="product_images"
+                          src="{{ block.settings.image_2 | image_url }}"
+                          width=""
+                          height=""
+                          alt="{{shop.name }}"
+                        >
+                        {% if block.settings.text_2 != blank %}
+                          <div class="product_images_text">{{ block.settings.text_2 }}</div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.image_3 != blank %}
+                      <div class="product_tab_images_item">
+                        <img
+                          class="product_images"
+                          src="{{ block.settings.image_3 | image_url }}"
+                          width=""
+                          height=""
+                          alt="{{shop.name }}"
+                        >
+                        {% if block.settings.text_3 != blank %}
+                          <div class="product_images_text">{{ block.settings.text_3 }}</div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.image_4 != blank %}
+                      <div class="product_tab_images_item">
+                        <img
+                          class="product_images"
+                          src="{{ block.settings.image_4 | image_url }}"
+                          width=""
+                          height=""
+                          alt="{{shop.name }}"
+                        >
+                        {% if block.settings.text_4 != blank %}
+                          <div class="product_images_text">{{ block.settings.text_4 }}</div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const section = document.querySelector('.product-info-tab-{{ section.id }}');
+    if (!section) return;
+
+    const tabItems = section.querySelectorAll('[data-tab-index]');
+    const contentWrappers = section.querySelectorAll('[data-tab-content]');
+
+    if (!tabItems.length || !contentWrappers.length) return;
+
+    section.querySelectorAll('.product-info-tab__video').forEach(function (videoContainer) {
+      var video = videoContainer.querySelector('video');
+      var muteBtn = videoContainer.querySelector('.product-info-tab_audio_btn');
+      if (!video || !muteBtn) return;
+
+      if (video.muted) {
+        muteBtn.classList.add('is-muted');
+      }
+    });
+
+    function stopAllVideos(exceptContainer) {
+      section.querySelectorAll('.product-info-tab__video').forEach(function (container) {
+        if (container === exceptContainer) return;
+        var video = container.querySelector('video');
+        var playBtn = container.querySelector('.product-info-tab_play_btn');
+        var thumbnail = container.querySelector('.product-info-tab__image-thumbnail');
+
+        if (video && !video.paused) {
+          video.pause();
+          if (playBtn) playBtn.classList.remove('is-playing');
+          if (thumbnail) thumbnail.classList.remove('is-hidden');
+        }
+      });
+    }
+
+    function activateTab(index) {
+      tabItems.forEach(function (tab) {
+        tab.classList.remove('is-active');
+      });
+
+      contentWrappers.forEach(function (content) {
+        content.classList.remove('is-active');
+
+        var video = content.querySelector('video');
+        var playBtn = content.querySelector('.product-info-tab_play_btn');
+        var thumbnail = content.querySelector('.product-info-tab__image-thumbnail');
+
+        if (video && !video.paused) {
+          video.pause();
+          if (playBtn) playBtn.classList.remove('is-playing');
+          if (thumbnail) thumbnail.classList.remove('is-hidden');
+        }
+      });
+
+      var activeTab = section.querySelector('[data-tab-index="' + index + '"]');
+      var activeContent = section.querySelector('[data-tab-content="' + index + '"]');
+
+      if (activeTab) {
+        activeTab.classList.add('is-active');
+        activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      }
+
+      if (activeContent) {
+        activeContent.classList.add('is-active');
+      }
+    }
+
+    tabItems.forEach(function (tab, index) {
+      tab.addEventListener('click', function () {
+        activateTab(index);
+      });
+
+      tab.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activateTab(index);
+        }
+      });
+    });
+
+    section.querySelectorAll('.product-info-tab_play_btn').forEach(function (button) {
+      var videoContainer = button.closest('.product-info-tab__video');
+      if (!videoContainer) return;
+
+      var video = videoContainer.querySelector('video');
+      var thumbnail = videoContainer.querySelector('.product-info-tab__image-thumbnail');
+
+      if (!video) return;
+
+      button.addEventListener('click', function () {
+        if (video.paused) {
+          stopAllVideos(videoContainer);
+
+          video.play().catch(function () {});
+
+          button.classList.add('is-playing');
+          if (thumbnail) thumbnail.classList.add('is-hidden');
+        } else {
+          video.pause();
+          button.classList.remove('is-playing');
+          if (thumbnail) thumbnail.classList.remove('is-hidden');
+        }
+      });
+
+      video.addEventListener('ended', function () {
+        button.classList.remove('is-playing');
+        if (thumbnail) thumbnail.classList.remove('is-hidden');
+      });
+    });
+
+    section.querySelectorAll('.product-info-tab_audio_btn').forEach(function (button) {
+      var videoContainer = button.closest('.product-info-tab__video');
+      if (!videoContainer) return;
+
+      var video = videoContainer.querySelector('video');
+      if (!video) return;
+
+      button.addEventListener('click', function () {
+        video.muted = !video.muted;
+        button.classList.toggle('is-muted', video.muted);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product Info Tab",
+  "tag": "section",
+  "class": "section-product-info-tab",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tab Name"
+    },
+    {
+      "type": "text",
+      "id": "tab_step",
+      "label": "Tab Step",
+      "default": "1,2,3",
+      "info": "Enter tab names separated by comma.Example: 1,2,3 "
+    },
+    {
+      "type": "text",
+      "id": "tab_name",
+      "label": "Tab Name",
+      "default": "PhytoBarrier™ Blend,Repairs and Shields,Targets Problem Areas",
+      "info": "Enter tab names separated by comma. Example: PhytoBarrier™ Blend,Repairs and Shields,Targets Problem Areas"
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab_content",
+      "name": "Tab Content",
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_placement",
+          "label": "Image Placement",
+          "options": [
+            {
+              "value": "image_left",
+              "label": "Left"
+            },
+            {
+              "value": "image_right",
+              "label": "Right"
+            }
+          ],
+          "default": "image_right"
+        },
+        {
+          "type": "text",
+          "id": "tab_name",
+          "label": "Tab Name (REQUIRED)",
+          "info": "Match exactly with Section Tab Name. E.g: PhytoBarrier™ Blend"
+        },
+        {
+          "type": "select",
+          "id": "image_layout",
+          "label": "Image Layout",
+          "options": [
+            {
+              "value": "image_with_video",
+              "label": "Image with Video"
+            },
+            {
+              "value": "images",
+              "label": "Images"
+            }
+          ],
+          "default": "image_with_video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image 1",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "richtext",
+          "id": "text_1",
+          "label": "Text 1",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image 2",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "richtext",
+          "id": "text_2",
+          "label": "Text 2",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image 3",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "richtext",
+          "id": "text_3",
+          "label": "Text 3",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Image 4",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "richtext",
+          "id": "text_4",
+          "label": "Text 4",
+          "visible_if": "{{ block.settings.image_layout == 'images' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Select a Image",
+          "visible_if": "{{ block.settings.image_layout == 'image_with_video' }}"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Select a video",
+          "visible_if": "{{ block.settings.image_layout == 'image_with_video' }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_thumbnail",
+          "label": "Video Thumbnail",
+          "visible_if": "{{ block.settings.image_layout == 'image_with_video' }}"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "bullet_description",
+          "label": "Bullet Point"
+        },
+        {
+          "type": "header",
+          "content": "Clinician's Choice"
+        },
+        {
+          "type": "checkbox",
+          "id": "subtitle_choice_show",
+          "label": "Clinician's Choice Show",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "subtitle_choice",
+          "label": "Subtitle"
+        },
+        {
+          "type": "richtext",
+          "id": "title_choice",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_choice",
+          "label": "Select a Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text_choice",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "name_choice",
+          "label": "Name"
+        },
+        {
+          "type": "header",
+          "content": "Stats Content"
+        },
+        {
+          "type": "text",
+          "id": "rating_stat",
+          "label": "Rating"
+        },
+        {
+          "type": "richtext",
+          "id": "rating_text_stat",
+          "label": "Rating Text"
+        },
+        {
+          "type": "text",
+          "id": "percentage_stat",
+          "label": "Percentage"
+        },
+        {
+          "type": "richtext",
+          "id": "percentage_text_stat",
+          "label": "Percentage Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_compliance",
+          "label": "Select a Image"
+        },
+        {
+          "type": "richtext",
+          "id": "compliance_text_stat",
+          "label": "Compliance Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Info Tab"
+    }
+  ]
+}
+{% endschema %}

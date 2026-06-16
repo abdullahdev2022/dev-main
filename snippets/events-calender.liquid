@@ -1,0 +1,359 @@
+<style>
+#ec-section-{{ section_id }} *,
+#ec-section-{{ section_id }} *::before,
+#ec-section-{{ section_id }} *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#ec-section-{{ section_id }} {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#ec-section-{{ section_id }} .ec-body {
+  display: grid;
+  grid-template-columns:1fr;
+  align-items: start;
+}
+
+
+#ec-section-{{ section_id }} .ec-calendar-wrap {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid #E6E1D8;
+  position: sticky;
+  top: 20px;
+  max-width: 420px;
+}
+
+
+#ec-section-{{ section_id }} .ec-cal-header {
+  margin-bottom: 4px;
+}
+#ec-section-{{ section_id }} .ec-cal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+#ec-section-{{ section_id }} .ec-cal-hint {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b0aba4;
+  margin-bottom: 0;
+}
+
+/* Divider line under header */
+#ec-section-{{ section_id }} .ec-cal-header::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: #f0ede8;
+  margin-top: 14px;
+}
+
+/* Footer: legend + hint */
+#ec-section-{{ section_id }} .ec-cal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px solid #f0ede8;
+}
+#ec-section-{{ section_id }} .ec-cal-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#ec-section-{{ section_id }} .ec-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9a96e;
+  flex-shrink: 0;
+}
+#ec-section-{{ section_id }} .ec-legend-label {
+  font-size: 0.8125rem;
+  color: #5a5a5a;
+  font-weight: 500;
+}
+#ec-section-{{ section_id }} .ec-cal-footer-hint {
+  font-size: 0.75rem;
+  color: #b0aba4;
+}
+
+/* ── Flatpickr Overrides ── */
+
+/* Strip default chrome */
+#ec-section-{{ section_id }} .flatpickr-calendar {
+  width: 100% !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  font-family: inherit !important;
+  border-radius: 0 !important;
+}
+
+/* Month row — month name LEFT, arrows RIGHT */
+#ec-section-{{ section_id }} .flatpickr-months {
+  display: flex !important;
+  align-items: center !important;
+  padding: 14px 0 10px !important;
+  position: relative !important;
+}
+#ec-section-{{ section_id }} .flatpickr-month {
+  background: transparent !important;
+  height: auto !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+#ec-section-{{ section_id }} .flatpickr-current-month {
+  font-size: 1.0625rem !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  padding: 0 !important;
+  position: static !important;
+  width: auto !important;
+  left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-current-month select,
+#ec-section-{{ section_id }} .flatpickr-current-month .cur-month {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+  font-size: 1.0625rem !important;
+  background: transparent !important;
+}
+#ec-section-{{ section_id }} .flatpickr-current-month .cur-year {
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+  font-size: 1.0625rem !important;
+  background: transparent !important;
+}
+
+/* Nav arrows — circular bordered buttons (right-aligned) */
+#ec-section-{{ section_id }} .flatpickr-prev-month,
+#ec-section-{{ section_id }} .flatpickr-next-month {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid #e4e0d8 !important;
+  background: #ffffff !important;
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+  padding: 0 !important;
+  position: static !important;
+  top: auto !important;
+}
+#ec-section-{{ section_id }} .flatpickr-prev-month {
+  margin-right: 6px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-prev-month:hover,
+#ec-section-{{ section_id }} .flatpickr-next-month:hover {
+  background: #f5f2ed !important;
+  border-color: #c9b99a !important;
+}
+#ec-section-{{ section_id }} .flatpickr-prev-month svg,
+#ec-section-{{ section_id }} .flatpickr-next-month svg {
+  width: 13px !important;
+  height: 13px !important;
+  fill: #5a5a5a !important;
+}
+
+/* Weekday row */
+#ec-section-{{ section_id }} .flatpickr-weekdays {
+  background: transparent !important;
+  margin-bottom: 2px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-weekday {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  color: #c0bbb4 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Days grid */
+#ec-section-{{ section_id }} .flatpickr-days {
+  width: 100% !important;
+}
+#ec-section-{{ section_id }} .dayContainer {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+
+#ec-section-{{ section_id }} .flatpickr-day:hover {
+  background: #f5f2ed !important;
+  border-color: transparent !important;
+  color: #1a1a1a !important;
+}
+
+/* Selected day — border ring, no fill (matches reference) */
+#ec-section-{{ section_id }} .flatpickr-day.selected,
+#ec-section-{{ section_id }} .flatpickr-day.selected:hover {
+  background: transparent !important;
+  border-color: #c9a96e !important;
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+}
+
+/* Today — same warm gold ring */
+#ec-section-{{ section_id }} .flatpickr-day.today {
+  border-color: #c9a96e70 !important;
+  font-weight: 700 !important;
+  color: #1a1a1a !important;
+  background: transparent !important;
+}
+#ec-section-{{ section_id }} .flatpickr-day.today:hover {
+  background: #fdf8f2 !important;
+}
+#ec-section-{{ section_id }} .flatpickr-day.today.selected {
+  border-color: #1a1a1a !important;
+}
+
+/* Other-month days */
+#ec-section-{{ section_id }} .flatpickr-day.prevMonthDay,
+#ec-section-{{ section_id }} .flatpickr-day.nextMonthDay {
+  color: #d4cfc9 !important;
+}
+
+/* Event dot — sits below the date number */
+#ec-section-{{ section_id }} .flatpickr-day {
+  padding-bottom: 6px !important;
+}
+#ec-section-{{ section_id }} .flatpickr-day {
+  position: relative !important;
+  padding-bottom: 6px !important;
+}
+#ec-section-{{ section_id }} .ec-event-dot {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #D2B976;
+  pointer-events: none;
+  display: block;
+}
+
+/* ── Filter Pills ── */
+#ec-section-{{ section_id }} .ec-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+#ec-section-{{ section_id }} .ec-filter-btn {
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1.5px solid #e0dbd4;
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #5a5a5a;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+#ec-section-{{ section_id }} .ec-filter-btn:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
+}
+#ec-section-{{ section_id }} .ec-filter-btn.ec-filter-active {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}
+
+#ec-section-{{ section_id }} .ec-event-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  border: 1.5px solid transparent;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: default;
+}
+#ec-section-{{ section_id }} .ec-event-card:hover {
+  border-color: #e8e3dc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+/* Left date column */
+#ec-section-{{ section_id }} .ec-event-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+  background: #f5f2ed;
+  border-radius: 10px;
+  padding: 8px 6px;
+  flex-shrink: 0;
+}
+#ec-section-{{ section_id }} .ec-event-month {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #b8967e;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+#ec-section-{{ section_id }} .ec-event-day {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+</style>
+<section
+  class="ec-section"
+  id="ec-section-{{ section_id }}"
+  data-section-id="{{ section_id }}"
+>
+  <div class="ec-container">
+
+    <div class="ec-body">
+
+      {%- comment %} ── Left: Calendar ── {%- endcomment %}
+      <div class="ec-calendar-wrap">
+        <div class="ec-cal-header">
+          <p class="ec-cal-title">{{ section.settings.cal_title | default: 'Choose a date' }}</p>
+          <p class="ec-cal-hint">DAYS WITH A DOT HAVE AN EVENT</p>
+        </div>
+        <div id="ec-flatpickr-{{ section_id }}" class="ec-flatpickr-inline"></div>
+        <div class="ec-cal-footer">
+          <div class="ec-cal-footer-left">
+            <span class="ec-legend-dot"></span>
+            <span class="ec-legend-label">Event day</span>
+          </div>
+          <span class="ec-cal-footer-hint">Tap a date to filter events</span>
+        </div>
+      </div>
+      
+
+    </div>
+  </div>
+</section>

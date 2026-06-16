@@ -1,0 +1,584 @@
+<style>
+.bundle-package-tab-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+
+  .bundle-package-tab-{{ section.id }} .bundle-package-tab__wrapper{
+  background-color: {{ section.settings.background_color }};
+}
+
+@media (max-width: 990px) {
+  .bundle-package-tab-{{ section.id }} {
+  padding-top: {{ section.settings.mobile_padding_top }}px;
+  padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+  }
+}
+
+.bundle-package-tab__wrapper {
+  padding: 48px 32px;
+  border-radius: 20px;
+}
+
+.bundle-package-tab__panel {
+  display: none;
+  gap: 48px;
+  align-items: center;
+}
+
+.bundle-package-tab__panel.bundle-tab-active {
+  display: flex;
+}
+
+.bundle-package-tab__swiper-thumb .swiper-slide {
+  width: 80px !important;
+  height: 80px !important;
+  opacity: 0.65;
+}
+
+.bundle-package-tab__swiper-thumb .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+.bundle-package-tab__media {
+  max-width: 509px;
+  width: 100%;
+}
+
+.bundle-package-tab__swiper-thumb {
+  margin-top: 16px;
+}
+
+.bundle-package-tab__slide {
+  cursor: pointer;
+}
+
+.bundle-package-tab__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  aspect-ratio: 1 / 1;
+}
+
+.bundle-package-tab__slide-thumb {
+  cursor: pointer;
+}
+
+.bundle-package-tab__slide-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.bundle-package-tab__info {
+  max-width: 755px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.bundle-package-tab__subheading p {
+  color: #6A6A6A;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21.6px;
+  letter-spacing: -2%;
+  margin: 0;
+}
+
+.bundle-package-tab__tabs {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 2px;
+}
+
+button.bundle-package-tab__tab-btn {
+  background-color: #fff;
+  padding: 11px 16px;
+  border-radius: 8px;
+  border: none;
+  color: rgba(106, 106, 106, 0.5);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 135%;
+  letter-spacing: -2%;
+  text-align: center;
+  width: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+button.bundle-package-tab__tab-btn:hover {
+  background-color: #6774A5;
+  color: #fff;
+}
+
+button.bundle-package-tab__tab-btn.bundle-tab-btn-active {
+  background-color: #6774A5;
+  color: #fff;
+}
+
+.bundle-package-tab__heading {
+  padding: 24px 0 16px;
+}
+
+.bundle-package-tab__heading h2 {
+  color: #232323;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: normal;
+  letter-spacing: -2%;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.bundle-package-tab__description p {
+  color: #6A6A6A;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20.8px;
+  letter-spacing: -1%;
+  margin: 0;
+}
+
+.bundle-package-tab__description p strong {
+  color: #232323;
+  font-weight: 600;
+}
+
+.bundle-package-tab__text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bundle-package-tab__text {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bundle-package-tab__text svg {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  stroke: unset;
+}
+
+.bundle-package-tab__text p {
+  color: #232323;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20.8px;
+  letter-spacing: -1%;
+  margin: 0;
+}
+
+.bundle-package-tab__text:not(:last-child) {
+  border-bottom: 1px solid #2323231A;
+  padding-bottom: 12px;
+}
+
+
+.bundle-package-tab__btn-wrap .bundle-package-tab__btn {
+  display: inline-block;
+  background-color: #6774A5;
+  padding: 17px 24px;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: normal;
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
+  text-decoration: none;
+  max-width: 133px;
+  width: 100%;
+  transition:0.3s;
+}
+
+  .bundle-package-tab__btn-wrap .bundle-package-tab__btn:hover {
+    background-color: #000;
+    color: #FFFFFF;
+  }
+
+.bundle-package-tab__media.desktop-hide {
+  display: none;
+}
+
+
+@media only screen and (max-width:990px) {
+
+  .bundle-package-tab__wrapper {
+    padding: 24px 16px 32px;
+    border-radius: 12px;
+  }
+
+  .bundle-package-tab__panel {
+    flex-direction: column;
+  }
+
+  .bundle-package-tab__media {
+    max-width: 100%;
+  }
+
+  .bundle-package-tab__slide img {
+    border-radius: 12px;
+  }
+
+  .bundle-package-tab__swiper-thumb {
+    display: none !important;
+  }
+
+  .bundle-package-tab__info {
+    max-width: 100%;
+    gap: 48px;
+  }
+
+  .bundle-package-tab__tabs {
+    border-radius: 10px;
+  }
+
+  button.bundle-package-tab__tab-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 15.6px;
+  }
+
+  .bundle-package-tab__heading h2 {
+    font-size: 24px;
+  }
+
+  .bundle-package-tab__description p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .bundle-package-tab__text p {
+    font-size: 14px;
+    line-height: 18.2px;
+  }
+
+  .bundle-package-tab__btn-wrap {
+    text-align: center;
+  }
+
+  .bundle-package-tab__btn-wrap .bundle-package-tab__btn {
+    padding: 12px 24px;
+  }
+
+  .bundle-package-tab__media.mobile-hide {
+    display: none;
+  }
+
+  .bundle-package-tab__media.desktop-hide {
+    display: block;
+  }
+
+}
+</style>
+
+{% capture text-icon %}
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.79 9.09572C14.733 9.06268 14.6705 9.03104 14.6058 9.0001C14.6705 8.96916 14.733 8.93752 14.79 8.90447C15.1124 8.72115 15.3954 8.47585 15.6227 8.18271C15.8499 7.88957 16.017 7.55438 16.1141 7.19642C16.2113 6.83847 16.2367 6.46482 16.1889 6.097C16.1411 5.72919 16.021 5.37446 15.8356 5.05324C15.6501 4.73202 15.4029 4.45066 15.1083 4.22536C14.8137 4.00005 14.4774 3.83525 14.1188 3.74044C13.7602 3.64564 13.3864 3.6227 13.0189 3.67295C12.6514 3.72319 12.2975 3.84564 11.9775 4.03322C11.9205 4.06627 11.8615 4.10354 11.8031 4.14502C11.8087 4.07471 11.8123 4.00439 11.8123 3.93408C11.8123 3.18816 11.5159 2.47279 10.9885 1.94534C10.461 1.4179 9.74567 1.12158 8.99975 1.12158C8.25383 1.12158 7.53846 1.4179 7.01101 1.94534C6.48357 2.47279 6.18725 3.18816 6.18725 3.93408C6.18725 4.00018 6.18725 4.07049 6.19639 4.14502C6.13803 4.10494 6.07897 4.06627 6.02202 4.03322C5.70204 3.84564 5.34811 3.72319 4.98062 3.67295C4.61312 3.6227 4.23932 3.64564 3.88073 3.74044C3.52214 3.83525 3.18584 4.00005 2.8912 4.22536C2.59656 4.45066 2.34939 4.73202 2.16393 5.05324C1.97847 5.37446 1.85838 5.72919 1.81057 6.097C1.76276 6.46482 1.78818 6.83847 1.88536 7.19642C1.98255 7.55438 2.14957 7.88957 2.37683 8.18271C2.60408 8.47585 2.88708 8.72115 3.20952 8.90447C3.26647 8.93752 3.32905 8.96916 3.39373 9.0001C3.32905 9.03104 3.26647 9.06268 3.20952 9.09572C2.88708 9.27905 2.60408 9.52434 2.37683 9.81748C2.14957 10.1106 1.98255 10.4458 1.88536 10.8038C1.78818 11.1617 1.76276 11.5354 1.81057 11.9032C1.85838 12.271 1.97847 12.6257 2.16393 12.947C2.34939 13.2682 2.59656 13.5495 2.8912 13.7748C3.18584 14.0001 3.52214 14.1649 3.88073 14.2598C4.23932 14.3546 4.61312 14.3775 4.98062 14.3272C5.34811 14.277 5.70204 14.1546 6.02202 13.967C6.07897 13.9339 6.13803 13.8967 6.19639 13.8552C6.19077 13.9255 6.18725 13.9958 6.18725 14.0626C6.18725 14.8085 6.48357 15.5239 7.01101 16.0513C7.53846 16.5788 8.25383 16.8751 8.99975 16.8751C9.74567 16.8751 10.461 16.5788 10.9885 16.0513C11.5159 15.5239 11.8123 14.8085 11.8123 14.0626C11.8123 13.9965 11.8087 13.9262 11.8031 13.8552C11.8615 13.8953 11.9205 13.9339 11.9775 13.967C12.4035 14.2138 12.8872 14.3438 13.3795 14.3438C13.6269 14.3435 13.8732 14.3109 14.1122 14.2468C14.6495 14.1028 15.132 13.8027 15.4988 13.3844C15.8655 12.9662 16.1 12.4485 16.1725 11.897C16.2451 11.3455 16.1525 10.7848 15.9064 10.286C15.6603 9.78709 15.2718 9.37239 14.79 9.09432V9.09572ZM8.99975 10.9688C8.61037 10.9688 8.22973 10.8534 7.90597 10.6371C7.58221 10.4207 7.32987 10.1132 7.18086 9.75351C7.03185 9.39376 6.99286 8.99791 7.06883 8.61601C7.14479 8.23411 7.3323 7.88332 7.60763 7.60798C7.88297 7.33265 8.23377 7.14514 8.61567 7.06918C8.99757 6.99321 9.39342 7.0322 9.75316 7.18121C10.1129 7.33022 10.4204 7.58256 10.6367 7.90632C10.853 8.23008 10.9685 8.61072 10.9685 9.0001C10.9685 9.52224 10.7611 10.023 10.3919 10.3922C10.0227 10.7614 9.52189 10.9688 8.99975 10.9688Z" fill="#6774A5"/>
+</svg>
+{% endcapture %}
+
+<div class="bundle-package-tab bundle-package-tab-{{ section.id }}">
+  <div class="container">
+    <div class="bundle-package-tab__wrapper">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% assign product = block.settings.product %}
+          {% assign btn_url = block.settings.button_url | default: product.url %}
+          <div
+            id="bpt-panel-{{ section.id }}-{{ forloop.index }}"
+            class="bundle-package-tab__panel"
+            data-tab-index="{{ forloop.index }}"
+            role="tabpanel"
+          >
+            <div class="bundle-package-tab__media mobile-hide">
+              {% render 'bpt-product-media', product: product, section_id: section.id, block_index: forloop.index %}
+            </div>
+
+            <div class="bundle-package-tab__info">
+              {% if section.settings.subheading != blank %}
+                <div class="bundle-package-tab__subheading">
+                  <p>{{ section.settings.subheading }}</p>
+                </div>
+              {% endif %}
+              <div class="bundle-package-tab__top">
+                <div class="bundle-package-tab__tabs" role="tablist">
+                  {% for tab_block in section.blocks %}
+                    {% assign tab_name = tab_block.settings['tab-name'] | default: tab_block.settings.heading %}
+                    <button
+                      class="bundle-package-tab__tab-btn{% if forloop.index == forloop.parentloop.index %} bundle-tab-btn-active{% endif %}"
+                      data-tab-target="bpt-panel-{{ section.id }}-{{ forloop.index }}"
+                      role="tab"
+                      {{ tab_block.shopify_attributes }}
+                    >
+                      {{ tab_name }}
+                    </button>
+                  {% endfor %}
+                </div>
+                {% if block.settings.heading != blank %}
+                  <div class="bundle-package-tab__heading">
+                    <h2>{{ block.settings.heading }}</h2>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.description != blank %}
+                  <div class="bundle-package-tab__description">
+                    {{ block.settings.description }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="bundle-package-tab__media desktop-hide">
+                {% render 'bpt-product-media', product: product, section_id: section.id, block_index: forloop.index %}
+              </div>
+              <div class="bundle-package-tab__text-wrap">
+                {% for i in (1..6) %}
+                  {% assign text_key = 'text_' | append: i %}
+                  {% if block.settings[text_key] != blank %}
+                    <div class="bundle-package-tab__text">
+                      <span>{{ text-icon }}</span>
+                      <p>{{ block.settings[text_key] }}</p>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              {% if block.settings.button_label != blank %}
+                <div class="bundle-package-tab__btn-wrap">
+                  <a
+                    href="{{ btn_url }}"
+                    class="bundle-package-tab__btn"
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var section = document.querySelector('.bundle-package-tab-{{ section.id }}');
+    if (!section) return;
+
+    {% for block in section.blocks %}
+      (function () {
+        var thumbEl = document.getElementById('bpt-thumb-{{ section.id }}-{{ forloop.index }}');
+        var mainEl  = document.getElementById('bpt-main-{{ section.id }}-{{ forloop.index }}');
+        if (!thumbEl || !mainEl) return;
+
+        var thumbSwiper = new Swiper(thumbEl, {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          watchSlidesProgress: true,
+          freeMode: true,
+          slideToClickedSlide: true,
+          loop: true,
+        });
+
+        var mainSwiper = new Swiper(mainEl, {
+          slidesPerView: 1,
+          spaceBetween: 0,
+          loop: true,
+          thumbs: {
+            swiper: thumbSwiper,
+          },
+          on: {
+            slideChange: function () {
+              thumbSwiper.slideTo(this.realIndex);
+            },
+          },
+        });
+      })();
+    {% endfor %}
+
+    var tabPanels = section.querySelectorAll('.bundle-package-tab__panel');
+    if (tabPanels.length > 0) {
+      tabPanels[0].classList.add('bundle-tab-active');
+    }
+
+    section.addEventListener('click', function (e) {
+      var btn = e.target.closest('.bundle-package-tab__tab-btn');
+      if (!btn || !section.contains(btn)) return;
+
+      var targetId = btn.getAttribute('data-tab-target');
+      if (!targetId) return;
+
+      var allPanels = section.querySelectorAll('.bundle-package-tab__panel');
+      allPanels.forEach(function (p) { p.classList.remove('bundle-tab-active'); });
+
+      var targetPanel = document.getElementById(targetId);
+      if (targetPanel) targetPanel.classList.add('bundle-tab-active');
+
+      var activeTabs = targetPanel.querySelectorAll('.bundle-package-tab__tab-btn');
+      var allTabs = section.querySelectorAll('.bundle-package-tab__tab-btn');
+      allTabs.forEach(function (t) { t.classList.remove('bundle-tab-btn-active'); });
+      activeTabs.forEach(function (t) {
+        if (t.getAttribute('data-tab-target') === targetId) {
+          t.classList.add('bundle-tab-btn-active');
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Bundle Package Tab",
+  "tag": "section",
+  "class": "section-bundle-package-tab",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub Heading",
+      "default": "CHECK OUT THE BUNDLE PACKAGE"
+    },
+    {
+      "type": "header",
+      "content": "Background Color"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select a Product"
+        },
+        {
+          "type": "text",
+          "id": "tab-name",
+          "label": "Tab Name"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "text_1",
+          "label": "Text (1)"
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Text (2)"
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Text (3)"
+        },
+        {
+          "type": "text",
+          "id": "text_4",
+          "label": "Text (4)"
+        },
+        {
+          "type": "text",
+          "id": "text_5",
+          "label": "Text (5)"
+        },
+        {
+          "type": "text",
+          "id": "text_6",
+          "label": "Text (6)"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Package Tab"
+    }
+  ]
+}
+{% endschema %}
