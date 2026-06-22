@@ -569,9 +569,26 @@ margin-top: 24px;
 
 <script>
 document.querySelectorAll('.infoDrawer_video').forEach(function(el) {
-  el.addEventListener('click', function() {
+  el.addEventListener('click', function(e) {
+    e.preventDefault();
     var url = this.getAttribute('data-video-url');
-    if (url) window.open(url, '_blank');
+    if (!url) return;
+
+    fetch(url)
+      .then(function(res) { return res.blob(); })
+      .then(function(blob) {
+        var blobUrl = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = url.split('/').pop().split('?')[0];
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      })
+      .catch(function(err) {
+        console.error('Video download failed:', err);
+      });
   });
 });
 </script>
