@@ -61,105 +61,133 @@
       </div>
     </div>
   </div>
+  <div class="infoDrawer_highlight-wrap">
+    <div class="infoDrawer_highlight-icon">
+      <img src="https://cdn.shopify.com/s/files/1/0609/1443/4101/files/Trophy.png?v=1782137888" alt="">
+    </div>
+    <div class="infoDrawer_highlight-content">
+      <div class="infoDrawer_highlight-content-title">
+        <h3>League-compliant</h3>
+      </div>
+      <div class="infoDrawer_highlight-content-description">
+        <p>The Clear Zero-G Plus meets 100% of association rules — safe and legal at every level of play.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <style>
-        .infoDrawer_tab_wrapper{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-bottom:24px;
+          .infoDrawer_tab_wrapper{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom:24px;
+          }
+
+            .infoDrawer_tab_item span {
+          border-radius: 16px;
+          border: 1px solid rgba(0, 0, 0, 0.10);
+          background: rgba(0, 0, 0, 0.05);
+          padding: 8px 16px;
+          display: inline-block;
+          color: #272727;
+          font-size: 10px;
+          font-weight: 400;
+          line-height: 11px;
+          text-transform: capitalize;
+          letter-spacing:0;
+    margin:0;
         }
 
-          .infoDrawer_tab_item span {
-        border-radius: 16px;
-        border: 1px solid rgba(0, 0, 0, 0.10);
-        background: rgba(0, 0, 0, 0.05);
-        padding: 8px 16px;
-        display: inline-block;
-        color: #272727;
-        font-size: 10px;
-        font-weight: 400;
-        line-height: 11px;
-        text-transform: capitalize;
-        letter-spacing:0;
-  margin:0;
+        .infoDrawer_tab_item.active span {
+          border-radius: 16px;
+          border: 1px solid #000;
+          background: #000;
+          color: #E2C888;
+        }
+
+        .infoDrawer_description p{
+        color: #3D3D3D;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-transform: capitalize;
+    letter-spacing:0;
+    margin:0;
+        }
+        .infoDrawer_description p strong{
+    font-weight: 600;
+        }
+
+        .infoDrawer_choose_wrapper{
+          display: flex;
+  flex-direction: column;
+  gap: 12px;
+      padding-top: 24px;
       }
 
-      .infoDrawer_tab_item.active span {
-        border-radius: 16px;
-        border: 1px solid #000;
-        background: #000;
-        color: #E2C888;
-      }
-
-      .infoDrawer_description p{
-      color: #3D3D3D;
+      .infoDrawer_choose_heading h2{
+      color: #E2C888;
   font-size: 16px;
-  font-weight: 400;
-  line-height: 19.2px;
-  text-transform: capitalize;
-  letter-spacing:0;
-  margin:0;
-      }
-      .infoDrawer_description p strong{
   font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+  margin:0;
       }
 
-      .infoDrawer_choose_wrapper{
-        display: flex;
-flex-direction: column;
-gap: 12px;
-    padding-top: 24px;
-    }
+      .infoDrawer_choose-item-wrap{
+      display: flex;
+  flex-direction: column;
+  gap: 12px;
+      }
 
-    .infoDrawer_choose_heading h2{
-    color: #E2C888;
-font-size: 16px;
-font-weight: 600;
-line-height: 24px; 
-letter-spacing: -0.32px;
-margin:0;
-    }
+      .infoDrawer_choose-item{
+      display: flex;
+  align-items: flex-start;
+  gap: 12px;
+      }
+      .infoDrawer_choose-item-icon svg{
+      width: 20px;
+  height: 20px;
+      display: flex;
 
-    .infoDrawer_choose-item-wrap{
-    display: flex;
-flex-direction: column;
-gap: 12px;
-    }
+      }
+      .infoDrawer_choose_item-content{
+      display: flex;
+  flex-direction: column;
+  gap: 8px;
+      }
+      .infoDrawer_choose-content-title h3{
+      color: #121212;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 15.4px;
+    letter-spacing:0;
+    margin:0;
+      }
+      .infoDrawer_choose-content-description p{
+      color: #777;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 15.4px;
+    letter-spacing:0;
+    margin:0;
+      }
 
-    .infoDrawer_choose-item{
-    display: flex;
-align-items: flex-start;
-gap: 12px;
+      .infoDrawer_highlight-wrap{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            border: 1px solid #E2C888;
+            border-radius: 12px;
     }
-    .infoDrawer_choose-item-icon svg{
-    width: 20px;
-height: 20px;
-    display: flex;
-
-    }
-    .infoDrawer_choose_item-content{
-    display: flex;
-flex-direction: column;
-gap: 8px;
-    }
-    .infoDrawer_choose-content-title h3{
-    color: #121212;
-font-size: 14px;
-font-weight: 500;
-line-height: 15.4px; 
-  letter-spacing:0;
-  margin:0;
-    }
-    .infoDrawer_choose-content-description p{
-    color: #777;
-font-size: 14px;
-font-weight: 400;
-line-height: 15.4px; 
-  letter-spacing:0;
-  margin:0;
-    }
+      .infoDrawer_highlight-icon{}
+      .infoDrawer_highlight-icon img{}
+      .infoDrawer_highlight-content{}
+      .infoDrawer_highlight-content-title h3{}
+      .infoDrawer_highlight-content-description p{}
+      .
 </style>
 
 {% schema %}
