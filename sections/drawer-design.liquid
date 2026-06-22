@@ -1,62 +1,65 @@
-    <div class="infoDrawer_inner">
+<div class="infoDrawer_inner">
   <div class="infoDrawer_tab_wrapper">
     <div class="infoDrawer_tab_item">
       <span>Description</span>
     </div>
-        <div class="infoDrawer_tab_item">
+    <div class="infoDrawer_tab_item">
       <span>Shipping</span>
     </div>
-        <div class="infoDrawer_tab_item">
+    <div class="infoDrawer_tab_item">
       <span>in the box</span>
     </div>
-        <div class="infoDrawer_tab_item">
+    <div class="infoDrawer_tab_item">
       <span>Fit guide</span>
     </div>
-          <div class="infoDrawer_tab_item">
+    <div class="infoDrawer_tab_item">
       <span>Material</span>
     </div>
+  </div>
+  <div class="infoDrawer_description">
+    <p>
+      The Zero-G Plus Clear visor is built for athletes who play hard and demand the best on the field. Originally
+      designed for the Riddell Speedflex, it’s confirmed to fit all current football helmets, including the Riddell
+      Axiom (top-bar facemask) and the Schutt F7 Pro and F7 Air. Trusted by tens of thousands of players for clarity,
+      protection, and performance.
+    </p>
   </div>
 </div>
 
 <style>
+      .infoDrawer_tab_wrapper{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom:24px;
+      }
 
-    .infoDrawer_tab_wrapper{
-display: flex;
-align-items: center;
-gap: 8px;
-padding-bottom:24px;
+        .infoDrawer_tab_item span {
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.10);
+      background: rgba(0, 0, 0, 0.05);
+      padding: 8px 16px;
+      display: inline-block;
+      color: #272727;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 11px;
+      text-transform: capitalize;
     }
 
-      .infoDrawer_tab_item span {
-    border-radius: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.10);
-    background: rgba(0, 0, 0, 0.05);
-    padding: 8px 16px;
-    display: inline-block;
-    color: #272727;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 11px;
-    text-transform: capitalize;
-  }
-
-  .infoDrawer_tab_item.active span {
-    border-radius: 16px;
-    border: 1px solid #000;
-    background: #000;
-    color: #E2C888;
-  }
+    .infoDrawer_tab_item.active span {
+      border-radius: 16px;
+      border: 1px solid #000;
+      background: #000;
+      color: #E2C888;
+    }
 </style>
-
-
-
 
 {% schema %}
 {
   "name": "Drawer Design",
-  "settings": [
-  ],
+  "settings": [],
   "presets": [
     {
       "name": "Drawer Design"
