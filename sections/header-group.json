@@ -112,16 +112,10 @@
         "enable_transparent_header_collection": false,
         "collection_color_scheme": "default"
       }
-    },
-    "drawer_design_WNhVfK": {
-      "type": "drawer-design",
-      "name": "Drawer Design",
-      "settings": {}
     }
   },
   "order": [
     "header_announcements_9jGBFp",
-    "header_section",
-    "drawer_design_WNhVfK"
+    "header_section"
   ]
 }

@@ -527,6 +527,11 @@
         "top_padding_mobile": 40,
         "bottom_padding_mobile": 40
       }
+    },
+    "drawer_design_xyrNy3": {
+      "type": "drawer-design",
+      "name": "Drawer Design",
+      "settings": {}
     }
   },
   "order": [
@@ -535,6 +540,7 @@
     "product_card_slider_wGwj4a",
     "brand_story_GMhwrj",
     "bundle_package_tab_39dUMB",
-    "event_73ieUp"
+    "event_73ieUp",
+    "drawer_design_xyrNy3"
   ]
 }
