@@ -532,6 +532,91 @@
       "type": "drawer-design",
       "name": "Drawer Design",
       "settings": {}
+    },
+    "test_ieaRC6": {
+      "type": "test",
+      "blocks": {
+        "product_card_pfzxdA": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "Adventure Cart Organizer",
+            "link": ""
+          }
+        },
+        "product_card_qRbhr7": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "AdventureTrack Bed",
+            "link": ""
+          }
+        },
+        "product_card_HagRLb": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "DreamNest Cradle",
+            "link": ""
+          }
+        },
+        "product_card_mJ8qV4": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "Little Driver's Dream",
+            "link": ""
+          }
+        },
+        "product_card_qi9naL": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "Lullaby Loft Bed",
+            "link": ""
+          }
+        },
+        "product_card_KdHfBX": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "SailAway Shelf",
+            "link": ""
+          }
+        },
+        "product_card_tKEUmX": {
+          "type": "product_card",
+          "settings": {
+            "product": "",
+            "title": "StoryWave Shelf",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_card_pfzxdA",
+        "product_card_qRbhr7",
+        "product_card_HagRLb",
+        "product_card_mJ8qV4",
+        "product_card_qi9naL",
+        "product_card_KdHfBX",
+        "product_card_tKEUmX"
+      ],
+      "name": "Best seller parallax",
+      "settings": {
+        "eyebrow": "Kiddorie BEST SELLER",
+        "heading": "Start of\nSomething\nWonderful",
+        "cta_label": "View product",
+        "background_color": "#ffa5c1",
+        "heading_color": "#000000",
+        "eyebrow_color": "#5c5c5c",
+        "text_color": "#000000",
+        "card_background": "#FFFFFF",
+        "max_width": 1400,
+        "card_radius": 12,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
@@ -541,6 +626,7 @@
     "brand_story_GMhwrj",
     "bundle_package_tab_39dUMB",
     "event_73ieUp",
-    "drawer_design_xyrNy3"
+    "drawer_design_xyrNy3",
+    "test_ieaRC6"
   ]
 }
