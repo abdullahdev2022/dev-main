@@ -1,0 +1,768 @@
+{% comment %}
+  Best seller parallax collage.
+  Add to the theme as: sections/best-seller-parallax.liquid
+{% endcomment %}
+
+{% liquid
+  assign eyebrow = section.settings.eyebrow
+  assign heading = section.settings.heading
+  assign cta_label = section.settings.cta_label | default: 'View product'
+%}
+
+<section
+  id="BestSellerParallax-{{ section.id }}"
+  class="best-seller-parallax"
+  data-parallax-section
+  style="
+    --bsp-bg: {{ section.settings.background_color }};
+    --bsp-text: {{ section.settings.text_color }};
+    --bsp-heading: {{ section.settings.heading_color }};
+    --bsp-eyebrow: {{ section.settings.eyebrow_color }};
+    --bsp-card-bg: {{ section.settings.card_background }};
+    --bsp-radius: {{ section.settings.card_radius }}px;
+    --bsp-max-width: {{ section.settings.max_width }}px;
+    --bsp-pad-top: {{ section.settings.padding_top }}px;
+    --bsp-pad-bottom: {{ section.settings.padding_bottom }}px;
+  "
+  aria-label="{{ heading | default: eyebrow | escape }}"
+>
+  <div class="best-seller-parallax__bg" aria-hidden="true"></div>
+
+  <div class="best-seller-parallax__container">
+    <div class="best-seller-parallax__heading">
+      {% if eyebrow != blank %}
+        <div
+          class="best-seller-parallax__eyebrow"
+          data-scroll
+          data-scroll-section
+          data-keyframes='{"20":{"y":300,"opacity":0},"40":{"y":0,"opacity":0.5},"80":{"y":0,"opacity":1}}'
+          data-breakpoints='{"992":{"20":{"y":200,"opacity":0},"40":{"y":0,"opacity":0.5},"80":{"y":0,"opacity":1}}}'
+        >
+          {{ eyebrow | escape }}
+        </div>
+      {% endif %}
+
+      {% if heading != blank %}
+        <h2
+          class="best-seller-parallax__title"
+          data-scroll
+          data-scroll-section
+          data-keyframes='{"20":{"scale":0.5,"y":190,"opacity":1},"40":{"scale":1,"y":0,"opacity":1},"80":{"scale":1,"y":0,"opacity":1}}'
+          data-breakpoints='{"992":{"20":{"scale":0.8,"y":160,"opacity":1},"40":{"scale":1,"y":0,"opacity":1},"80":{"scale":1,"y":0,"opacity":1}}}'
+        >
+          {{ heading | escape | newline_to_br }}
+        </h2>
+      {% endif %}
+    </div>
+
+    <div class="best-seller-parallax__layout">
+      {% for block in section.blocks %}
+        {% liquid
+          assign selected_product = block.settings.product
+          assign display_title = block.settings.title
+          assign display_url = block.settings.link
+          assign display_image = block.settings.image
+
+          if selected_product != blank
+            if display_title == blank
+              assign display_title = selected_product.title
+            endif
+            if display_url == blank
+              assign display_url = selected_product.url
+            endif
+            if display_image == blank
+              assign display_image = selected_product.featured_image
+            endif
+          endif
+        %}
+
+        <article class="best-seller-parallax__item" {{ block.shopify_attributes }}>
+          <div
+            class="best-seller-parallax__item-inner"
+            data-scroll
+            data-keyframes='{"0":{"y":0,"scale":0.5},"50":{"y":-50,"scale":0.8},"100":{"y":-100,"scale":1}}'
+            data-breakpoints='{"768":{"0":{"y":0,"scale":0.5},"50":{"y":0,"scale":0.8},"100":{"y":0,"scale":1}}}'
+          >
+            {% if display_url != blank %}
+              <a class="best-seller-parallax__card" href="{{ display_url }}">
+            {% else %}
+              <div class="best-seller-parallax__card">
+            {% endif %}
+
+              <div class="best-seller-parallax__media">
+                <div
+                  class="best-seller-parallax__zoom"
+                  data-scroll
+                  data-keyframes='{"0":{"scale":2.5},"50":{"scale":1.2},"100":{"scale":1}}'
+                >
+                  {% if display_image != blank %}
+                    {{
+                      display_image
+                      | image_url: width: 900
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '320, 480, 640, 800, 900',
+                        sizes: '(min-width: 990px) 32vw, 70vw',
+                        alt: display_title
+                    }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'best-seller-parallax__placeholder' }}
+                  {% endif %}
+                </div>
+              </div>
+
+              <div
+                class="best-seller-parallax__meta"
+                data-scroll
+                data-keyframes='{"0":{"y":200,"opacity":0},"50":{"y":0,"opacity":1},"100":{"y":0,"opacity":1}}'
+              >
+                {% if display_title != blank %}
+                  <h3>{{ display_title | escape }}</h3>
+                {% endif %}
+                {% if display_url != blank %}
+                  <span>{{ cta_label | escape }} <span aria-hidden="true">›</span></span>
+                {% endif %}
+              </div>
+
+            {% if display_url != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #BestSellerParallax-{{ section.id }} {
+    position: relative;
+    overflow: clip;
+    padding: var(--bsp-pad-top) 0 var(--bsp-pad-bottom);
+    color: var(--bsp-text);
+  }
+
+  #BestSellerParallax-{{ section.id }} *,
+  #BestSellerParallax-{{ section.id }} *::before,
+  #BestSellerParallax-{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #BestSellerParallax-{{ section.id }} img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  #BestSellerParallax-{{ section.id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--bsp-bg);
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__container {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 2rem, var(--bsp-max-width));
+    margin-inline: auto;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__heading {
+    position: sticky;
+    top: 50vh;
+    z-index: 1;
+    width: 100%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__heading > * {
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__eyebrow,
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__title {
+    margin: 0 auto;
+    max-width: 830px;
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__eyebrow {
+    margin-bottom: 2rem;
+    color: var(--bsp-eyebrow);
+    font-family: var(--font-body-family, "Instrument Sans", sans-serif);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__title {
+    color: var(--bsp-heading);
+    font-family: var(--font-heading-family, Fraunces, Georgia, serif);
+    font-optical-sizing: none;
+    font-size: clamp(2.5rem, 4.6vw, 4.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__layout {
+    position: relative;
+    z-index: 2;
+    --layout-freedom-container: 1700;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item {
+    display: flex;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item-inner {
+    width: calc(1194 / var(--layout-freedom-container) * 100%);
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 2) {
+    justify-content: flex-end;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 2) .best-seller-parallax__item-inner {
+    width: calc(1075 / var(--layout-freedom-container) * 100%);
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 3) {
+    max-width: calc(var(--bsp-max-width) - 10vw);
+    margin-inline: auto;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 3) .best-seller-parallax__item-inner {
+    width: calc(1052 / var(--layout-freedom-container) * 100%);
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 4) {
+    justify-content: flex-end;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 4) .best-seller-parallax__item-inner {
+    width: calc(1362 / var(--layout-freedom-container) * 100%);
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 5) .best-seller-parallax__item-inner {
+    width: calc(931 / var(--layout-freedom-container) * 100%);
+  }
+
+  @media (min-width: 576px) {
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 1) .best-seller-parallax__item-inner {
+      width: calc(894 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 2) .best-seller-parallax__item-inner {
+      width: calc(775 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 3) .best-seller-parallax__item-inner {
+      width: calc(752 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 4) .best-seller-parallax__item-inner {
+      width: calc(1062 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 5) .best-seller-parallax__item-inner {
+      width: calc(631 / var(--layout-freedom-container) * 100%);
+    }
+  }
+
+  @media (min-width: 768px) {
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 1) .best-seller-parallax__item-inner {
+      width: calc(694 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 2) {
+      margin-top: -100px;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 2) .best-seller-parallax__item-inner {
+      width: calc(575 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 3) {
+      margin-top: -50px;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 3) .best-seller-parallax__item-inner {
+      width: calc(552 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 4) {
+      margin-bottom: -100px;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 4) .best-seller-parallax__item-inner {
+      width: calc(862 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 5) .best-seller-parallax__item-inner {
+      width: calc(431 / var(--layout-freedom-container) * 100%);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(6) {
+      margin-top: 24px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 2) {
+      margin-top: -200px;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 3) {
+      margin-top: -150px;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(4n + 4) {
+      margin-top: -50px;
+      margin-bottom: -200px;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:nth-child(6) {
+      margin-top: 96px;
+    }
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    cursor: pointer;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__media {
+    overflow: hidden;
+    border-radius: var(--bsp-radius);
+    background: var(--bsp-card-bg);
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__zoom {
+    overflow: hidden;
+    aspect-ratio: 1000 / 1080;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__zoom img,
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1000ms ease;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__card:hover .best-seller-parallax__zoom img {
+    transform: scale(1.2);
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.75rem 1.1rem;
+    will-change: transform, opacity;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__meta h3 {
+    margin: 0;
+    font-family: var(--font-body-family, "Instrument Sans", sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__meta span {
+    font-family: var(--font-sub-family, Nunito, sans-serif);
+    font-size: 0.9375rem;
+    font-weight: 400;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__card:hover .best-seller-parallax__meta h3 {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  #BestSellerParallax-{{ section.id }} .best-seller-parallax__card:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 6px;
+  }
+
+  @media (max-width: 767px) {
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__title {
+      font-size: clamp(2.25rem, 9vw, 3rem);
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item {
+      margin-top: 2.5rem;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item:first-child {
+      margin-top: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__heading > *,
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__item-inner,
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__zoom,
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__meta {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    #BestSellerParallax-{{ section.id }} .best-seller-parallax__zoom img {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    var root = document.getElementById('BestSellerParallax-{{ section.id }}');
+    if (!root || root.dataset.bspReady === 'true') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    root.dataset.bspReady = 'true';
+
+    var nodes = Array.prototype.slice.call(root.querySelectorAll('[data-scroll]'));
+
+    function clamp(value, min, max) {
+      min = min == null ? 0 : min;
+      max = max == null ? 1 : max;
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function parseMap(value) {
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function toFrames(map) {
+      return Object.keys(map || {})
+        .map(function (key) {
+          return { progress: Number(key) / 100, props: map[key] };
+        })
+        .sort(function (a, b) {
+          return a.progress - b.progress;
+        });
+    }
+
+    function lerp(start, end, t) {
+      return start + (end - start) * t;
+    }
+
+    function interpolate(frames, progress) {
+      if (!frames.length) return {};
+      if (progress <= frames[0].progress) return Object.assign({}, frames[0].props);
+      if (progress >= frames[frames.length - 1].progress) {
+        return Object.assign({}, frames[frames.length - 1].props);
+      }
+
+      var nextIndex = frames.findIndex(function (frame) {
+        return frame.progress >= progress;
+      });
+      if (nextIndex <= 0) nextIndex = 1;
+      var previous = frames[nextIndex - 1];
+      var next = frames[nextIndex];
+      var span = next.progress - previous.progress || 1;
+      var t = (progress - previous.progress) / span;
+      var result = {};
+      var keys = {};
+
+      Object.keys(previous.props).forEach(function (key) {
+        keys[key] = true;
+      });
+      Object.keys(next.props).forEach(function (key) {
+        keys[key] = true;
+      });
+
+      Object.keys(keys).forEach(function (key) {
+        var from = previous.props[key];
+        var to = next.props[key];
+        result[key] = typeof from === 'number' && typeof to === 'number' ? lerp(from, to, t) : to;
+      });
+
+      return result;
+    }
+
+    function applyTransform(el, props) {
+      var y = props.y == null ? 0 : props.y;
+      var scale = props.scale == null ? 1 : props.scale;
+      el.style.transform = 'translate3d(0, ' + y + 'px, 0) scale(' + scale + ')';
+      if (props.opacity != null) el.style.opacity = String(props.opacity);
+    }
+
+    function sectionProgress() {
+      var rect = root.getBoundingClientRect();
+      var travel = Math.max(root.offsetHeight - window.innerHeight, 1);
+      return clamp(-rect.top / travel);
+    }
+
+    function elementProgress(el) {
+      var rect = el.getBoundingClientRect();
+      var start = window.innerHeight * 0.95;
+      var end = window.innerHeight * 0.05 - rect.height;
+      return clamp((start - rect.top) / (start - end));
+    }
+
+    function resolveFrames(el) {
+      var base = parseMap(el.getAttribute('data-keyframes')) || {};
+      var breakpoints = parseMap(el.getAttribute('data-breakpoints')) || {};
+      var width = window.innerWidth;
+      var matched = Object.keys(breakpoints)
+        .map(Number)
+        .filter(function (bp) {
+          return width >= bp;
+        })
+        .sort(function (a, b) {
+          return a - b;
+        })
+        .pop();
+
+      return toFrames(matched != null ? breakpoints[matched] : base);
+    }
+
+    var frameCache = [];
+    var ticking = false;
+
+    function refreshFrames() {
+      frameCache = nodes.map(resolveFrames);
+    }
+
+    function render() {
+      var sectionP = sectionProgress();
+      nodes.forEach(function (el, index) {
+        var frames = frameCache[index] || resolveFrames(el);
+        var progress = el.hasAttribute('data-scroll-section') ? sectionP : elementProgress(el);
+        applyTransform(el, interpolate(frames, progress));
+      });
+      ticking = false;
+    }
+
+    function requestRender() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(render);
+    }
+
+    refreshFrames();
+    render();
+
+    window.addEventListener('scroll', requestRender, { passive: true });
+    window.addEventListener('resize', function () {
+      refreshFrames();
+      requestRender();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Best seller parallax",
+  "tag": "section",
+  "class": "section-best-seller-parallax",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small label",
+      "default": "Kiddorie BEST SELLER"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Start of\nSomething\nWonderful",
+      "info": "Use line breaks to stack the title."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Product link label",
+      "default": "View product"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffa5c1"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Small label",
+      "default": "#5c5c5c"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Product text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Image card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum content width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image",
+          "info": "Optional. Uses the product image if left empty."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom title",
+          "info": "Optional. Uses the product title if left empty."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link",
+          "info": "Optional. Uses the product page if left empty."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best seller parallax",
+      "category": "Products",
+      "blocks": [
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Adventure Cart Organizer"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "AdventureTrack Bed"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "DreamNest Cradle"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Little Driver's Dream"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "Lullaby Loft Bed"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "SailAway Shelf"
+          }
+        },
+        {
+          "type": "product_card",
+          "settings": {
+            "title": "StoryWave Shelf"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
