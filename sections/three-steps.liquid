@@ -1,0 +1,827 @@
+{% liquid
+  assign section_heading_eyebrow = section.settings.eyebrow
+  assign section_heading = section.settings.heading
+
+  assign main_image = section.settings.main_image
+  assign main_decorative_image = section.settings.main_decorative_image
+  assign step_two_image = section.settings.step_two_image
+  assign step_three_image = section.settings.step_three_image
+
+  assign connector_one_image = section.settings.connector_one_image
+  assign connector_two_image = section.settings.connector_two_image
+
+  assign section_bg_color = section.settings.background_color
+  assign padding_top_mobile = section.settings.padding_top_mobile
+  assign padding_bottom_mobile = section.settings.padding_bottom_mobile
+  assign padding_top_desktop = section.settings.padding_top_desktop
+  assign padding_bottom_desktop = section.settings.padding_bottom_desktop
+
+  for block in section.blocks
+    assign block_title = block.settings.title
+    assign block_description = block.settings.description
+  endfor
+%}
+
+<section
+  id="shopify-section-{{ section.id }}"
+  class="effortless-steps"
+  style="
+    --effortless-steps-bg: {{ section_bg_color }};
+    --effortless-steps-padding-top-mobile: {{ padding_top_mobile }}px;
+    --effortless-steps-padding-bottom-mobile: {{ padding_bottom_mobile }}px;
+    --effortless-steps-padding-top-desktop: {{ padding_top_desktop }}px;
+    --effortless-steps-padding-bottom-desktop: {{ padding_bottom_desktop }}px;
+  "
+>
+  <div class="effortless-steps__container">
+
+    <div class="effortless-steps__header">
+      <div class="effortless-steps__eyebrow">
+        <p>{{ section_heading_eyebrow }}</p>
+      </div>
+
+      <div class="effortless-steps__heading">
+        <h2>{{ section_heading }}</h2>
+      </div>
+    </div>
+
+    <div class="effortless-steps__content">
+
+      {% comment %}
+        Main product artwork
+      {% endcomment %}
+      <div class="effortless-steps__main-artwork">
+
+        {% if main_decorative_image != blank %}
+          <div class="effortless-steps__main-decorative">
+            {{
+              main_decorative_image
+              | image_url: width: 900
+              | image_tag:
+                loading: 'lazy',
+                widths: '300,450,600,750,900',
+                sizes: '(min-width: 769px) 457px, 279px',
+                alt: main_decorative_image.alt
+            }}
+          </div>
+        {% endif %}
+
+        {% if main_image != blank %}
+          <div class="effortless-steps__main-image">
+            {{
+              main_image
+              | image_url: width: 1120
+              | image_tag:
+                loading: 'lazy',
+                widths: '341,560,700,900,1120',
+                sizes: '(min-width: 769px) 560px, 341px',
+                alt: main_image.alt
+            }}
+          </div>
+        {% endif %}
+
+      </div>
+
+      {% comment %}
+        Step 1
+      {% endcomment %}
+      <div class="effortless-steps__step effortless-steps__step--one">
+
+        <div class="effortless-steps__number">
+          <span>1</span>
+        </div>
+
+        <div class="effortless-steps__step-content">
+          <div class="effortless-steps__step-title">
+            <h3>
+              {% if section.blocks.size > 0 %}
+                {{ section.blocks[0].settings.title }}
+              {% endif %}
+            </h3>
+          </div>
+
+          <div class="effortless-steps__step-description">
+            <p>
+              {% if section.blocks.size > 0 %}
+                {{ section.blocks[0].settings.description }}
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      {% comment %}
+        Step 2 image
+      {% endcomment %}
+      {% if step_two_image != blank %}
+        <div class="effortless-steps__step-image effortless-steps__step-image--two">
+          {{
+            step_two_image
+            | image_url: width: 420
+            | image_tag:
+              loading: 'lazy',
+              widths: '140,280,420',
+              sizes: '(min-width: 769px) 206px, 140px',
+              alt: step_two_image.alt
+          }}
+        </div>
+      {% endif %}
+
+      {% comment %}
+        Step 2
+      {% endcomment %}
+      <div class="effortless-steps__step effortless-steps__step--two">
+
+        <div class="effortless-steps__number">
+          <span>2</span>
+        </div>
+
+        <div class="effortless-steps__step-content">
+          <div class="effortless-steps__step-title">
+            <h3>
+              {% if section.blocks.size > 1 %}
+                {{ section.blocks[1].settings.title }}
+              {% endif %}
+            </h3>
+          </div>
+
+          <div class="effortless-steps__step-description">
+            <p>
+              {% if section.blocks.size > 1 %}
+                {{ section.blocks[1].settings.description }}
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      {% comment %}
+        Step 3 image
+      {% endcomment %}
+      {% if step_three_image != blank %}
+        <div class="effortless-steps__step-image effortless-steps__step-image--three">
+          {{
+            step_three_image
+            | image_url: width: 420
+            | image_tag:
+              loading: 'lazy',
+              widths: '140,280,420',
+              sizes: '(min-width: 769px) 206px, 140px',
+              alt: step_three_image.alt
+          }}
+        </div>
+      {% endif %}
+
+      {% comment %}
+        Step 3
+      {% endcomment %}
+      <div class="effortless-steps__step effortless-steps__step--three">
+
+        <div class="effortless-steps__number">
+          <span>3</span>
+        </div>
+
+        <div class="effortless-steps__step-content">
+          <div class="effortless-steps__step-title">
+            <h3>
+              {% if section.blocks.size > 2 %}
+                {{ section.blocks[2].settings.title }}
+              {% endif %}
+            </h3>
+          </div>
+
+          <div class="effortless-steps__step-description">
+            <p>
+              {% if section.blocks.size > 2 %}
+                {{ section.blocks[2].settings.description }}
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      {% comment %}
+        Figma connector artwork
+      {% endcomment %}
+      {% if connector_one_image != blank %}
+        <div class="effortless-steps__connector effortless-steps__connector--one">
+          {{
+            connector_one_image
+            | image_url: width: 400
+            | image_tag:
+              loading: 'lazy',
+              widths: '200,300,400',
+              alt: connector_one_image.alt
+          }}
+        </div>
+      {% endif %}
+
+      {% if connector_two_image != blank %}
+        <div class="effortless-steps__connector effortless-steps__connector--two">
+          {{
+            connector_two_image
+            | image_url: width: 400
+            | image_tag:
+              loading: 'lazy',
+              widths: '200,300,400',
+              alt: connector_two_image.alt
+          }}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background: var(--effortless-steps-bg);
+    padding-top: var(--effortless-steps-padding-top-mobile);
+    padding-bottom: var(--effortless-steps-padding-bottom-mobile);
+  }
+
+  .effortless-steps {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .effortless-steps__container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .effortless-steps__header {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+    color: #121212;
+  }
+
+  .effortless-steps__eyebrow {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .effortless-steps__eyebrow p {
+    margin: 0;
+    font-family: "Assistant", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 17.83px;
+    text-transform: uppercase;
+  }
+
+  .effortless-steps__heading {
+    width: 100%;
+  }
+
+  .effortless-steps__heading h2 {
+    margin: 0;
+    font-family: "Assistant", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.72px;
+  }
+
+  .effortless-steps__content {
+    position: relative;
+    width: 100%;
+    min-height: 780px;
+    margin-top: 20px;
+  }
+
+  .effortless-steps__main-artwork {
+    position: absolute;
+    top: 69px;
+    left: 0;
+    width: 100%;
+    height: 348px;
+  }
+
+  .effortless-steps__main-decorative {
+    position: absolute;
+    top: 27px;
+    left: 64px;
+    width: 279px;
+    height: 279px;
+  }
+
+  .effortless-steps__main-decorative img,
+  .effortless-steps__main-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .effortless-steps__main-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 341px;
+    height: 348px;
+  }
+
+  .effortless-steps__step {
+    position: absolute;
+    z-index: 4;
+  }
+
+  .effortless-steps__step--one {
+    top: 0;
+    left: 0;
+    width: 183px;
+    height: 183px;
+    padding: 30px;
+    border-radius: 50%;
+    background: #fffaf6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .effortless-steps__number {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  .effortless-steps__number span {
+    display: block;
+    font-family: "Assistant", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 21.55px;
+  }
+
+  .effortless-steps__step--one .effortless-steps__number {
+    top: 3px;
+    left: 0;
+  }
+
+  .effortless-steps__step-content {
+    width: 100%;
+  }
+
+  .effortless-steps__step-title {
+    width: 100%;
+  }
+
+  .effortless-steps__step-title h3 {
+    margin: 0;
+    color: #111;
+    font-family: "Assistant", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 19.42px;
+    text-align: center;
+  }
+
+  .effortless-steps__step-description {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .effortless-steps__step-description p {
+    margin: 0;
+    color: #605f5f;
+    font-family: "Assistant", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
+  }
+
+  .effortless-steps__step-image {
+    position: absolute;
+    z-index: 3;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .effortless-steps__step-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .effortless-steps__step-image--two {
+    top: 348px;
+    left: 0;
+    width: 140px;
+    height: 140px;
+  }
+
+  .effortless-steps__step--two {
+    top: 358px;
+    left: 180px;
+    width: 147px;
+  }
+
+  .effortless-steps__step--two .effortless-steps__number {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 8px;
+  }
+
+  .effortless-steps__step--two .effortless-steps__step-title h3 {
+    text-align: left;
+  }
+
+  .effortless-steps__step--three {
+    top: 531px;
+    left: 25px;
+    width: 146px;
+  }
+
+  .effortless-steps__step--three .effortless-steps__number {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 8px;
+  }
+
+  .effortless-steps__step--three .effortless-steps__step-title h3 {
+    text-align: left;
+  }
+
+  .effortless-steps__step-image--three {
+    top: 522px;
+    left: 179px;
+    width: 140px;
+    height: 140px;
+  }
+
+  .effortless-steps__connector {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .effortless-steps__connector img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .effortless-steps__connector--one {
+    top: 421px;
+    left: 92px;
+    width: 99px;
+    height: 114px;
+    transform: rotate(50.61deg);
+  }
+
+  .effortless-steps__connector--two {
+    top: 282px;
+    left: 121px;
+    width: 118px;
+    height: 129px;
+    transform: rotate(-48.25deg);
+  }
+
+  @media (min-width: 769px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: var(--effortless-steps-padding-top-desktop);
+      padding-bottom: var(--effortless-steps-padding-bottom-desktop);
+    }
+
+    .effortless-steps__container {
+      padding: 0;
+    }
+
+    .effortless-steps__header {
+      position: relative;
+      z-index: 5;
+    }
+
+    .effortless-steps__eyebrow {
+      margin-bottom: 8px;
+    }
+
+    .effortless-steps__eyebrow p {
+      font-size: 16px;
+    }
+
+    .effortless-steps__heading h2 {
+      font-size: 32px;
+      letter-spacing: -0.96px;
+    }
+
+    .effortless-steps__content {
+      height: 600px;
+      min-height: 0;
+      margin-top: 40px;
+    }
+
+    .effortless-steps__main-artwork {
+      top: 51px;
+      left: 261px;
+      width: 560px;
+      height: 572px;
+    }
+
+    .effortless-steps__main-decorative {
+      top: 44px;
+      left: 106px;
+      width: 457px;
+      height: 457px;
+    }
+
+    .effortless-steps__main-image {
+      top: 0;
+      left: 0;
+      width: 560px;
+      height: 572px;
+    }
+
+    .effortless-steps__step--one {
+      top: 0;
+      left: 144px;
+      width: 269px;
+      height: 269px;
+      padding: 48px;
+    }
+
+    .effortless-steps__step--one .effortless-steps__number {
+      top: 0;
+      left: 5px;
+      width: 60px;
+      height: 60px;
+    }
+
+    .effortless-steps__step--one .effortless-steps__number span {
+      font-size: 25.714px;
+      line-height: 34.286px;
+    }
+
+    .effortless-steps__step-title h3 {
+      font-size: 32px;
+      line-height: 30.891px;
+    }
+
+    .effortless-steps__step-description {
+      margin-top: 12px;
+    }
+
+    .effortless-steps__step-description p {
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .effortless-steps__step--one .effortless-steps__step-description p {
+      width: 219px;
+    }
+
+    .effortless-steps__step-image--two {
+      top: 9px;
+      left: 923px;
+      width: 206px;
+      height: 206px;
+    }
+
+    .effortless-steps__step--two {
+      top: 0;
+      left: 1146px;
+      width: 219px;
+    }
+
+    .effortless-steps__step--two .effortless-steps__number,
+    .effortless-steps__step--three .effortless-steps__number {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 12px;
+    }
+
+    .effortless-steps__step--two .effortless-steps__number span,
+    .effortless-steps__step--three .effortless-steps__number span {
+      font-size: 25.714px;
+      line-height: 34.286px;
+    }
+
+    .effortless-steps__step--two .effortless-steps__step-title h3,
+    .effortless-steps__step--three .effortless-steps__step-title h3 {
+      text-align: center;
+    }
+
+    .effortless-steps__step--two .effortless-steps__step-description,
+    .effortless-steps__step--three .effortless-steps__step-description {
+      margin-top: 0;
+    }
+
+    .effortless-steps__step-image--three {
+      top: 301px;
+      left: 1167px;
+      width: 206px;
+      height: 206px;
+    }
+
+    .effortless-steps__step--three {
+      top: 287px;
+      left: 934px;
+      width: 219px;
+    }
+
+    .effortless-steps__connector--one {
+      top: 198px;
+      left: 1058px;
+      width: 145px;
+      height: 168px;
+      transform: rotate(50.61deg);
+    }
+
+    .effortless-steps__connector--two {
+      top: 106px;
+      left: 688px;
+      width: 238px;
+      height: 260px;
+      transform: rotate(-48.25deg);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Effortless steps",
+  "tag": "section",
+  "class": "section-effortless-steps",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Effortless"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Three steps to your daily dose"
+    },
+
+    {
+      "type": "header",
+      "content": "Main artwork"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_decorative_image",
+      "label": "Decorative image"
+    },
+
+    {
+      "type": "header",
+      "content": "Step images"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_two_image",
+      "label": "Step 2 image"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_three_image",
+      "label": "Step 3 image"
+    },
+
+    {
+      "type": "header",
+      "content": "Connector artwork"
+    },
+    {
+      "type": "image_picker",
+      "id": "connector_one_image",
+      "label": "Connector 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "connector_two_image",
+      "label": "Connector 2"
+    },
+
+    {
+      "type": "header",
+      "content": "Section styling"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding mobile",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding mobile",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Top padding desktop",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Bottom padding desktop",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Pick your blend"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Choose by goal, or grab a best seller. Every SLX is full-spectrum and sugar-free."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Effortless steps",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Pick your blend",
+            "description": "Choose by goal, or grab a best seller. Every SLX is full-spectrum and sugar-free."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Add 1–2 tsp",
+            "description": "Stir into coffee, tea, smoothies, or take it straight. 2–3× daily, no brewing."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Feel it work",
+            "description": "Smooth taste, high absorption, no clumps, and no bitter aftertaste. That's it."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
