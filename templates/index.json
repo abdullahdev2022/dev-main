@@ -611,11 +611,57 @@
         "heading_color": "#000000",
         "eyebrow_color": "#5c5c5c",
         "text_color": "#000000",
-        "card_background": "#FFFFFF",
+        "card_background": "#ffffff",
         "max_width": 1400,
         "card_radius": 12,
         "padding_top": 80,
         "padding_bottom": 80
+      }
+    },
+    "three_steps_DcPdim": {
+      "type": "three-steps",
+      "blocks": {
+        "step_Knbwt3": {
+          "type": "step",
+          "settings": {
+            "title": "Pick your blend",
+            "description": "Choose by goal, or grab a best seller. Every SLX is full-spectrum and sugar-free."
+          }
+        },
+        "step_xeFxpL": {
+          "type": "step",
+          "settings": {
+            "title": "Add 1–2 tsp",
+            "description": "Stir into coffee, tea, smoothies, or take it straight. 2–3× daily, no brewing."
+          }
+        },
+        "step_hXypxB": {
+          "type": "step",
+          "settings": {
+            "title": "Feel it work",
+            "description": "Smooth taste, high absorption, no clumps, and no bitter aftertaste. That's it."
+          }
+        }
+      },
+      "block_order": [
+        "step_Knbwt3",
+        "step_xeFxpL",
+        "step_hXypxB"
+      ],
+      "name": "Effortless steps",
+      "settings": {
+        "eyebrow": "Effortless",
+        "heading": "Three steps to your daily dose",
+        "main_image": "shopify://shop_images/d336f0b88dee13bf1b32fac443f5e02916f4d100.png",
+        "step_two_image": "shopify://shop_images/563e42275c3ba04f79959f005043e5bfc6d9b208.png",
+        "step_three_image": "shopify://shop_images/d6d064bfd2315574b0d0fad0fb70d4bc016789c1.png",
+        "connector_one_image": "shopify://shop_images/Line_174.png",
+        "connector_two_image": "shopify://shop_images/Line_175.png",
+        "background_color": "#FFFFFF",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 40
       }
     }
   },
@@ -627,6 +673,7 @@
     "bundle_package_tab_39dUMB",
     "event_73ieUp",
     "drawer_design_xyrNy3",
-    "test_ieaRC6"
+    "test_ieaRC6",
+    "three_steps_DcPdim"
   ]
 }
