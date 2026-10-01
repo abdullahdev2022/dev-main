@@ -13,7 +13,7 @@
     --name-story-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
   "
 >
-  <div class="name-story__inner">
+  <div class="wrapper">
     <div class="name-story__header">
       {% if section.settings.subtitle != blank %}
         <div class="name-story__subtitle">
@@ -79,7 +79,8 @@
     position: relative;
     isolation: isolate;
     background: #0c0805;
-    padding: var(--name-story-padding-top-mobile) 16px var(--name-story-padding-bottom-mobile);
+    padding-top: var(--name-story-padding-top-mobile);
+    padding-bottom: var(--name-story-padding-bottom-mobile);
   }
 
   .name-story::before {
@@ -91,11 +92,6 @@
     background-size: 100% 100%;
     background-position: center;
     opacity: 0.6;
-  }
-
-  .name-story__inner {
-    max-width: 1248px;
-    margin: 0 auto;
   }
 
   .name-story__header {
@@ -204,7 +200,8 @@
 
   @media screen and (min-width: 750px) {
     .name-story {
-      padding: var(--name-story-padding-top-desktop) clamp(24px, 6.667vw, 96px) var(--name-story-padding-bottom-desktop);
+      padding-top: var(--name-story-padding-top-desktop);
+      padding-bottom: var(--name-story-padding-bottom-desktop);
     }
 
     .name-story::before {
@@ -394,4 +391,5 @@
   ]
 }
 {% endschema %}
+
 
