@@ -657,11 +657,51 @@
         "step_three_image": "shopify://shop_images/d6d064bfd2315574b0d0fad0fb70d4bc016789c1.png",
         "connector_one_image": "shopify://shop_images/Line_174.png",
         "connector_two_image": "shopify://shop_images/Line_175.png",
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "padding_top_mobile": 24,
         "padding_bottom_mobile": 24,
         "padding_top_desktop": 40,
         "padding_bottom_desktop": 40
+      }
+    },
+    "meaning_behind_the_name_jRihgt": {
+      "type": "Meaning-behind-the-name",
+      "blocks": {
+        "card_ciFPik": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Container_1.png",
+            "image_mobile": "shopify://shop_images/Container_3.png",
+            "title": "ETHOS",
+            "text": "The principles that guide us — the values we carry, the convictions we stand behind and the character we display when nobody is watching."
+          }
+        },
+        "card_JKWVNb": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Container.png",
+            "image_mobile": "shopify://shop_images/Container_2.png",
+            "title": "INK",
+            "text": "Conviction made visible. It represents the values written so deeply into who you are that you are willing to wear them for life."
+          }
+        }
+      },
+      "block_order": [
+        "card_ciFPik",
+        "card_JKWVNb"
+      ],
+      "name": "Meaning behind the name",
+      "settings": {
+        "background_desktop": "shopify://shop_images/507de62c8c1ecad1f475a9d99e001404d07b488d.jpg",
+        "subtitle": "Principles over profit",
+        "heading": "The meaning behind",
+        "heading_highlight": "the name",
+        "introduction": "<p>Valor Heritage Collection — honoring the original Badge of Military Merit, est. August 7, 1782.<br/>Every piece is a numbered run of 250</p>",
+        "description": "<p>Every design begins with real artists creating real art. Our work is developed in-house with the detail, intention and human character that have always defined Based Trading Cards. These are not disposable graphics created to chase a moment. They are pieces designed to tell a story, start a conversation and mean something to the person wearing them.</p>",
+        "padding_top_mobile": 64,
+        "padding_bottom_mobile": 64,
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 64
       }
     }
   },
@@ -674,6 +714,7 @@
     "event_73ieUp",
     "drawer_design_xyrNy3",
     "test_ieaRC6",
-    "three_steps_DcPdim"
+    "three_steps_DcPdim",
+    "meaning_behind_the_name_jRihgt"
   ]
 }
