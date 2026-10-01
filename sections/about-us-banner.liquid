@@ -11,39 +11,41 @@
     --about-us-banner-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
   "
 >
-  <div class="about-us-banner__inner">
-    <div class="about-us-banner__content">
-      <div class="about-us-banner__header">
-        {% if section.settings.heading != blank or section.settings.heading_highlight != blank %}
-          <div class="about-us-banner__heading">
-            <h2>
-              {{ section.settings.heading | escape }}
-              {% if section.settings.heading_highlight != blank %}
-                <span>{{ section.settings.heading_highlight | escape }}</span>
-              {% endif %}
-            </h2>
+  <div class="wrapper">
+    <div class="about-us-banner__layout">
+      <div class="about-us-banner__content">
+        <div class="about-us-banner__header">
+          {% if section.settings.heading != blank or section.settings.heading_highlight != blank %}
+            <div class="about-us-banner__heading">
+              <h2>
+                {{ section.settings.heading | escape }}
+                {% if section.settings.heading_highlight != blank %}
+                  <span>{{ section.settings.heading_highlight | escape }}</span>
+                {% endif %}
+              </h2>
+            </div>
+          {% endif %}
+  
+          {% if section.settings.subtitle != blank %}
+            <div class="about-us-banner__subtitle">
+              <p>{{ section.settings.subtitle | escape }}</p>
+            </div>
+          {% endif %}
+        </div>
+  
+        {% if section.settings.description != blank %}
+          <div class="about-us-banner__description">
+            {{ section.settings.description }}
           </div>
         {% endif %}
-
-        {% if section.settings.subtitle != blank %}
-          <div class="about-us-banner__subtitle">
-            <p>{{ section.settings.subtitle | escape }}</p>
+  
+        {% if section.settings.closing_text != blank %}
+          <div class="about-us-banner__closing">
+            <p>{{ section.settings.closing_text | escape }}</p>
           </div>
         {% endif %}
       </div>
-
-      {% if section.settings.description != blank %}
-        <div class="about-us-banner__description">
-          {{ section.settings.description }}
-        </div>
-      {% endif %}
-
-      {% if section.settings.closing_text != blank %}
-        <div class="about-us-banner__closing">
-          <p>{{ section.settings.closing_text | escape }}</p>
-        </div>
-      {% endif %}
-    </div>
+  </div>
   </div>
 </div>
 
@@ -52,12 +54,16 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding: var(--about-us-banner-padding-top-mobile) 16px var(--about-us-banner-padding-bottom-mobile);
-    background: #000;
+    padding-top: var(--about-us-banner-padding-top-mobile);
+    padding-bottom: var(--about-us-banner-padding-bottom-mobile);
+    background-color: #000;
+    background-image: var(--about-us-banner-background-mobile);
+    background-repeat: no-repeat;
+    background-size: 100% calc(682px + var(--about-us-banner-padding-top-mobile) + var(--about-us-banner-padding-bottom-mobile));
+    background-position: center calc(-0.251 * (682px + var(--about-us-banner-padding-top-mobile) + var(--about-us-banner-padding-bottom-mobile)));
     text-align: left;
   }
 
-  .about-us-banner::before,
   .about-us-banner::after {
     content: "";
     position: absolute;
@@ -66,26 +72,24 @@
     pointer-events: none;
   }
 
-  .about-us-banner::before {
-    background-image: var(--about-us-banner-background-mobile);
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    transform: translateY(-25.1%);
-  }
-
   .about-us-banner::after {
     background: linear-gradient(179.97deg, rgba(0, 0, 0, 0) 16.31%, rgba(0, 0, 0, 0.851) 37.759%, #000 49.917%);
   }
 
-  .about-us-banner__inner {
-    max-width: 1248px;
-    margin: 0 auto;
+  .about-us-banner__layout {
+    display: grid;
   }
 
-  .about-us-banner__inner::before {
+  .about-us-banner__layout::before {
     content: "";
-    display: block;
-    aspect-ratio: 343 / 230;
+    grid-area: 1 / 1;
+    padding-top: 682px;
+    pointer-events: none;
+  }
+
+  .about-us-banner__content {
+    grid-area: 1 / 1;
+    align-self: end;
   }
 
   .about-us-banner__heading h2 {
@@ -139,26 +143,24 @@
 
   @media screen and (min-width: 750px) {
     .about-us-banner {
-      padding: var(--about-us-banner-padding-top-desktop) clamp(24px, 6.667vw, 96px) var(--about-us-banner-padding-bottom-desktop);
-    }
-
-    .about-us-banner::before {
+      padding-top: var(--about-us-banner-padding-top-desktop);
+      padding-bottom: var(--about-us-banner-padding-bottom-desktop);
       background-image: var(--about-us-banner-background-desktop);
       background-size: 100% 159.76%;
       background-position: center 94.244%;
-      transform: none;
     }
 
-    .about-us-banner::after {
+      .about-us-banner::after {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 507' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='100%25' height='100%25' fill='url(%23grad)'/%3E%3Cdefs%3E%3CradialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(68.95 29.006 -60.61 102.73 716.5 200.54)'%3E%3Cstop stop-color='black' offset='0'/%3E%3Cstop stop-color='black' stop-opacity='.1' offset='1'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E");
       background-size: 100% 100%;
     }
 
-    .about-us-banner__inner::before {
-      display: none;
+    .about-us-banner__layout::before {
+      padding-top: 379px;
     }
 
     .about-us-banner__content {
+      align-self: center;
       max-width: 646px;
     }
 
@@ -279,4 +281,7 @@
   ]
 }
 {% endschema %}
+
+
+
 
