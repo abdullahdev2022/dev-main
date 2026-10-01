@@ -720,6 +720,23 @@
         "padding_top_desktop": 96,
         "padding_bottom_desktop": 64
       }
+    },
+    "about_us_banner_yzRXAL": {
+      "type": "about-us-banner",
+      "name": "About us banner",
+      "settings": {
+        "background_desktop": "shopify://shop_images/background-desktop_2b104b82-49ed-4f70-9ff3-33dd6fe07333.jpg",
+        "background_mobile": "shopify://shop_images/background-mobile_5e16584a-82e9-45a4-95f5-e35fe43e705a.jpg",
+        "heading": "About",
+        "heading_highlight": "Ethos & Ink",
+        "subtitle": "Stand for something. Stay connected.",
+        "description": "<p>Ethos & Ink is a values-driven apparel and art brand created by Based Trading Cards for people who believe conviction and connection still belong together.</p><p>We believe in the things that continue to matter when the noise disappears: family, integrity, freedom, friendship and the courage to stand behind your values. Everyone does not need to agree on everything. Our differences should never prevent us from recognizing what we share.</p><p>In a world consumed by endless content, manufactured outrage and life filtered through an algorithm, many of us are searching for something real again. Real conversations. Real relationships. Real experiences. Time with the people directly in front of us.</p>",
+        "closing_text": "Ethos & Ink was created to help bring those values back into the physical world.",
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 64
+      }
     }
   },
   "order": [
@@ -733,6 +750,7 @@
     "test_ieaRC6",
     "three_steps_DcPdim",
     "meaning_behind_the_name_jRihgt",
-    "collection_banner_Nmp3dK"
+    "collection_banner_Nmp3dK",
+    "about_us_banner_yzRXAL"
   ]
 }
