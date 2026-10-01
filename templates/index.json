@@ -703,6 +703,23 @@
         "padding_top_desktop": 64,
         "padding_bottom_desktop": 64
       }
+    },
+    "collection_banner_Nmp3dK": {
+      "type": "collection-banner",
+      "name": "Collection banner",
+      "settings": {
+        "background_desktop": "shopify://shop_images/background-desktop.jpg",
+        "background_mobile": "shopify://shop_images/background-mobile.jpg",
+        "heading": "Ethos & Ink is more than what you wear. Next Drop",
+        "heading_highlight": "It is what you stand for.",
+        "description_mobile": "Runs of 250 sell out. Coalition members get 24-hour early access before every public release — plus 10% off your first order.",
+        "button_label": "Shop the Collection",
+        "button_link": "",
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 64
+      }
     }
   },
   "order": [
@@ -715,6 +732,7 @@
     "drawer_design_xyrNy3",
     "test_ieaRC6",
     "three_steps_DcPdim",
-    "meaning_behind_the_name_jRihgt"
+    "meaning_behind_the_name_jRihgt",
+    "collection_banner_Nmp3dK"
   ]
 }
