@@ -1,0 +1,282 @@
+{% assign background_mobile = section.settings.background_mobile | default: section.settings.background_desktop %}
+
+<div
+  class="about-us-banner"
+  style="
+    --about-us-banner-background-desktop: {% if section.settings.background_desktop != blank %}url('{{ section.settings.background_desktop | image_url: width: 2400 | escape }}'){% else %}none{% endif %};
+    --about-us-banner-background-mobile: {% if background_mobile != blank %}url('{{ background_mobile | image_url: width: 1000 | escape }}'){% else %}none{% endif %};
+    --about-us-banner-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+    --about-us-banner-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --about-us-banner-padding-top-desktop: {{ section.settings.padding_top_desktop }}px;
+    --about-us-banner-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
+  <div class="about-us-banner__inner">
+    <div class="about-us-banner__content">
+      <div class="about-us-banner__header">
+        {% if section.settings.heading != blank or section.settings.heading_highlight != blank %}
+          <div class="about-us-banner__heading">
+            <h2>
+              {{ section.settings.heading | escape }}
+              {% if section.settings.heading_highlight != blank %}
+                <span>{{ section.settings.heading_highlight | escape }}</span>
+              {% endif %}
+            </h2>
+          </div>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <div class="about-us-banner__subtitle">
+            <p>{{ section.settings.subtitle | escape }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank %}
+        <div class="about-us-banner__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.closing_text != blank %}
+        <div class="about-us-banner__closing">
+          <p>{{ section.settings.closing_text | escape }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .about-us-banner {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: var(--about-us-banner-padding-top-mobile) 16px var(--about-us-banner-padding-bottom-mobile);
+    background: #000;
+    text-align: left;
+  }
+
+  .about-us-banner::before,
+  .about-us-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .about-us-banner::before {
+    background-image: var(--about-us-banner-background-mobile);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    transform: translateY(-25.1%);
+  }
+
+  .about-us-banner::after {
+    background: linear-gradient(179.97deg, rgba(0, 0, 0, 0) 16.31%, rgba(0, 0, 0, 0.851) 37.759%, #000 49.917%);
+  }
+
+  .about-us-banner__inner {
+    max-width: 1248px;
+    margin: 0 auto;
+  }
+
+  .about-us-banner__inner::before {
+    content: "";
+    display: block;
+    aspect-ratio: 343 / 230;
+  }
+
+  .about-us-banner__heading h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 31px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.62px;
+    text-transform: uppercase;
+  }
+
+  .about-us-banner__heading span {
+    color: #bb9e6b;
+  }
+
+  .about-us-banner__subtitle p {
+    margin: 8px 0 0;
+    color: #f2d06b;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.56px;
+    text-transform: uppercase;
+  }
+
+  .about-us-banner__description {
+    margin-top: 24px;
+    color: #ece2d1;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  .about-us-banner__description p {
+    margin: 0;
+  }
+
+  .about-us-banner__description p + p {
+    margin-top: 12px;
+  }
+
+  .about-us-banner__closing p {
+    margin: 24px 0 0;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.96px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .about-us-banner {
+      padding: var(--about-us-banner-padding-top-desktop) clamp(24px, 6.667vw, 96px) var(--about-us-banner-padding-bottom-desktop);
+    }
+
+    .about-us-banner::before {
+      background-image: var(--about-us-banner-background-desktop);
+      background-size: 100% 159.76%;
+      background-position: center 94.244%;
+      transform: none;
+    }
+
+    .about-us-banner::after {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 507' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect x='0' y='0' width='100%25' height='100%25' fill='url(%23grad)'/%3E%3Cdefs%3E%3CradialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(68.95 29.006 -60.61 102.73 716.5 200.54)'%3E%3Cstop stop-color='black' offset='0'/%3E%3Cstop stop-color='black' stop-opacity='.1' offset='1'/%3E%3C/radialGradient%3E%3C/defs%3E%3C/svg%3E");
+      background-size: 100% 100%;
+    }
+
+    .about-us-banner__inner::before {
+      display: none;
+    }
+
+    .about-us-banner__content {
+      max-width: 646px;
+    }
+
+    .about-us-banner__heading h2 {
+      font-size: 48px;
+      letter-spacing: -0.96px;
+    }
+
+    .about-us-banner__description {
+      font-size: 16px;
+    }
+
+    .about-us-banner__description p:not(:last-child) {
+      max-width: 639px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "About us banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_desktop",
+      "label": "Desktop background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_mobile",
+      "label": "Mobile background",
+      "info": "Uses desktop background when empty."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About"
+    },
+    {
+      "type": "text",
+      "id": "heading_highlight",
+      "label": "Highlighted heading",
+      "default": "Ethos & Ink"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Stand for something. Stay connected."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Ethos &amp; Ink is a values-driven apparel and art brand created by Based Trading Cards for people who believe conviction and connection still belong together.</p><p>We believe in the things that continue to matter when the noise disappears: family, integrity, freedom, friendship and the courage to stand behind your values. Everyone does not need to agree on everything. Our differences should never prevent us from recognizing what we share.</p><p>In a world consumed by endless content, manufactured outrage and life filtered through an algorithm, many of us are searching for something real again. Real conversations. Real relationships. Real experiences. Time with the people directly in front of us.</p>"
+    },
+    {
+      "type": "text",
+      "id": "closing_text",
+      "label": "Closing text",
+      "default": "Ethos & Ink was created to help bring those values back into the physical world."
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Desktop padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "About us banner"
+    }
+  ]
+}
+{% endschema %}
+
