@@ -14,39 +14,42 @@
     --collection-banner-padding-bottom-desktop: {{ section.settings.padding_bottom_desktop }}px;
   "
 >
-  <div class="collection-banner__inner">
-    <div class="collection-banner__content">
-      {% if section.settings.heading != blank or section.settings.heading_highlight != blank %}
-        <div class="collection-banner__heading">
-          <h2>
-            {{ section.settings.heading | escape }}
-            {% if section.settings.heading_highlight != blank %}
-              <span>{{ section.settings.heading_highlight | escape }}</span>
-            {% endif %}
-          </h2>
-        </div>
-      {% endif %}
-
-      {% if section.settings.description_mobile != blank %}
-        <div class="collection-banner__description">
-          <p>{{ section.settings.description_mobile | escape }}</p>
-        </div>
-      {% endif %}
-
-      {% if section.settings.button_label != blank %}
-        <div class="collection-banner__button-wrapper">
-          <a class="collection-banner__button" href="{{ button_link | escape }}">
-            {{ section.settings.button_label | escape }}
-          </a>
-        </div>
-      {% endif %}
+  <div class="wrapper">
+    <div class="collection-banner__inner">
+      <div class="collection-banner__content">
+        {% if section.settings.heading != blank or section.settings.heading_highlight != blank %}
+          <div class="collection-banner__heading">
+            <h2>
+              {{ section.settings.heading | escape }}
+              {% if section.settings.heading_highlight != blank %}
+                <span>{{ section.settings.heading_highlight | escape }}</span>
+              {% endif %}
+            </h2>
+          </div>
+        {% endif %}
+  
+        {% if section.settings.description_mobile != blank %}
+          <div class="collection-banner__description">
+            <p>{{ section.settings.description_mobile | escape }}</p>
+          </div>
+        {% endif %}
+  
+        {% if section.settings.button_label != blank %}
+          <div class="collection-banner__button-wrapper">
+            <a class="collection-banner__button" href="{{ button_link | escape }}">
+              {{ section.settings.button_label | escape }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
 
 {% stylesheet %}
   .collection-banner {
-    padding: var(--collection-banner-padding-top-mobile) 16px var(--collection-banner-padding-bottom-mobile);
+    padding-top: var(--collection-banner-padding-top-mobile);
+    padding-bottom: var(--collection-banner-padding-bottom-mobile);
     background-color: #080808;
     background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), var(--collection-banner-background-mobile);
     background-size: cover;
@@ -56,8 +59,6 @@
 
   .collection-banner__inner {
     display: grid;
-    max-width: 1248px;
-    margin: 0 auto;
   }
 
   .collection-banner__inner::before {
@@ -129,7 +130,8 @@
 
   @media screen and (min-width: 750px) {
     .collection-banner {
-      padding: var(--collection-banner-padding-top-desktop) clamp(24px, 6.667vw, 96px) var(--collection-banner-padding-bottom-desktop);
+      padding-top: var(--collection-banner-padding-top-desktop);
+      padding-bottom: var(--collection-banner-padding-bottom-desktop);
       background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), var(--collection-banner-background-desktop);
       background-size: 100% 190.14%;
       background-position: center 40.737%;
@@ -263,4 +265,5 @@
   ]
 }
 {% endschema %}
+
 
