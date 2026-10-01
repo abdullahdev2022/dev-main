@@ -96,6 +96,7 @@
 
   .name-story__header {
     text-align: center;
+    overflow-wrap: anywhere;
   }
 
   .name-story__subtitle p {
@@ -142,23 +143,22 @@
 
   .name-story__cards {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 20px;
     margin-top: 40px;
   }
 
   .name-story__card {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: end;
+    overflow-wrap: anywhere;
+    box-sizing: border-box;
+    aspect-ratio: 343 / 322;
     border: 3px solid #bb9e6b;
     background-image: linear-gradient(to top, rgba(11, 6, 3, 0.7) 35.577%, rgba(28, 27, 27, 0.14)), var(--name-story-card-mobile);
     background-position: center;
     background-size: cover;
-  }
-
-  .name-story__card::before {
-    content: "";
-    grid-area: 1 / 1;
-    aspect-ratio: 337 / 316;
-    pointer-events: none;
   }
 
   .name-story__card:nth-child(2) {
@@ -166,8 +166,6 @@
   }
 
   .name-story__card-content {
-    grid-area: 1 / 1;
-    align-self: end;
     padding: 24px 12px;
   }
 
@@ -227,11 +225,8 @@
 
     .name-story__card,
     .name-story__card:nth-child(2) {
+      aspect-ratio: 614 / 322;
       background-image: linear-gradient(to right, rgba(11, 6, 3, 0.7) 35.577%, rgba(28, 27, 27, 0.14)), var(--name-story-card-desktop);
-    }
-
-    .name-story__card::before {
-      aspect-ratio: 608 / 316;
     }
 
     .name-story__card-content {
@@ -391,5 +386,7 @@
   ]
 }
 {% endschema %}
+
+
 
 
