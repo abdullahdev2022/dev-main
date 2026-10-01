@@ -510,6 +510,7 @@
         "events_ED6kba",
         "events_fejtQf"
       ],
+      "disabled": true,
       "name": "Events",
       "settings": {
         "heading": "Upcoming events",
@@ -530,6 +531,7 @@
     },
     "drawer_design_xyrNy3": {
       "type": "drawer-design",
+      "disabled": true,
       "name": "Drawer Design",
       "settings": {}
     },
@@ -602,6 +604,7 @@
         "product_card_KdHfBX",
         "product_card_tKEUmX"
       ],
+      "disabled": true,
       "name": "Best seller parallax",
       "settings": {
         "eyebrow": "Kiddorie BEST SELLER",
@@ -648,6 +651,7 @@
         "step_xeFxpL",
         "step_hXypxB"
       ],
+      "disabled": true,
       "name": "Effortless steps",
       "settings": {
         "eyebrow": "Effortless",
