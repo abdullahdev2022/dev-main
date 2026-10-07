@@ -296,7 +296,7 @@
 {% assign initial_allocation = allocations.first %}
 
 {% if allocations.size > 0 %}
-  <div
+  <subscription-widget-controller
     class="subscription-widget-inner"
     data-sub-widget
     data-variant-id="{{ current_variant.id }}"
@@ -413,8 +413,162 @@
       value="{{ initial_allocation.selling_plan.id }}"
       data-selling-plan-input
     >
-  </div>
+
+    <script type="application/json" data-subscription-variants>
+      {
+        {% for variant in product.variants %}
+          "{{ variant.id }}": {
+            "oneTimePrice": {{ variant.price | money | json }},
+            "allocations": [
+              {% for allocation in variant.selling_plan_allocations %}
+                {
+                  "planId": "{{ allocation.selling_plan.id }}",
+                  "price": {{ allocation.price | money | json }},
+                  "comparePrice": {{ allocation.compare_at_price | money | json }}
+                }{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ]
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      }
+    </script>
+  </subscription-widget-controller>
 {% endif %}
+
+{% javascript %}
+  if (!customElements.get('subscription-widget-controller')) {
+    class SubscriptionWidgetController extends HTMLElement {
+      connectedCallback() {
+        this.widget = this;
+        if (this.initialized) return;
+
+        this.initialized = true;
+        this.variantData = JSON.parse(this.querySelector('[data-subscription-variants]').textContent);
+        this.planButtons = [...this.querySelectorAll('[data-plan-item]')];
+        this.purchaseInputs = [...this.querySelectorAll('[data-purchase-type]')];
+        this.sellingPlanInput = this.querySelector('[data-selling-plan-input]');
+        this.planPriceOutput = this.querySelector('[data-plan-price-output]');
+        this.comparePriceOutput = this.querySelector('[data-compare-price-output]');
+        this.oneTimePriceOutput = this.querySelector('[data-onetime-price]');
+        this.productForm = this.findProductForm();
+
+        this.connectSellingPlanInput();
+        this.addEventListener('click', this.handleClick.bind(this));
+        this.addEventListener('change', this.handlePurchaseTypeChange.bind(this));
+        document.addEventListener('change', this.handleVariantChange.bind(this));
+        document.addEventListener('variant:change', this.handleVariantEvent.bind(this));
+        document.addEventListener('variant-change', this.handleVariantEvent.bind(this));
+        this.syncVariant(this.getSelectedVariantId());
+      }
+
+      findProductForm() {
+        const productScope = this.closest('product-info, product-form, [data-product-id], .shopify-section');
+        return productScope?.querySelector('form[action*="/cart/add"]') || document.querySelector('form[action*="/cart/add"]');
+      }
+
+      connectSellingPlanInput() {
+        if (!this.productForm || !this.sellingPlanInput) return;
+        if (!this.productForm.id) this.productForm.id = `product-form-${Date.now()}`;
+        this.sellingPlanInput.setAttribute('form', this.productForm.id);
+      }
+
+      getSelectedVariantId() {
+        const formVariantInput = this.productForm?.querySelector('[name="id"]');
+        return String(formVariantInput?.value || this.widget.dataset.variantId);
+      }
+
+      getActivePlanButton() {
+        return this.planButtons.find((button) => button.getAttribute('aria-pressed') === 'true') || this.planButtons[0];
+      }
+
+      getSelectedPurchaseType() {
+        return this.purchaseInputs.find((input) => input.checked)?.value || 'subscribe';
+      }
+
+      getAllocation(variant, planId) {
+        return variant?.allocations.find((allocation) => allocation.planId === String(planId));
+      }
+
+      selectPlan(button) {
+        this.planButtons.forEach((planButton) => {
+          const selected = planButton === button;
+          planButton.classList.toggle('is-selected', selected);
+          planButton.setAttribute('aria-pressed', String(selected));
+        });
+
+        const subscribeInput = this.purchaseInputs.find((input) => input.value === 'subscribe');
+        if (subscribeInput) subscribeInput.checked = true;
+        this.syncPurchaseSelection();
+      }
+
+      syncVariant(variantId) {
+        const variant = this.variantData[String(variantId)];
+        if (!variant) return;
+
+        this.currentVariantId = String(variantId);
+        this.widget.dataset.variantId = String(variantId);
+        if (this.oneTimePriceOutput) this.oneTimePriceOutput.textContent = variant.oneTimePrice;
+
+        this.planButtons.forEach((button) => {
+          const allocation = this.getAllocation(variant, button.dataset.planId);
+          button.disabled = !allocation;
+          button.hidden = !allocation;
+          if (allocation) {
+            button.dataset.planPrice = allocation.price;
+            button.dataset.comparePrice = allocation.comparePrice;
+          }
+        });
+
+        let activeButton = this.getActivePlanButton();
+        if (!activeButton || activeButton.disabled) {
+          activeButton = this.planButtons.find((button) => !button.disabled);
+        }
+        if (activeButton) this.selectPlan(activeButton);
+      }
+
+      syncPurchaseSelection() {
+        const variant = this.variantData[this.currentVariantId || this.getSelectedVariantId()];
+        const activeButton = this.getActivePlanButton();
+        const allocation = activeButton ? this.getAllocation(variant, activeButton.dataset.planId) : null;
+        const isSubscription = this.getSelectedPurchaseType() === 'subscribe' && allocation;
+
+        if (allocation) {
+          this.planPriceOutput.textContent = allocation.price;
+          this.comparePriceOutput.textContent = allocation.comparePrice;
+        }
+
+        if (isSubscription) {
+          this.sellingPlanInput.disabled = false;
+          this.sellingPlanInput.value = allocation.planId;
+        } else {
+          this.sellingPlanInput.value = '';
+          this.sellingPlanInput.disabled = true;
+        }
+      }
+
+      handleClick(event) {
+        const planButton = event.target.closest('[data-plan-item]');
+        if (planButton && this.contains(planButton) && !planButton.disabled) this.selectPlan(planButton);
+      }
+
+      handlePurchaseTypeChange(event) {
+        if (event.target.matches('[data-purchase-type]')) this.syncPurchaseSelection();
+      }
+
+      handleVariantChange(event) {
+        if (!event.target.matches('[name="id"]')) return;
+        window.requestAnimationFrame(() => this.syncVariant(event.target.value));
+      }
+
+      handleVariantEvent(event) {
+        const variantId = event.detail?.variant?.id || event.detail?.variantId || this.getSelectedVariantId();
+        this.syncVariant(variantId);
+      }
+    }
+
+    customElements.define('subscription-widget-controller', SubscriptionWidgetController);
+  }
+{% endjavascript %}
 
 {% schema %}
 {
