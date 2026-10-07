@@ -313,77 +313,154 @@
     }
   }
 {% endstylesheet %}
-
-{% assign subscription = product.selected_or_first_available_variant %}
-{% assign allocations = subscription.selling_plan_allocations %}
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign allocations = current_variant.selling_plan_allocations %}
 {% assign initial_allocation = allocations.first %}
-<div class="subscription-widget-inner">
-  <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
-    <div class="subscription-widget-plan-head">
-      <div class="subscription-widget__head-inner">
-        <input class="subscription-widget__input" type="radio" name="purchase_type" value="subscribe">
-        <span class="subscription-widget__radio"></span>
-      </div>
-      <div class="subscription-widget__plan-name">
-        <p>{{  product.selling_plan_groups.first.name }}</p>
+
+{% if allocations.size > 0 %}
+  <div
+    class="subscription-widget-inner"
+    data-sub-widget
+    data-variant-id="{{ current_variant.id }}"
+  >
+    <div
+      class="subscription-widget-plan-main subscription-widget_subscribe-save"
+      data-subscription-card
+    >
+      <label class="subscription-widget-plan-head">
+        <div class="subscription-widget__head-inner">
+          <input
+            class="subscription-widget__input"
+            type="radio"
+            name="purchase_type"
+            value="subscribe"
+            data-purchase-type
+            {% if product.requires_selling_plan %}
+              checked
+            {% endif %}
+          >
+          <span class="subscription-widget__radio"></span>
+        </div>
+
+        <div class="subscription-widget__plan-name">
+          <p>{{ product.selling_plan_groups.first.name }}</p>
+        </div>
+
+        <div class="subscription-widget__price-main">
+          <span
+            class="subscription-widget__comapre-price"
+            data-compare-price-output
+          >
+            {{ initial_allocation.compare_at_price | money }}
+          </span>
+
+          <span
+            class="subscription-widget__price"
+            data-plan-price-output
+          >
+            {{ initial_allocation.price | money }}
+          </span>
+        </div>
+      </label>
+
+      <div class="subscription-widget__point-head">
+        <ul>
+          <li>
+            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Exclusive subscriber gifts
+          </li>
+
+          <li>
+            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Earn 5% back in rewards
+          </li>
+
+          <li>
+            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Free shipping, always
+          </li>
+
+          <li>
+            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Skip, pause, or cancel anytime
+          </li>
+        </ul>
       </div>
 
-      <div class="subscription-widget__price-main">
-        <span class="subscription-widget__comapre-price">{{  initial_allocation.compare_at_price | money }}</span>
-        <span class="subscription-widget__price">{{  initial_allocation.price | money }}</span>
-      </div>
-    </div>
-    <div class="subscription-widget__point-head">
-      <ul>
-        <li>
-          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Exclusive subscriber gifts
-        </li>
-        <li>
-          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Earn 5% back in rewards
-        </li>
-        <li>
-          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Free shipping, always
-        </li>
-        <li>
-          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Skip, pause, or cancel anytime
-        </li>
-      </ul>
-    </div>
-    <div class="subscription-widget__days-plan">
-      <span class="subscription-widget__ships-every">Ships every</span>
-{%  for sub_allocations in allocations %}
-      <button class="subscription-widget__days-plan" type="button" data-plan-id="{{  sub_allocations.selling_plan.id }}">{{ sub_allocations.selling_plan.options.first.value  | remove: 'Deliver '| capitalize }}</button>
-    {%  endfor %}
-    </div>
-  </label>
-  <label class="subscription-widget-plan-main subscription-widget-plan_one-time">
-    <div class="subscription-widget-plan-head">
+      <div class="subscription-widget__days-plan">
+        <span class="subscription-widget__ships-every"> Ships every </span>
 
-    <div class="subscription-widget__head-inner">
-      <input class="subscription-widget__input" type="radio" name="purchase_type" value="onetime">
-      <span class="subscription-widget__radio"></span>
-    </div>
-       <div class="subscription-widget__plan-name">
-        <p>ONE-TIME PURCHASE</p>
+        {% for allocation in allocations %}
+          <button
+            type="button"
+            class="subscription-widget__days-plan{% if forloop.first %} is-selected{% endif %}"
+            data-plan-item
+            data-plan-id="{{ allocation.selling_plan.id }}"
+            data-plan-price="{{ allocation.price | money | escape }}"
+            data-compare-price="{{ allocation.compare_at_price | money | escape }}"
+            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+          >
+            {{ allocation.selling_plan.options.first.value | remove: 'Deliver ' | capitalize }}
+          </button>
+        {% endfor %}
       </div>
-    <div class="subscription-widget__price-main">
-      <span class="subscription-widget__price">{{  subscription.price | money }}</span>
     </div>
-    </div>
-  </label>
-</div>
+
+    {% unless product.requires_selling_plan %}
+      <label
+        class="subscription-widget-plan-main subscription-widget-plan_one-time"
+        data-onetime-card
+      >
+        <div class="subscription-widget-plan-head">
+          <div class="subscription-widget__head-inner">
+            <input
+              class="subscription-widget__input"
+              type="radio"
+              name="purchase_type"
+              value="onetime"
+              data-purchase-type
+              checked
+            >
+            <span class="subscription-widget__radio"></span>
+          </div>
+
+          <div class="subscription-widget__plan-name">
+            <p>One-time purchase</p>
+          </div>
+
+          <div class="subscription-widget__price-main">
+            <span
+              class="subscription-widget__price"
+              data-onetime-price
+            >
+              {{ current_variant.price | money }}
+            </span>
+          </div>
+        </div>
+      </label>
+    {% endunless %}
+
+    <input
+      type="hidden"
+      name="selling_plan"
+      data-selling-plan-input
+      {% if product.requires_selling_plan %}
+        value="{{ initial_allocation.selling_plan.id }}"
+      {% else %}
+        value=""
+        disabled
+      {% endif %}
+    >
+  </div>
+{% endif %}
 
 {% schema %}
 {
