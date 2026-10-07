@@ -194,9 +194,9 @@
                 "widget_style": "card",
                 "widget_style_card_selector": "radio_button",
                 "subscription_policy_url": "",
-                "color_text_body": "#6D7175",
-                "dividers_color": "#8F8D8D",
-                "background_color": "#FFFFFF",
+                "color_text_body": "#6d7175",
+                "dividers_color": "#8f8d8d",
+                "background_color": "#ffffff",
                 "border_thickness": 1,
                 "border_radius": 0,
                 "product": "{{closest.product}}"
@@ -262,6 +262,12 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "subscription_widget_EqdkR7": {
+              "type": "subscription-widget",
+              "name": "Subscription widget",
+              "settings": {},
+              "blocks": {}
             }
           },
           "block_order": [
@@ -270,7 +276,8 @@
             "variant_picker_R3rGDr",
             "subscriptions_app_block_d83fDW",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "text_aEtTtq",
+            "subscription_widget_EqdkR7"
           ]
         }
       },
