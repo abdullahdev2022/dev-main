@@ -1,8 +1,323 @@
+{% stylesheet %}
+  .subscription-widget-inner,
+  .subscription-widget-inner *,
+  .subscription-widget-inner *::before,
+  .subscription-widget-inner *::after {
+    box-sizing: border-box;
+  }
+
+  .subscription-widget-inner {
+    --widget-text: #2d2926;
+    --widget-muted: #6b675e;
+    --widget-yellow: #f1eb9c;
+    --widget-yellow-soft: rgba(241, 235, 156, 0.5);
+    --widget-border: rgba(45, 41, 38, 0.15);
+    --widget-font: var(--font-body-family, Arial, sans-serif);
+    --widget-heading-font: var(--font-heading-family, Arial, sans-serif);
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    color: var(--widget-text);
+    font-family: var(--widget-font);
+  }
+
+  .subscription-widget-plan-main {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px var(--widget-border);
+    cursor: pointer;
+  }
+
+  .subscription-widget_subscribe-save {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .subscription-widget-plan-head {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 9px;
+    width: 100%;
+    min-height: 24px;
+  }
+
+  .subscription-widget__head-inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+  }
+
+  .subscription-widget__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .subscription-widget__radio {
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--widget-text);
+    border-radius: 50%;
+    background: transparent;
+  }
+
+  .subscription-widget__radio::after {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--widget-text);
+    content: "";
+    opacity: 0;
+    transform: scale(0.4);
+    transition:
+      opacity 150ms ease,
+      transform 150ms ease;
+  }
+
+  .subscription-widget__input:checked
+    + .subscription-widget__radio::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .subscription-widget-plan-main:has(
+      .subscription-widget__input:focus-visible
+    ) {
+    outline: 2px solid var(--widget-text);
+    outline-offset: 3px;
+  }
+
+  .subscription-widget__plan-name {
+    min-width: 0;
+  }
+
+  .subscription-widget__plan-name p {
+    margin: 0;
+    color: var(--widget-text);
+    font-family: var(--widget-heading-font);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    text-transform: uppercase;
+  }
+
+  .subscription-widget__price-main {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .subscription-widget__comapre-price {
+    color: var(--widget-muted);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-decoration: line-through;
+  }
+
+  .subscription-widget__price {
+    color: var(--widget-text);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+  }
+
+  .subscription-widget__point-head ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 28px;
+    width: 100%;
+    margin: 0;
+    padding: 4px 0 0;
+    list-style: none;
+  }
+
+  .subscription-widget__point-head li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    color: var(--widget-text);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+  }
+
+  .subscription-widget__point-head svg {
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .subscription-widget__days-plan {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding-top: 2px;
+  }
+
+  .subscription-widget__ships-every {
+    color: var(--widget-muted);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+
+  .subscription-widget__days-plan
+    > button.subscription-widget__days-plan {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    height: 24px;
+    margin: 0;
+    padding: 4px 12px;
+    border: 0;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(45, 41, 38, 0.18);
+    color: var(--widget-text);
+    font-family: var(--widget-font);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      box-shadow 150ms ease,
+      transform 150ms ease;
+  }
+
+  .subscription-widget__days-plan
+    > button.subscription-widget__days-plan:hover {
+    box-shadow: inset 0 0 0 1.5px var(--widget-text);
+  }
+
+  .subscription-widget__days-plan
+    > button.subscription-widget__days-plan:active {
+    transform: scale(0.97);
+  }
+
+  .subscription-widget__days-plan
+    > button.subscription-widget__days-plan:focus-visible {
+    outline: 2px solid var(--widget-text);
+    outline-offset: 2px;
+  }
+
+  .subscription-widget__days-plan
+    > button.subscription-widget__days-plan.is-selected,
+  .subscription-widget__days-plan
+    > button.subscription-widget__days-plan[aria-pressed="true"] {
+    background: var(--widget-yellow);
+    box-shadow: inset 0 0 0 1.5px var(--widget-text);
+  }
+
+  .subscription-widget-plan_one-time {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 9px;
+    min-height: 56px;
+    border-radius: 8px;
+  }
+
+  .subscription-widget_subscribe-save:has(
+      .subscription-widget-plan-head
+        .subscription-widget__input:checked
+    ) {
+    background: var(--widget-yellow-soft);
+    box-shadow: none;
+  }
+
+  .subscription-widget-plan_one-time:has(
+      > .subscription-widget__head-inner
+        .subscription-widget__input:checked
+    ) {
+    box-shadow: inset 0 0 0 1.5px var(--widget-text);
+  }
+
+  .subscription-widget_subscribe-save:not(
+      :has(.subscription-widget__input:checked)
+    )
+    .subscription-widget__days-plan
+    > button {
+    opacity: 0.65;
+  }
+
+  @media screen and (max-width: 749px) {
+    .subscription-widget-plan-main {
+      padding: 14px;
+    }
+
+    .subscription-widget-plan-head {
+      grid-template-columns: 16px minmax(0, 1fr) auto;
+    }
+
+    .subscription-widget__plan-name p,
+    .subscription-widget__price {
+      font-size: 15px;
+    }
+
+    .subscription-widget__point-head ul {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .subscription-widget__days-plan {
+      row-gap: 8px;
+    }
+  }
+
+  @media screen and (max-width: 390px) {
+    .subscription-widget-plan-head,
+    .subscription-widget-plan_one-time {
+      grid-template-columns: 16px minmax(0, 1fr);
+    }
+
+    .subscription-widget-plan-head
+      > .subscription-widget__price-main,
+    .subscription-widget-plan_one-time
+      > .subscription-widget__price-main {
+      grid-column: 2;
+      justify-content: flex-start;
+      margin-top: 2px;
+    }
+  }
+{% endstylesheet %}
+
 <div class="subscription-widget-inner">
-  <label class="subscription-widget-plan-main subscription-widget_subscribe-save">
+  <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
     <div class="subscription-widget-plan-head">
       <div class="subscription-widget__head-inner">
-        <input class="subscription-widget__input" type="radio" name="" value="">
+        <input class="subscription-widget__input" type="radio" name="purchase_type" value="subscribe">
         <span class="subscription-widget__radio"></span>
       </div>
       <div class="subscription-widget__plan-name">
@@ -52,7 +367,7 @@
   </label>
   <label class="subscription-widget-plan-main subscription-widget-plan_one-time">
     <div class="subscription-widget__head-inner">
-      <input class="subscription-widget__input" type="radio" name="" value="">
+      <input class="subscription-widget__input" type="radio" name="purchase_type" value="onetime">
       <span class="subscription-widget__radio"></span>
     </div>
     <div class="subscription-widget__price-main">
