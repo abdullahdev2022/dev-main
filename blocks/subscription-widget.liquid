@@ -328,8 +328,8 @@
     {%  for allocations in subscription.selling_plan_allocations %}
 
       <div class="subscription-widget__price-main">
-        <span class="subscription-widget__comapre-price">$29.99</span>
-        <span class="subscription-widget__price">$27.29</span>
+        <span class="subscription-widget__comapre-price">{{  allocations.compare_at_price | money }}</span>
+        <span class="subscription-widget__price">{{  allocations.price | money }}</span>
       </div>
     </div>
     <div class="subscription-widget__point-head">
