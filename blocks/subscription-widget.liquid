@@ -396,7 +396,9 @@
       </div>
 
       <div class="subscription-widget__days-plan">
-        <span class="subscription-widget__ships-every"> Ships every </span>
+        <span class="subscription-widget__ships-every">
+          Ships every
+        </span>
 
         {% for allocation in allocations %}
           <button
@@ -408,7 +410,11 @@
             data-compare-price="{{ allocation.compare_at_price | money | escape }}"
             aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
           >
-            {{ allocation.selling_plan.options.first.value | remove: 'Deliver ' | capitalize }}
+            {{
+              allocation.selling_plan.options.first.value
+              | remove: 'Deliver '
+              | capitalize
+            }}
           </button>
         {% endfor %}
       </div>
