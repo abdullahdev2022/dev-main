@@ -5,6 +5,13 @@
 <p>Available Plan {{ current_varaint.selling_plan_allocations.size }}</p>
 </div>
 
+{% for allocations in current_varaint.selling_plan_allocations %}
+
+<p>Plan Name {{  allocations.selling_plan }}</p>
+
+
+{% endfor %}
+
 {% schema %}
 {
   "name": "Subscription widget",
