@@ -363,11 +363,9 @@
     </div>
     <div class="subscription-widget__days-plan">
       <span class="subscription-widget__ships-every">Ships every</span>
-      <button class="subscription-widget__days-plan">15 days</button>
-      <button class="subscription-widget__days-plan">30 days</button>
-      <button class="subscription-widget__days-plan">45 days</button>
-      <button class="subscription-widget__days-plan">60 days</button>
-      <button class="subscription-widget__days-plan">90 days</button>
+{%  for sub_allocations in allocations %}
+      <button class="subscription-widget__days-plan">{{ sub_allocations.selling_plan.name }}</button>
+    {%  endfor %}
     </div>
   </label>
   <label class="subscription-widget-plan-main subscription-widget-plan_one-time">
