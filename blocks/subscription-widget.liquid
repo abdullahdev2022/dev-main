@@ -1,0 +1,17 @@
+{%  assign current_varaint  = product.selected_or_first_available_variant.id %}
+
+
+<div class="subscription-widget">
+<p>current variant {{ current_varaint }}</p>
+</div>
+
+{% schema %}
+{
+  "name": "Subscription widget",
+  "presets": [
+    {
+      "name": "Subscription widget"
+    }
+  ]
+}
+{% endschema %}
