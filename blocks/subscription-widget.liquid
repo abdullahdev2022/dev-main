@@ -317,8 +317,7 @@
 {% assign subscription = product.selected_or_first_available_variant %}
 <div class="subscription-widget-inner">
     {%  for allocations in subscription.selling_plan_allocations %}
-{{  subscription.selected_selling_plan_allocation.name }}
-
+{{  product.selling_plan_groups.first.name }}
   <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
     <div class="subscription-widget-plan-head">
       <div class="subscription-widget__head-inner">
