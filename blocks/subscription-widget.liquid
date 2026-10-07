@@ -318,7 +318,6 @@
 
 <div class="subscription-widget-inner">
     {%  for allocations in subscription.selected_selling_plan_allocations %}
-        {{ allocations.selling_plan.name }}
   <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
     <div class="subscription-widget-plan-head">
       <div class="subscription-widget__head-inner">
@@ -326,7 +325,7 @@
         <span class="subscription-widget__radio"></span>
       </div>
       <div class="subscription-widget__plan-name">
-        <p>{{  allocations.name }}</p>
+        <p>{{  allocations.selling_plan.name }}</p>
       </div>
       <div class="subscription-widget__price-main">
         <span class="subscription-widget__comapre-price">$29.99</span>
