@@ -318,7 +318,7 @@
 
 <div class="subscription-widget-inner">
     {%  for allocations in subscription.selected_selling_plan_allocations %}
-        {{ allocations.id }}
+        {{ allocations.selling_plan.name }}
   <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
     <div class="subscription-widget-plan-head">
       <div class="subscription-widget__head-inner">
