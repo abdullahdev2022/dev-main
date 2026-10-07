@@ -1,3 +1,7 @@
+{% doc %}
+  Renders a custom subscription purchase widget for the current product.
+{% enddoc %}
+
 {% stylesheet %}
   .subscription-widget-inner,
   .subscription-widget-inner *,
@@ -14,7 +18,6 @@
     --widget-border: rgba(45, 41, 38, 0.15);
     --widget-font: var(--font-body-family, Arial, sans-serif);
     --widget-heading-font: var(--font-heading-family, Arial, sans-serif);
-
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -30,25 +33,28 @@
     padding: 16px;
     border: 0;
     border-radius: 12px;
-    background: #ffffff;
+    background: #fff;
     box-shadow: inset 0 0 0 1px var(--widget-border);
-    cursor: pointer;
   }
 
   .subscription-widget_subscribe-save {
     display: flex;
     flex-direction: column;
-    align-items: baseline !important;
+    align-items: stretch;
     gap: 12px;
   }
 
   .subscription-widget-plan-head {
     display: grid;
-    grid-template-columns: 16px minmax(0, 1fr) auto;
+    grid-template-columns: 16px minmax(0, 1fr) max-content;
     align-items: center;
+    align-self: stretch;
     column-gap: 9px;
     width: 100%;
+    max-width: none;
     min-height: 24px;
+    margin: 0;
+    cursor: pointer;
   }
 
   .subscription-widget__head-inner {
@@ -57,7 +63,6 @@
     place-items: center;
     width: 16px;
     height: 16px;
-    flex: 0 0 16px;
   }
 
   .subscription-widget__input {
@@ -85,23 +90,18 @@
     height: 8px;
     border-radius: 50%;
     background: var(--widget-text);
-    content: "";
+    content: '';
     opacity: 0;
     transform: scale(0.4);
-    transition:
-      opacity 150ms ease,
-      transform 150ms ease;
+    transition: opacity 150ms ease, transform 150ms ease;
   }
 
-  .subscription-widget__input:checked
-    + .subscription-widget__radio::after {
+  .subscription-widget__input:checked + .subscription-widget__radio::after {
     opacity: 1;
     transform: scale(1);
   }
 
-  .subscription-widget-plan-main:has(
-      .subscription-widget__input:focus-visible
-    ) {
+  .subscription-widget-plan-main:has(.subscription-widget__input:focus-visible) {
     outline: 2px solid var(--widget-text);
     outline-offset: 3px;
   }
@@ -124,11 +124,13 @@
     display: flex;
     align-items: baseline;
     justify-content: flex-end;
+    justify-self: end;
     gap: 4px;
+    margin-left: auto;
     white-space: nowrap;
   }
 
-  .subscription-widget__comapre-price {
+  .subscription-widget__compare-price {
     color: var(--widget-muted);
     font-size: 12px;
     font-weight: 400;
@@ -143,11 +145,16 @@
     line-height: 24px;
   }
 
+  .subscription-widget__point-head,
+  .subscription-widget__point-head ul,
+  .subscription-widget__days-plan {
+    width: 100%;
+  }
+
   .subscription-widget__point-head ul {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px 28px;
-    width: 100%;
     margin: 0;
     padding: 4px 0 0;
     list-style: none;
@@ -177,7 +184,6 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 7px;
-    width: 100%;
     padding-top: 2px;
   }
 
@@ -189,8 +195,7 @@
     white-space: nowrap;
   }
 
-  .subscription-widget__days-plan
-    > button.subscription-widget__days-plan {
+  .subscription-widget__days-plan > button.subscription-widget__days-plan {
     appearance: none;
     display: inline-flex;
     align-items: center;
@@ -202,7 +207,7 @@
     padding: 4px 12px;
     border: 0;
     border-radius: 999px;
-    background: #ffffff;
+    background: #fff;
     box-shadow: inset 0 0 0 1px rgba(45, 41, 38, 0.18);
     color: var(--widget-text);
     font-family: var(--widget-font);
@@ -211,75 +216,49 @@
     line-height: 16px;
     white-space: nowrap;
     cursor: pointer;
-    transition:
-      background-color 150ms ease,
-      box-shadow 150ms ease,
-      transform 150ms ease;
+    transition: background-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
   }
 
-  .subscription-widget__days-plan
-    > button.subscription-widget__days-plan:hover {
+  .subscription-widget__days-plan > button.subscription-widget__days-plan:hover {
     box-shadow: inset 0 0 0 1.5px var(--widget-text);
   }
 
-  .subscription-widget__days-plan
-    > button.subscription-widget__days-plan:active {
+  .subscription-widget__days-plan > button.subscription-widget__days-plan:active {
     transform: scale(0.97);
   }
 
-  .subscription-widget__days-plan
-    > button.subscription-widget__days-plan:focus-visible {
+  .subscription-widget__days-plan > button.subscription-widget__days-plan:focus-visible {
     outline: 2px solid var(--widget-text);
     outline-offset: 2px;
   }
 
-  .subscription-widget__days-plan
-    > button.subscription-widget__days-plan.is-selected,
-  .subscription-widget__days-plan
-    > button.subscription-widget__days-plan[aria-pressed="true"] {
+  .subscription-widget__days-plan > button.subscription-widget__days-plan.is-selected,
+  .subscription-widget__days-plan > button.subscription-widget__days-plan[aria-pressed='true'] {
     background: var(--widget-yellow);
     box-shadow: inset 0 0 0 1.5px var(--widget-text);
   }
 
   .subscription-widget-plan_one-time {
-    display: grid;
-    grid-template-columns: 16px minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 9px;
-    min-height: 56px;
     border-radius: 8px;
   }
 
-  .subscription-widget_subscribe-save:has(
-      .subscription-widget-plan-head
-        .subscription-widget__input:checked
-    ) {
+  .subscription-widget_subscribe-save:has(.subscription-widget__input:checked) {
     background: var(--widget-yellow-soft);
-    box-shadow: none;
-  }
-
-  .subscription-widget-plan_one-time:has(
-      > .subscription-widget__head-inner
-        .subscription-widget__input:checked
-    ) {
     box-shadow: inset 0 0 0 1.5px var(--widget-text);
   }
 
-  .subscription-widget_subscribe-save:not(
-      :has(.subscription-widget__input:checked)
-    )
-    .subscription-widget__days-plan
-    > button {
+  .subscription-widget-plan_one-time:has(.subscription-widget__input:checked) {
+    box-shadow: inset 0 0 0 1.5px var(--widget-text);
+  }
+
+  .subscription-widget_subscribe-save:not(:has(.subscription-widget__input:checked))
+    .subscription-widget__days-plan > button {
     opacity: 0.65;
   }
 
   @media screen and (max-width: 749px) {
     .subscription-widget-plan-main {
       padding: 14px;
-    }
-
-    .subscription-widget-plan-head {
-      grid-template-columns: 16px minmax(0, 1fr) auto;
     }
 
     .subscription-widget__plan-name p,
@@ -298,21 +277,20 @@
   }
 
   @media screen and (max-width: 390px) {
-    .subscription-widget-plan-head,
-    .subscription-widget-plan_one-time {
+    .subscription-widget-plan-head {
       grid-template-columns: 16px minmax(0, 1fr);
     }
 
-    .subscription-widget-plan-head
-      > .subscription-widget__price-main,
-    .subscription-widget-plan_one-time
-      > .subscription-widget__price-main {
+    .subscription-widget-plan-head > .subscription-widget__price-main {
       grid-column: 2;
+      justify-self: start;
       justify-content: flex-start;
       margin-top: 2px;
+      margin-left: 0;
     }
   }
 {% endstylesheet %}
+
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign allocations = current_variant.selling_plan_allocations %}
 {% assign initial_allocation = allocations.first %}
@@ -328,39 +306,30 @@
       data-subscription-card
     >
       <label class="subscription-widget-plan-head">
-        <div class="subscription-widget__head-inner">
+        <span class="subscription-widget__head-inner">
           <input
             class="subscription-widget__input"
             type="radio"
-            name="purchase_type"
+            name="purchase_type_{{ section.id }}"
             value="subscribe"
             data-purchase-type
-            {% if product.requires_selling_plan %}
-              checked
-            {% endif %}
+            checked
           >
           <span class="subscription-widget__radio"></span>
-        </div>
+        </span>
 
-        <div class="subscription-widget__plan-name">
+        <span class="subscription-widget__plan-name">
           <p>{{ product.selling_plan_groups.first.name }}</p>
-        </div>
+        </span>
 
-        <div class="subscription-widget__price-main">
-          <span
-            class="subscription-widget__comapre-price"
-            data-compare-price-output
-          >
+        <span class="subscription-widget__price-main">
+          <span class="subscription-widget__compare-price" data-compare-price-output>
             {{ initial_allocation.compare_at_price | money }}
           </span>
-
-          <span
-            class="subscription-widget__price"
-            data-plan-price-output
-          >
+          <span class="subscription-widget__price" data-plan-price-output>
             {{ initial_allocation.price | money }}
           </span>
-        </div>
+        </span>
       </label>
 
       <div class="subscription-widget__point-head">
@@ -369,37 +338,31 @@
             <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
               <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
-            Exclusive subscriber gifts
+            <span>Exclusive subscriber gifts</span>
           </li>
-
           <li>
             <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
               <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
-            Earn 5% back in rewards
+            <span>Earn 5% back in rewards</span>
           </li>
-
           <li>
             <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
               <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
-            Free shipping, always
+            <span>Free shipping, always</span>
           </li>
-
           <li>
             <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
               <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>
-            Skip, pause, or cancel anytime
+            <span>Skip, pause, or cancel anytime</span>
           </li>
         </ul>
       </div>
 
       <div class="subscription-widget__days-plan">
-        <span class="subscription-widget__ships-every">
-          Ships every
-        </span>
-
+        <span class="subscription-widget__ships-every">Ships every</span>
         {% for allocation in allocations %}
           <button
             type="button"
@@ -410,11 +373,7 @@
             data-compare-price="{{ allocation.compare_at_price | money | escape }}"
             aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
           >
-            {{
-              allocation.selling_plan.options.first.value
-              | remove: 'Deliver '
-              | capitalize
-            }}
+            {{ allocation.selling_plan.options.first.value | remove: 'Deliver ' | capitalize }}
           </button>
         {% endfor %}
       </div>
@@ -422,48 +381,37 @@
 
     {% unless product.requires_selling_plan %}
       <label
-        class="subscription-widget-plan-main subscription-widget-plan_one-time"
+        class="subscription-widget-plan-main subscription-widget-plan_one-time subscription-widget-plan-head"
         data-onetime-card
       >
-        <div class="subscription-widget-plan-head">
-          <div class="subscription-widget__head-inner">
-            <input
-              class="subscription-widget__input"
-              type="radio"
-              name="purchase_type"
-              value="onetime"
-              data-purchase-type
-              checked
-            >
-            <span class="subscription-widget__radio"></span>
-          </div>
+        <span class="subscription-widget__head-inner">
+          <input
+            class="subscription-widget__input"
+            type="radio"
+            name="purchase_type_{{ section.id }}"
+            value="onetime"
+            data-purchase-type
+          >
+          <span class="subscription-widget__radio"></span>
+        </span>
 
-          <div class="subscription-widget__plan-name">
-            <p>One-time purchase</p>
-          </div>
+        <span class="subscription-widget__plan-name">
+          <p>One-time purchase</p>
+        </span>
 
-          <div class="subscription-widget__price-main">
-            <span
-              class="subscription-widget__price"
-              data-onetime-price
-            >
-              {{ current_variant.price | money }}
-            </span>
-          </div>
-        </div>
+        <span class="subscription-widget__price-main">
+          <span class="subscription-widget__price" data-onetime-price>
+            {{ current_variant.price | money }}
+          </span>
+        </span>
       </label>
     {% endunless %}
 
     <input
       type="hidden"
       name="selling_plan"
+      value="{{ initial_allocation.selling_plan.id }}"
       data-selling-plan-input
-      {% if product.requires_selling_plan %}
-        value="{{ initial_allocation.selling_plan.id }}"
-      {% else %}
-        value=""
-        disabled
-      {% endif %}
     >
   </div>
 {% endif %}
