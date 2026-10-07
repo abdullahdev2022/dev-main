@@ -468,8 +468,12 @@
 
       connectSellingPlanInput() {
         if (!this.productForm || !this.sellingPlanInput) return;
-        if (!this.productForm.id) this.productForm.id = `product-form-${Date.now()}`;
-        this.sellingPlanInput.setAttribute('form', this.productForm.id);
+        let productFormId = this.productForm.getAttribute('id');
+        if (!productFormId) {
+          productFormId = `product-form-${Date.now()}`;
+          this.productForm.setAttribute('id', productFormId);
+        }
+        this.sellingPlanInput.setAttribute('form', productFormId);
       }
 
       getSelectedVariantId() {
@@ -556,8 +560,14 @@
       }
 
       handleVariantChange(event) {
-        if (!event.target.matches('[name="id"]')) return;
-        window.requestAnimationFrame(() => this.syncVariant(event.target.value));
+        if (event.target.matches('variant-picker input[data-variant-id]')) {
+          window.requestAnimationFrame(() => this.syncVariant(event.target.dataset.variantId));
+          return;
+        }
+
+        if (event.target.matches('[name="id"]')) {
+          window.requestAnimationFrame(() => this.syncVariant(event.target.value));
+        }
       }
 
       handleVariantEvent(event) {
