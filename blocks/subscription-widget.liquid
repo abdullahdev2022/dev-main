@@ -316,6 +316,7 @@
 
 {% assign subscription = product.selected_or_first_available_variant %}
 {% assign allocations = subscription.selling_plan_allocations %}
+{% assign initial_allocation = allocations.first %}
 <div class="subscription-widget-inner">
   <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
     <div class="subscription-widget-plan-head">
@@ -328,8 +329,8 @@
       </div>
 
       <div class="subscription-widget__price-main">
-        <span class="subscription-widget__comapre-price">{{  initial_allocation.first.compare_at_price | money }}</span>
-        <span class="subscription-widget__price">{{  allocations.initial_allocations.price | money }}</span>
+        <span class="subscription-widget__comapre-price">{{  initial_allocation.compare_at_price | money }}</span>
+        <span class="subscription-widget__price">{{  initial_allocation.price | money }}</span>
       </div>
     </div>
     <div class="subscription-widget__point-head">
