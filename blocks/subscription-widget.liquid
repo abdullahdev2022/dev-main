@@ -1,63 +1,64 @@
-{% assign current_variant = product.selected_or_first_available_variant %}
-
-<div class="subscription-widget">
-  <p>Current variant ID: {{ current_variant.id }}</p>
-
-  <p>
-    Available plans:
-    {{ current_variant.selling_plan_allocations.size }}
-  </p>
-
-  {% for allocation in current_variant.selling_plan_allocations %}
-    <hr>
-
-    <p>
-      Plan name:
-      {{ allocation.selling_plan.name }}
-    </p>
-
-    <p>
-      Plan ID:
-      {{ allocation.selling_plan.id }}
-    </p>
-
-    <p>
-      Compare-at price:
-      {{ allocation.compare_at_price | money }}
-    </p>
-
-    <p>
-      Subscription price:
-      {{ allocation.price | money }}
-    </p>
-
-    <p>
-      Per-delivery price:
-      {{ allocation.per_delivery_price | money }}
-    </p>
-
-    <p>
-      Price-adjustment count:
-      {{ allocation.price_adjustments.size }}
-    </p>
-
-    <p>
-      Remaining balance:
-      {{ allocation.remaining_balance_charge_amount | money }}
-    </p>
-
-    <p>
-      Selling-plan group ID:
-      {{ allocation.selling_plan_group_id }}
-    </p>
-
-    {% if allocation.unit_price %}
-      <p>
-        Unit price:
-        {{ allocation.unit_price | money }}
-      </p>
-    {% endif %}
-  {% endfor %}
+<div class="subscription-widget-inner">
+  <label class="subscription-widget-plan-main subscription-widget_subscribe-save">
+    <div class="subscription-widget-plan-head">
+      <div class="subscription-widget__head-inner">
+        <input class="subscription-widget__input" type="radio" name="" value="">
+        <span class="subscription-widget__radio"></span>
+      </div>
+      <div class="subscription-widget__plan-name">
+        <p>Subscribe & Save</p>
+      </div>
+      <div class="subscription-widget__price-main">
+        <span class="subscription-widget__comapre-price">$29.99</span>
+        <span class="subscription-widget__price">$27.29</span>
+      </div>
+    </div>
+    <div class="subscription-widget__point-head">
+      <ul>
+        <li>
+          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Exclusive subscriber gifts
+        </li>
+        <li>
+          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Earn 5% back in rewards
+        </li>
+        <li>
+          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Free shipping, always
+        </li>
+        <li>
+          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          Skip, pause, or cancel anytime
+        </li>
+      </ul>
+    </div>
+    <div class="subscription-widget__days-plan">
+      <span class="subscription-widget__ships-every">Ships every</span>
+      <button class="subscription-widget__days-plan">15 days</button>
+      <button class="subscription-widget__days-plan">30 days</button>
+      <button class="subscription-widget__days-plan">45 days</button>
+      <button class="subscription-widget__days-plan">60 days</button>
+      <button class="subscription-widget__days-plan">90 days</button>
+    </div>
+  </label>
+  <label class="subscription-widget-plan-main subscription-widget-plan_one-time">
+    <div class="subscription-widget__head-inner">
+      <input class="subscription-widget__input" type="radio" name="" value="">
+      <span class="subscription-widget__radio"></span>
+    </div>
+    <div class="subscription-widget__price-main">
+      <span class="subscription-widget__price">$27.29</span>
+    </div>
+  </label>
 </div>
 
 {% schema %}
