@@ -1,7 +1,7 @@
 {%  assign current_varaint  = product.selected_or_first_available_variant %}
 
 <div class="subscription-widget">
-<p>current variant {{ current_varaint }}</p>
+<p>current variant {{ current_varaint.id }}</p>
 <p>Available Plan {{ current_varaint.selling_plan_allocations.size }}</p>
 </div>
 
