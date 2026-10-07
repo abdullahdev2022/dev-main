@@ -325,11 +325,10 @@
       <div class="subscription-widget__plan-name">
         <p>{{  product.selling_plan_groups.first.name }}</p>
       </div>
-    {%  for allocations in subscription.selling_plan_allocations %}
 
       <div class="subscription-widget__price-main">
-        <span class="subscription-widget__comapre-price">{{  allocations.compare_at_price | money }}</span>
-        <span class="subscription-widget__price">{{  allocations.price | money }}</span>
+        <span class="subscription-widget__comapre-price">{{  subscription.initial_allocations.compare_at_price | money }}</span>
+        <span class="subscription-widget__price">{{  subscription.initial_allocations.price | money }}</span>
       </div>
     </div>
     <div class="subscription-widget__point-head">
@@ -368,7 +367,6 @@
       <button class="subscription-widget__days-plan">60 days</button>
       <button class="subscription-widget__days-plan">90 days</button>
     </div>
-{%  endfor %}
   </label>
   <label class="subscription-widget-plan-main subscription-widget-plan_one-time">
     <div class="subscription-widget-plan-head">
