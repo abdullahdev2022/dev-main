@@ -364,7 +364,7 @@
     <div class="subscription-widget__days-plan">
       <span class="subscription-widget__ships-every">Ships every</span>
 {%  for sub_allocations in allocations %}
-      <button class="subscription-widget__days-plan">{{ sub_allocations.selling_plan.name }}</button>
+      <button class="subscription-widget__days-plan" data-plan-id="{{  sub_allocations.selling_plan.id }}">{{ sub_allocations.selling_plan.name }}</button>
     {%  endfor %}
     </div>
   </label>
