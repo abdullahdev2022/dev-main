@@ -1,23 +1,64 @@
-{%  assign current_varaint  = product.selected_or_first_available_variant %}
+{% assign current_variant = product.selected_or_first_available_variant %}
 
 <div class="subscription-widget">
-<p>current variant {{ current_varaint.id }}</p>
-<p>Available Plan {{ current_varaint.selling_plan_allocations.size }}</p>
+  <p>Current variant ID: {{ current_variant.id }}</p>
+
+  <p>
+    Available plans:
+    {{ current_variant.selling_plan_allocations.size }}
+  </p>
+
+  {% for allocation in current_variant.selling_plan_allocations %}
+    <hr>
+
+    <p>
+      Plan name:
+      {{ allocation.selling_plan.name }}
+    </p>
+
+    <p>
+      Plan ID:
+      {{ allocation.selling_plan.id }}
+    </p>
+
+    <p>
+      Compare-at price:
+      {{ allocation.compare_at_price | money }}
+    </p>
+
+    <p>
+      Subscription price:
+      {{ allocation.price | money }}
+    </p>
+
+    <p>
+      Per-delivery price:
+      {{ allocation.per_delivery_price | money }}
+    </p>
+
+    <p>
+      Price-adjustment count:
+      {{ allocation.price_adjustments.size }}
+    </p>
+
+    <p>
+      Remaining balance:
+      {{ allocation.remaining_balance_charge_amount | money }}
+    </p>
+
+    <p>
+      Selling-plan group ID:
+      {{ allocation.selling_plan_group_id }}
+    </p>
+
+    {% if allocation.unit_price %}
+      <p>
+        Unit price:
+        {{ allocation.unit_price | money }}
+      </p>
+    {% endif %}
+  {% endfor %}
 </div>
-
-{% for allocations in current_varaint.selling_plan_allocations %}
-
-<p>Plan Name :{{  allocations.selling_plan }}</p>
-<p>Compare At price :{{  allocations.compare_at_price | money }}</p>
-<p>Per Delivery Price: {{  allocations.per_delivery_price | money }}</p>
-<p>Price :{{  allocations.price | money }}</p>
-<p>Price Adjustments: {{  allocations.price_adjustments }}</p>
-<p>Remaining Balance Charge Amount: {{  allocations.remaining_balance_charge_amount }}</p>
-<p>Selling Plan Group Id: {{  allocations.selling_plan_group_id }}</p>
-<p>Unit Price: {{  allocations.unit_price }}</p>
-
-
-{% endfor %}
 
 {% schema %}
 {
