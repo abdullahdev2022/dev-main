@@ -315,6 +315,7 @@
 {% endstylesheet %}
 
 {% assign subscription = product.selected_or_first_available_variant %}
+{% assign allocations = subscription.selling_plan_allocations %}
 <div class="subscription-widget-inner">
   <label class="subscription-widget-plan-main subscription-widget_subscribe-save is-selected">
     <div class="subscription-widget-plan-head">
@@ -327,8 +328,8 @@
       </div>
 
       <div class="subscription-widget__price-main">
-        <span class="subscription-widget__comapre-price">{{  subscription.initial_allocations.compare_at_price | money }}</span>
-        <span class="subscription-widget__price">{{  subscription.initial_allocations.price | money }}</span>
+        <span class="subscription-widget__comapre-price">{{  allocations.initial_allocations.compare_at_price | money }}</span>
+        <span class="subscription-widget__price">{{  allocations.initial_allocations.price | money }}</span>
       </div>
     </div>
     <div class="subscription-widget__point-head">
