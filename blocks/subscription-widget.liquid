@@ -439,69 +439,66 @@
   if (!customElements.get('subscription-widget-controller')) {
     class SubscriptionWidgetController extends HTMLElement {
       connectedCallback() {
-        this.widget = this;
         if (this.initialized) return;
-
         this.initialized = true;
+
+        this.productSection = this.closest('.shopify-section');
         this.variantData = JSON.parse(this.querySelector('[data-subscription-variants]').textContent);
         this.planButtons = [...this.querySelectorAll('[data-plan-item]')];
-        this.purchaseInputs = [...this.querySelectorAll('[data-purchase-type]')];
         this.sellingPlanInput = this.querySelector('[data-selling-plan-input]');
         this.planPriceOutput = this.querySelector('[data-plan-price-output]');
         this.comparePriceOutput = this.querySelector('[data-compare-price-output]');
         this.oneTimePriceOutput = this.querySelector('[data-onetime-price]');
-        this.productForm = this.findProductForm();
+        this.productForm = this.productSection?.querySelector('product-form-component form[action*="/cart/add"]');
+
+        this.handleVariantChange = this.handleVariantChange.bind(this);
 
         this.connectSellingPlanInput();
-        this.addEventListener('click', this.handleClick.bind(this));
-        this.addEventListener('change', this.handlePurchaseTypeChange.bind(this));
-        document.addEventListener('change', this.handleVariantChange.bind(this));
-        document.addEventListener('variant:change', this.handleVariantEvent.bind(this));
-        document.addEventListener('variant-change', this.handleVariantEvent.bind(this));
+        this.addEventListener('click', this.handlePlanClick);
+        this.addEventListener('change', this.handlePurchaseTypeChange);
+        document.addEventListener('change', this.handleVariantChange);
         this.syncVariant(this.getSelectedVariantId());
       }
 
-      findProductForm() {
-        const productScope = this.closest('product-info, product-form, [data-product-id], .shopify-section');
-        return productScope?.querySelector('form[action*="/cart/add"]') || document.querySelector('form[action*="/cart/add"]');
+      disconnectedCallback() {
+        document.removeEventListener('change', this.handleVariantChange);
       }
 
       connectSellingPlanInput() {
         if (!this.productForm || !this.sellingPlanInput) return;
-        let productFormId = this.productForm.getAttribute('id');
-        if (!productFormId) {
-          productFormId = `product-form-${Date.now()}`;
-          this.productForm.setAttribute('id', productFormId);
+
+        let formId = this.productForm.getAttribute('id');
+        if (!formId) {
+          formId = `product-form-${Date.now()}`;
+          this.productForm.setAttribute('id', formId);
         }
-        this.sellingPlanInput.setAttribute('form', productFormId);
+
+        this.sellingPlanInput.setAttribute('form', formId);
       }
 
       getSelectedVariantId() {
-        const formVariantInput = this.productForm?.querySelector('[name="id"]');
-        return String(formVariantInput?.value || this.widget.dataset.variantId);
+        const selectedVariant = this.productSection?.querySelector('variant-picker input[data-variant-id]:checked');
+        return selectedVariant?.dataset.variantId || this.dataset.variantId;
       }
 
       getActivePlanButton() {
-        return this.planButtons.find((button) => button.getAttribute('aria-pressed') === 'true') || this.planButtons[0];
-      }
-
-      getSelectedPurchaseType() {
-        return this.purchaseInputs.find((input) => input.checked)?.value || 'subscribe';
+        return this.querySelector('[data-plan-item][aria-pressed="true"]') || this.planButtons[0];
       }
 
       getAllocation(variant, planId) {
         return variant?.allocations.find((allocation) => allocation.planId === String(planId));
       }
 
-      selectPlan(button) {
-        this.planButtons.forEach((planButton) => {
-          const selected = planButton === button;
-          planButton.classList.toggle('is-selected', selected);
-          planButton.setAttribute('aria-pressed', String(selected));
+      selectPlan(selectedButton) {
+        this.planButtons.forEach((button) => {
+          const selected = button === selectedButton;
+          button.classList.toggle('is-selected', selected);
+          button.setAttribute('aria-pressed', String(selected));
         });
 
-        const subscribeInput = this.purchaseInputs.find((input) => input.value === 'subscribe');
+        const subscribeInput = this.querySelector('[data-purchase-type][value="subscribe"]');
         if (subscribeInput) subscribeInput.checked = true;
+
         this.syncPurchaseSelection();
       }
 
@@ -510,38 +507,40 @@
         if (!variant) return;
 
         this.currentVariantId = String(variantId);
-        this.widget.dataset.variantId = String(variantId);
-        if (this.oneTimePriceOutput) this.oneTimePriceOutput.textContent = variant.oneTimePrice;
+        this.dataset.variantId = this.currentVariantId;
+
+        if (this.oneTimePriceOutput) {
+          this.oneTimePriceOutput.textContent = variant.oneTimePrice;
+        }
 
         this.planButtons.forEach((button) => {
           const allocation = this.getAllocation(variant, button.dataset.planId);
           button.disabled = !allocation;
           button.hidden = !allocation;
-          if (allocation) {
-            button.dataset.planPrice = allocation.price;
-            button.dataset.comparePrice = allocation.comparePrice;
-          }
         });
 
         let activeButton = this.getActivePlanButton();
         if (!activeButton || activeButton.disabled) {
           activeButton = this.planButtons.find((button) => !button.disabled);
         }
+
         if (activeButton) this.selectPlan(activeButton);
       }
 
       syncPurchaseSelection() {
-        const variant = this.variantData[this.currentVariantId || this.getSelectedVariantId()];
+        const variant = this.variantData[this.currentVariantId];
         const activeButton = this.getActivePlanButton();
-        const allocation = activeButton ? this.getAllocation(variant, activeButton.dataset.planId) : null;
-        const isSubscription = this.getSelectedPurchaseType() === 'subscribe' && allocation;
+        const allocation = activeButton
+          ? this.getAllocation(variant, activeButton.dataset.planId)
+          : null;
+        const purchaseType = this.querySelector('[data-purchase-type]:checked')?.value;
 
         if (allocation) {
           this.planPriceOutput.textContent = allocation.price;
           this.comparePriceOutput.textContent = allocation.comparePrice;
         }
 
-        if (isSubscription) {
+        if (purchaseType === 'subscribe' && allocation) {
           this.sellingPlanInput.disabled = false;
           this.sellingPlanInput.value = allocation.planId;
         } else {
@@ -550,35 +549,33 @@
         }
       }
 
-      handleClick(event) {
-        const planButton = event.target.closest('[data-plan-item]');
-        if (planButton && this.contains(planButton) && !planButton.disabled) this.selectPlan(planButton);
-      }
+      handlePlanClick = (event) => {
+        const button = event.target.closest('[data-plan-item]');
+        if (button && this.contains(button) && !button.disabled) {
+          this.selectPlan(button);
+        }
+      };
 
-      handlePurchaseTypeChange(event) {
-        if (event.target.matches('[data-purchase-type]')) this.syncPurchaseSelection();
-      }
+      handlePurchaseTypeChange = (event) => {
+        if (event.target.matches('[data-purchase-type]')) {
+          this.syncPurchaseSelection();
+        }
+      };
 
       handleVariantChange(event) {
-        if (event.target.matches('variant-picker input[data-variant-id]')) {
-          window.requestAnimationFrame(() => this.syncVariant(event.target.dataset.variantId));
-          return;
-        }
+        if (!event.target.matches('variant-picker input[data-variant-id]')) return;
+        if (!this.productSection?.contains(event.target)) return;
 
-        if (event.target.matches('[name="id"]')) {
-          window.requestAnimationFrame(() => this.syncVariant(event.target.value));
-        }
-      }
-
-      handleVariantEvent(event) {
-        const variantId = event.detail?.variant?.id || event.detail?.variantId || this.getSelectedVariantId();
-        this.syncVariant(variantId);
+        window.requestAnimationFrame(() => {
+          this.syncVariant(event.target.dataset.variantId);
+        });
       }
     }
 
     customElements.define('subscription-widget-controller', SubscriptionWidgetController);
   }
 {% endjavascript %}
+
 
 {% schema %}
 {
