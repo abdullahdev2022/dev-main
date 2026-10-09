@@ -292,10 +292,12 @@
 {% endstylesheet %}
 
 {% assign current_variant = product.selected_or_first_available_variant %}
-{% assign allocations = current_variant.selling_plan_allocations %}
-{% assign initial_allocation = allocations.first %}
+{% assign group_allocations = current_variant.selling_plan_allocations
+  | where: 'selling_plan_group_id', group_id
+%}
+{% comment %} {% assign initial_allocation = allocations.first %} {% endcomment %}
 
-{% if allocations.size > 0 %}
+{% if group_allocations.size > 0 %}
   <subscription-widget-controller
     class="subscription-widget-inner"
     data-sub-widget
@@ -319,15 +321,15 @@
         </span>
 
         <span class="subscription-widget__plan-name">
-          <p>{{ product.selling_plan_groups.first.name }}</p>
+          <p>{{ group_allocations.first.name }}</p>
         </span>
 
         <span class="subscription-widget__price-main">
           <span class="subscription-widget__compare-price" data-compare-price-output>
-            {{ initial_allocation.compare_at_price | money }}
+            {{ group_allocations.compare_at_price | money }}
           </span>
           <span class="subscription-widget__price" data-plan-price-output>
-            {{ initial_allocation.price | money }}
+            {{ group_allocations.price | money }}
           </span>
         </span>
       </label>
