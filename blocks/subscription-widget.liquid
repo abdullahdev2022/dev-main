@@ -292,94 +292,98 @@
 {% endstylesheet %}
 
 {% assign current_variant = product.selected_or_first_available_variant %}
-{% assign group_allocations = current_variant.selling_plan_allocations
-  | where: 'selling_plan_group_id', group_id
-%}
-{% comment %} {% assign initial_allocation = allocations.first %} {% endcomment %}
+{% assign allocations = current_variant.selling_plan_allocations %}
+{% assign group_ids = allocations | map: 'selling_plan_group_id' | uniq %}
+{% assign initial_allocation = allocations.first %}
 
-{% if group_allocations.size > 0 %}
+{% if allocations.size > 0 %}
   <subscription-widget-controller
     class="subscription-widget-inner"
     data-sub-widget
     data-variant-id="{{ current_variant.id }}"
   >
-    <div
-      class="subscription-widget-plan-main subscription-widget_subscribe-save"
-      data-subscription-card
-    >
-      <label class="subscription-widget-plan-head">
-        <span class="subscription-widget__head-inner">
-          <input
-            class="subscription-widget__input"
-            type="radio"
-            name="purchase_type_{{ section.id }}"
-            value="subscribe"
-            data-purchase-type
-            checked
-          >
-          <span class="subscription-widget__radio"></span>
-        </span>
+    {% for group_id in group_ids %}
+      {% assign group = product.selling_plan_groups | where: 'id', group_id | first %}
+      {% assign group_allocations = allocations | where: 'selling_plan_group_id', group_id %}
+      {% assign group_initial = group_allocations.first %}
 
-        <span class="subscription-widget__plan-name">
-          <p>{{ group_allocations.first.name }}</p>
-        </span>
-
-        <span class="subscription-widget__price-main">
-          <span class="subscription-widget__compare-price" data-compare-price-output>
-            {{ group_allocations.compare_at_price | money }}
+      <div
+        class="subscription-widget-plan-main subscription-widget_subscribe-save"
+        data-plan-group
+        data-group-id="{{ group_id }}"
+      >
+        <label class="subscription-widget-plan-head">
+          <span class="subscription-widget__head-inner">
+            <input
+              class="subscription-widget__input"
+              type="radio"
+              name="purchase_type_{{ section.id }}"
+              value="{{ group_id }}"
+              data-purchase-type
+              {% if forloop.first %}checked{% endif %}
+            >
+            <span class="subscription-widget__radio"></span>
           </span>
-          <span class="subscription-widget__price" data-plan-price-output>
-            {{ group_allocations.price | money }}
+
+          <span class="subscription-widget__plan-name">
+            <p>{{ group.name }}</p>
           </span>
-        </span>
-      </label>
 
-      <div class="subscription-widget__point-head">
-        <ul>
-          <li>
-            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <span>Exclusive subscriber gifts</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <span>Earn 5% back in rewards</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <span>Free shipping, always</span>
-          </li>
-          <li>
-            <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
-              <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <span>Skip, pause, or cancel anytime</span>
-          </li>
-        </ul>
-      </div>
+          <span class="subscription-widget__price-main">
+            <span class="subscription-widget__compare-price" data-group-compare-price>
+              {{ group_initial.compare_at_price | money }}
+            </span>
+            <span class="subscription-widget__price" data-group-plan-price>
+              {{ group_initial.price | money }}
+            </span>
+          </span>
+        </label>
 
-      <div class="subscription-widget__days-plan">
-        <span class="subscription-widget__ships-every">Ships every</span>
-        {% for allocation in allocations %}
-          <button
-            type="button"
-            class="subscription-widget__days-plan{% if forloop.first %} is-selected{% endif %}"
-            data-plan-item
-            data-plan-id="{{ allocation.selling_plan.id }}"
-            data-plan-price="{{ allocation.price | money | escape }}"
-            data-compare-price="{{ allocation.compare_at_price | money | escape }}"
-            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
-          >
-            {{ allocation.selling_plan.options.first.value | remove: 'Deliver ' | capitalize }}
-          </button>
-        {% endfor %}
+        <div class="subscription-widget__point-head">
+          <ul>
+            <li>
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+                <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>Exclusive subscriber gifts</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+                <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>Earn 5% back in rewards</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+                <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>Free shipping, always</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+                <path d="M1.875 6.375L4.875 9.375L10.125 2.625" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>Skip, pause, or cancel anytime</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="subscription-widget__days-plan">
+          <span class="subscription-widget__ships-every">Ships every</span>
+          {% for allocation in group_allocations %}
+            <button
+              type="button"
+              class="subscription-widget__days-plan{% if forloop.first %} is-selected{% endif %}"
+              data-plan-item
+              data-plan-id="{{ allocation.selling_plan.id }}"
+              aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+            >
+              {{ allocation.selling_plan.options.first.value | remove: 'Deliver ' | capitalize }}
+            </button>
+          {% endfor %}
+        </div>
       </div>
-    </div>
+    {% endfor %}
 
     {% unless product.requires_selling_plan %}
       <label
@@ -425,6 +429,7 @@
               {% for allocation in variant.selling_plan_allocations %}
                 {
                   "planId": "{{ allocation.selling_plan.id }}",
+                  "groupId": {{ allocation.selling_plan_group_id | json }},
                   "price": {{ allocation.price | money | json }},
                   "comparePrice": {{ allocation.compare_at_price | money | json }}
                 }{% unless forloop.last %},{% endunless %}
@@ -446,18 +451,19 @@
 
         this.productSection = this.closest('.shopify-section');
         this.variantData = JSON.parse(this.querySelector('[data-subscription-variants]').textContent);
+        this.groupCards = [...this.querySelectorAll('[data-plan-group]')];
         this.planButtons = [...this.querySelectorAll('[data-plan-item]')];
         this.sellingPlanInput = this.querySelector('[data-selling-plan-input]');
-        this.planPriceOutput = this.querySelector('[data-plan-price-output]');
-        this.comparePriceOutput = this.querySelector('[data-compare-price-output]');
         this.oneTimePriceOutput = this.querySelector('[data-onetime-price]');
         this.productForm = this.productSection?.querySelector('product-form-component form[action*="/cart/add"]');
 
+        this.handleClick = this.handleClick.bind(this);
+        this.handlePurchaseChange = this.handlePurchaseChange.bind(this);
         this.handleVariantChange = this.handleVariantChange.bind(this);
 
         this.connectSellingPlanInput();
-        this.addEventListener('click', this.handlePlanClick);
-        this.addEventListener('change', this.handlePurchaseTypeChange);
+        this.addEventListener('click', this.handleClick);
+        this.addEventListener('change', this.handlePurchaseChange);
         document.addEventListener('change', this.handleVariantChange);
         this.syncVariant(this.getSelectedVariantId());
       }
@@ -468,14 +474,12 @@
 
       connectSellingPlanInput() {
         if (!this.productForm || !this.sellingPlanInput) return;
-
-        let formId = this.productForm.getAttribute('id');
-        if (!formId) {
-          formId = `product-form-${Date.now()}`;
-          this.productForm.setAttribute('id', formId);
+        let productFormId = this.productForm.getAttribute('id');
+        if (!productFormId) {
+          productFormId = `product-form-${Date.now()}`;
+          this.productForm.setAttribute('id', productFormId);
         }
-
-        this.sellingPlanInput.setAttribute('form', formId);
+        this.sellingPlanInput.setAttribute('form', productFormId);
       }
 
       getSelectedVariantId() {
@@ -483,25 +487,42 @@
         return selectedVariant?.dataset.variantId || this.dataset.variantId;
       }
 
-      getActivePlanButton() {
-        return this.querySelector('[data-plan-item][aria-pressed="true"]') || this.planButtons[0];
-      }
-
       getAllocation(variant, planId) {
         return variant?.allocations.find((allocation) => allocation.planId === String(planId));
       }
 
-      selectPlan(selectedButton) {
-        this.planButtons.forEach((button) => {
-          const selected = button === selectedButton;
+      getActiveButton(groupCard) {
+        return groupCard.querySelector('[data-plan-item][aria-pressed="true"]');
+      }
+
+      updateGroupCard(groupCard, variant) {
+        const buttons = [...groupCard.querySelectorAll('[data-plan-item]')];
+        buttons.forEach((button) => {
+          const allocation = this.getAllocation(variant, button.dataset.planId);
+          button.disabled = !allocation;
+          button.hidden = !allocation;
+        });
+
+        let activeButton = this.getActiveButton(groupCard);
+        if (!activeButton || activeButton.disabled) {
+          activeButton = buttons.find((button) => !button.disabled);
+        }
+
+        if (!activeButton) {
+          groupCard.hidden = true;
+          return;
+        }
+
+        groupCard.hidden = false;
+        buttons.forEach((button) => {
+          const selected = button === activeButton;
           button.classList.toggle('is-selected', selected);
           button.setAttribute('aria-pressed', String(selected));
         });
 
-        const subscribeInput = this.querySelector('[data-purchase-type][value="subscribe"]');
-        if (subscribeInput) subscribeInput.checked = true;
-
-        this.syncPurchaseSelection();
+        const allocation = this.getAllocation(variant, activeButton.dataset.planId);
+        groupCard.querySelector('[data-group-plan-price]').textContent = allocation.price;
+        groupCard.querySelector('[data-group-compare-price]').textContent = allocation.comparePrice;
       }
 
       syncVariant(variantId) {
@@ -515,69 +536,78 @@
           this.oneTimePriceOutput.textContent = variant.oneTimePrice;
         }
 
-        this.planButtons.forEach((button) => {
-          const allocation = this.getAllocation(variant, button.dataset.planId);
-          button.disabled = !allocation;
-          button.hidden = !allocation;
-        });
+        this.groupCards.forEach((groupCard) => this.updateGroupCard(groupCard, variant));
 
-        let activeButton = this.getActivePlanButton();
-        if (!activeButton || activeButton.disabled) {
-          activeButton = this.planButtons.find((button) => !button.disabled);
+        const selectedPurchase = this.querySelector('[data-purchase-type]:checked');
+        const selectedGroup = selectedPurchase?.closest('[data-plan-group]');
+        if (selectedGroup?.hidden) {
+          const availableGroup = this.groupCards.find((groupCard) => !groupCard.hidden);
+          const availableGroupRadio = availableGroup?.querySelector('[data-purchase-type]');
+          if (availableGroupRadio) availableGroupRadio.checked = true;
         }
 
-        if (activeButton) this.selectPlan(activeButton);
+        this.syncPurchaseSelection();
       }
 
       syncPurchaseSelection() {
+        const selectedPurchase = this.querySelector('[data-purchase-type]:checked');
+        if (!selectedPurchase || selectedPurchase.value === 'onetime') {
+          this.sellingPlanInput.value = '';
+          this.sellingPlanInput.disabled = true;
+          return;
+        }
+
+        const groupCard = selectedPurchase.closest('[data-plan-group]');
+        const activeButton = this.getActiveButton(groupCard);
         const variant = this.variantData[this.currentVariantId];
-        const activeButton = this.getActivePlanButton();
         const allocation = activeButton
           ? this.getAllocation(variant, activeButton.dataset.planId)
           : null;
-        const purchaseType = this.querySelector('[data-purchase-type]:checked')?.value;
 
-        if (allocation) {
-          this.planPriceOutput.textContent = allocation.price;
-          this.comparePriceOutput.textContent = allocation.comparePrice;
-        }
-
-        if (purchaseType === 'subscribe' && allocation) {
-          this.sellingPlanInput.disabled = false;
-          this.sellingPlanInput.value = allocation.planId;
-        } else {
+        if (!allocation) {
           this.sellingPlanInput.value = '';
           this.sellingPlanInput.disabled = true;
+          return;
         }
+
+        this.sellingPlanInput.disabled = false;
+        this.sellingPlanInput.value = allocation.planId;
       }
 
-      handlePlanClick = (event) => {
-        const button = event.target.closest('[data-plan-item]');
-        if (button && this.contains(button) && !button.disabled) {
-          this.selectPlan(button);
-        }
-      };
+      handleClick(event) {
+        const clickedButton = event.target.closest('[data-plan-item]');
+        if (!clickedButton || !this.contains(clickedButton) || clickedButton.disabled) return;
 
-      handlePurchaseTypeChange = (event) => {
+        const groupCard = clickedButton.closest('[data-plan-group]');
+        const buttons = [...groupCard.querySelectorAll('[data-plan-item]')];
+
+        buttons.forEach((button) => {
+          const selected = button === clickedButton;
+          button.classList.toggle('is-selected', selected);
+          button.setAttribute('aria-pressed', String(selected));
+        });
+
+        groupCard.querySelector('[data-purchase-type]').checked = true;
+        this.updateGroupCard(groupCard, this.variantData[this.currentVariantId]);
+        this.syncPurchaseSelection();
+      }
+
+      handlePurchaseChange(event) {
         if (event.target.matches('[data-purchase-type]')) {
           this.syncPurchaseSelection();
         }
-      };
+      }
 
       handleVariantChange(event) {
         if (!event.target.matches('variant-picker input[data-variant-id]')) return;
         if (!this.productSection?.contains(event.target)) return;
-
-        window.requestAnimationFrame(() => {
-          this.syncVariant(event.target.dataset.variantId);
-        });
+        window.requestAnimationFrame(() => this.syncVariant(event.target.dataset.variantId));
       }
     }
 
     customElements.define('subscription-widget-controller', SubscriptionWidgetController);
   }
 {% endjavascript %}
-
 
 {% schema %}
 {
